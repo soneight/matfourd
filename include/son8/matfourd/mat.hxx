@@ -153,7 +153,7 @@ namespace son8::matfourd {
     -> Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows > {
         using Ret = Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows >;
         Ret ret;
-        Mat< TypeL, Rows, Cols, Layout::RowMajor > mat { matL };
+        Mat< TypeL, Rows, Cols, Layout::RowMajor > const mat { matL };
         ret.x( ) = mat.v1( ) * vecR;
         ret.y( ) = mat.v2( ) * vecR;
         if constexpr ( Rows > 2 ) ret.z( ) = mat.v3( ) * vecR;
@@ -161,17 +161,18 @@ namespace son8::matfourd {
         return ret;
     }
     // Mat * Mat
-    template< typename TypeL, typename TypeR, unsigned RowsL, unsigned ColsL, unsigned RowsR, unsigned ColsR, bool LaytL >
-    SON8_MATFOURD_FUNC operator*( Mat< TypeL, RowsL, ColsL, LaytL > const &matL, Mat< TypeR, RowsR, ColsR > const &matR )
+    template< typename TypeL, typename TypeR, unsigned RowsL, unsigned ColsL, unsigned RowsR, unsigned ColsR, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator*( Mat< TypeL, RowsL, ColsL, LaytL > const &matL, Mat< TypeR, RowsR, ColsR, LaytR > const &matR )
     -> Mat< decltype( matL.v1( ).x( ) * matR.v1( ).x( ) ), RowsL, ColsR > {
         static_assert( ColsL == RowsR, "Mat (column matrix) " "columns of left matrix must match rows of right matrix" );
         using Ret = Mat< decltype( matL.v1( ).x( ) * matR.v1( ).x( ) ), RowsL, ColsR >;
         Ret ret;
-        Mat< TypeL, RowsL, ColsL, Layout::RowMajor > mat{ matL };
-        ret.v1( ) = mat * matR.v1( );
-        ret.v2( ) = mat * matR.v2( );
-        if constexpr ( ColsR > 2 ) ret.v3( ) = mat * matR.v3( );
-        if constexpr ( ColsR > 3 ) ret.v4( ) = mat * matR.v4( );
+        Mat< TypeL, RowsL, ColsL, Layout::RowMajor > const matRow{ matL };
+        Mat< TypeR, RowsR, ColsR, Layout::ColMajor > const matCol{ matR };
+        ret.v1( ) = matRow * matCol.v1( );
+        ret.v2( ) = matRow * matCol.v2( );
+        if constexpr ( ColsR > 2 ) ret.v3( ) = matRow * matCol.v3( );
+        if constexpr ( ColsR > 3 ) ret.v4( ) = matRow * matCol.v4( );
         return ret;
     }
 
