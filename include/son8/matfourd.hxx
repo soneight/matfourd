@@ -4,6 +4,7 @@
 #include "matfourd/core.hxx"
 #include "matfourd/layout.hxx"
 #include "matfourd/vec.hxx"
+#include "matfourd/mat.hxx"
 #include "matfourd/print.hxx"
 
 #endif//SON8_MATFOURD_HXX
