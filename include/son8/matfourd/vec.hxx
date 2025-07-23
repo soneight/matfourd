@@ -18,6 +18,7 @@ namespace son8::matfourd {
     private:
         DataType data_;
     public:
+        static constexpr unsigned size( ) { return Size; }
         // constructors
         Vec( ) = default;
         Vec( DataType const &array )
@@ -35,8 +36,7 @@ namespace son8::matfourd {
         }
         // as row-major operator~
         SON8_MATFOURD_FUNC operator~( ) const {
-            static_assert( Layt == Layout::ColMajor, "Vec (column vector) " "already in row-major layout" );
-            return Vec< ValueType, Size, Layout::RowMajor >{ data_ };
+            return Vec< ValueType, Size, not Layt >{ data_ };
         }
         // accessors
         SON8_MATFOURD_FUNC x( ) -> ValueType & {
