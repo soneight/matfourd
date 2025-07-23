@@ -28,6 +28,10 @@ namespace son8::matfourd {
         DataType data_;
     public:
         static constexpr unsigned vecs( ) { return ( Layt == Layout::ColMajor ) ? Cols : Rows; }
+        static constexpr unsigned vals( ) { return ( Layt == Layout::ColMajor ) ? Rows : Cols; }
+        static constexpr unsigned rows( ) { return Rows; }
+        static constexpr unsigned cols( ) { return Cols; }
+        static constexpr unsigned size( ) { return Rows * Cols; }
         // constructors
         Mat( ) = default;
         Mat( DataType const &array ) : data_( array ) { }
@@ -74,27 +78,26 @@ namespace son8::matfourd {
             return data_[3];
         }
         // as row-major operator~
-        SON8_MATFOURD_FUNC operator~( ) const -> Mat< ValueType, Rows, Cols, Layout::RowMajor > {
-            static_assert( Layt == Layout::ColMajor, "Mat (column matrix) " "already in row-major layout" );
-            Mat< ValueType, Rows, Cols, Layout::RowMajor > ret;
+        SON8_MATFOURD_FUNC operator~( ) const -> Mat< ValueType, Rows, Cols, not Layt > {
+            Mat< ValueType, Rows, Cols, not Layt > ret;
 
-            /*_*/if constexpr ( Cols == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
-            else if constexpr ( Cols == 3 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x() };
-            else if constexpr ( Cols == 4 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x(), data_[3].x() };
+            /*_*/if constexpr ( vecs( ) == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
+            else if constexpr ( vecs( ) == 3 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x() };
+            else if constexpr ( vecs( ) == 4 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x(), data_[3].x() };
 
-            /*_*/if constexpr ( Cols == 2 ) ret.v2() = { data_[0].y(), data_[1].y() };
-            else if constexpr ( Cols == 3 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y() };
-            else if constexpr ( Cols == 4 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y(), data_[3].y() };
+            /*_*/if constexpr ( vecs( ) == 2 ) ret.v2() = { data_[0].y(), data_[1].y() };
+            else if constexpr ( vecs( ) == 3 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y() };
+            else if constexpr ( vecs( ) == 4 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y(), data_[3].y() };
 
-            if constexpr ( Rows > 2 ) {
-                /*_*/if constexpr ( Cols == 2 ) ret.v3() = { data_[0].z(), data_[1].z() };
-                else if constexpr ( Cols == 3 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z() };
-                else if constexpr ( Cols == 4 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z(), data_[3].z() };
+            if constexpr ( vals( ) > 2 ) {
+                /*_*/if constexpr ( vecs( ) == 2 ) ret.v3() = { data_[0].z(), data_[1].z() };
+                else if constexpr ( vecs( ) == 3 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z() };
+                else if constexpr ( vecs( ) == 4 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z(), data_[3].z() };
             }
-            if constexpr ( Rows > 3 ) {
-                /*_*/if constexpr ( Cols == 2 ) ret.v4() = { data_[0].w(), data_[1].w() };
-                else if constexpr ( Cols == 3 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w() };
-                else if constexpr ( Cols == 4 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w(), data_[3].w() };
+            if constexpr ( vals( ) > 3 ) {
+                /*_*/if constexpr ( vecs( ) == 2 ) ret.v4() = { data_[0].w(), data_[1].w() };
+                else if constexpr ( vecs( ) == 3 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w() };
+                else if constexpr ( vecs( ) == 4 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w(), data_[3].w() };
             }
             return ret;
         }
