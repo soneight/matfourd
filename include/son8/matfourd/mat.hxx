@@ -32,8 +32,10 @@ namespace son8::matfourd {
         static constexpr unsigned rows( ) { return Rows; }
         static constexpr unsigned cols( ) { return Cols; }
         static constexpr unsigned size( ) { return Rows * Cols; }
+        DataType const &data( ) const { return data_; }
         // constructors
         Mat( ) = default;
+        Mat( Mat< Type, Rows, Cols, not Layt > const &other ) : data_{ (~other).data( ) } { }
         Mat( DataType const &array ) : data_( array ) { }
         Mat( VectorType const &v1, VectorType const &v2 )
         : data_{ v1, v2 } {
@@ -151,9 +153,7 @@ namespace son8::matfourd {
     -> Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows > {
         using Ret = Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows >;
         Ret ret;
-        Mat< TypeL, Rows, Cols, Layout::RowMajor > mat;
-        if constexpr ( LaytL == Layout::RowMajor ) mat = matL;
-        else mat = ~matL;
+        Mat< TypeL, Rows, Cols, Layout::RowMajor > mat { matL };
         ret.x( ) = mat.v1( ) * vecR;
         ret.y( ) = mat.v2( ) * vecR;
         if constexpr ( Rows > 2 ) ret.z( ) = mat.v3( ) * vecR;
@@ -167,9 +167,7 @@ namespace son8::matfourd {
         static_assert( ColsL == RowsR, "Mat (column matrix) " "columns of left matrix must match rows of right matrix" );
         using Ret = Mat< decltype( matL.v1( ).x( ) * matR.v1( ).x( ) ), RowsL, ColsR >;
         Ret ret;
-        Mat< TypeL, RowsL, ColsL, Layout::RowMajor > mat;
-        if constexpr ( LaytL == Layout::RowMajor ) mat = matL;
-        else mat = ~matL;
+        Mat< TypeL, RowsL, ColsL, Layout::RowMajor > mat{ matL };
         ret.v1( ) = mat * matR.v1( );
         ret.v2( ) = mat * matR.v2( );
         if constexpr ( ColsR > 2 ) ret.v3( ) = mat * matR.v3( );
