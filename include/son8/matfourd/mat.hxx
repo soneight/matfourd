@@ -24,6 +24,8 @@ namespace son8::matfourd {
             std::array< VectorType, Rows >,
             std::array< VectorType, Cols >
         >;
+        using SelfType = Mat< Type, Rows, Cols, Layt >;
+        using SwapType = Mat< Type, Rows, Cols, not Layt >;
     private:
         DataType data_;
     public:
@@ -35,7 +37,7 @@ namespace son8::matfourd {
         DataType const &data( ) const { return data_; }
         // constructors
         Mat( ) = default;
-        Mat( Mat< Type, Rows, Cols, not Layt > const &other ) : data_{ (~other).data( ) } { }
+        Mat( SwapType const &other ) : data_{ (~other).data( ) } { }
         Mat( DataType const &array ) : data_( array ) { }
         Mat( VectorType const &v1, VectorType const &v2 )
         : data_{ v1, v2 } {
@@ -80,8 +82,8 @@ namespace son8::matfourd {
             return data_[3];
         }
         // as row-major operator~
-        SON8_MATFOURD_FUNC operator~( ) const -> Mat< ValueType, Rows, Cols, not Layt > {
-            Mat< ValueType, Rows, Cols, not Layt > ret;
+        SON8_MATFOURD_FUNC operator~( ) const -> SwapType {
+            SwapType ret;
 
             /*_*/if constexpr ( vecs( ) == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
             else if constexpr ( vecs( ) == 3 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x() };
