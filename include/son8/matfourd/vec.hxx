@@ -33,9 +33,9 @@ namespace son8::matfourd {
         Vec( ValueType const &x, ValueType const &y, ValueType const &z, ValueType const &w ) : data_{ x, y, z, w } {
             static_assert( Size == 4, "Vec (column vector) " "size must be 4 for this constructor" );
         }
-        // "transpose" operator~
+        // as row-major operator~
         SON8_MATFOURD_FUNC operator~( ) const {
-            static_assert( Layt == Layout::ColMajor, "Vec (column vector) " "layout is already row-major" );
+            static_assert( Layt == Layout::ColMajor, "Vec (column vector) " "already in row-major layout" );
             return Vec< ValueType, Size, Layout::RowMajor >{ data_ };
         }
         // accessors

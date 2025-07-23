@@ -73,9 +73,9 @@ namespace son8::matfourd {
             static_assert( vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
             return data_[3];
         }
-        // "transpose" operator~
+        // as row-major operator~
         SON8_MATFOURD_FUNC operator~( ) const -> Mat< ValueType, Rows, Cols, Layout::RowMajor > {
-            static_assert( Layt == Layout::ColMajor, "Mat (column matrix) " "`transpose` requires column-major layout" );
+            static_assert( Layt == Layout::ColMajor, "Mat (column matrix) " "already in row-major layout" );
             Mat< ValueType, Rows, Cols, Layout::RowMajor > ret;
 
             /*_*/if constexpr ( Cols == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
@@ -136,30 +136,44 @@ namespace son8::matfourd {
     -> Vec< decltype( vecL.x( ) * matR.v1( ).x( ) ), Cols, Layout::RowMajor > {
         using Ret = Vec< decltype( vecL.x( ) * matR.v1( ).x( ) ), Cols, Layout::RowMajor >;
         Ret ret;
-        Vec< TypeL, Rows, LaytL > vec = vecL;
-        // if constexpr ( LaytL == Layout::RowMajor ) vec = vecL;
-        // else vec = ~vecL;
-        ret.x( ) = vec * matR.v1( );
-        ret.y( ) = vec * matR.v2( );
-        if constexpr ( Cols > 2 ) ret.z( ) = vec * matR.v3( );
-        if constexpr ( Cols > 3 ) ret.w( ) = vec * matR.v4( );
+        ret.x( ) = vecL * matR.v1( );
+        ret.y( ) = vecL * matR.v2( );
+        if constexpr ( Cols > 2 ) ret.z( ) = vecL * matR.v3( );
+        if constexpr ( Cols > 3 ) ret.w( ) = vecL * matR.v4( );
         return ret;
     }
     // Mat * Vec
     template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL >
-    SON8_MATFOURD_FUNC operator*( Mat< TypeL, Rows, Cols, LaytL > const &matL, Vec< TypeR, Cols > const &vec )
-    -> Vec< decltype( matL.v1( ).x( ) * vec.x( ) ), Rows > {
-        using Ret = Vec< decltype( matL.v1( ).x( ) * vec.x( ) ), Rows >;
+    SON8_MATFOURD_FUNC operator*( Mat< TypeL, Rows, Cols, LaytL > const &matL, Vec< TypeR, Cols > const &vecR )
+    -> Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows > {
+        using Ret = Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows >;
         Ret ret;
         Mat< TypeL, Rows, Cols, Layout::RowMajor > mat;
         if constexpr ( LaytL == Layout::RowMajor ) mat = matL;
         else mat = ~matL;
-        ret.x( ) = mat.v1( ) * vec;
-        ret.y( ) = mat.v2( ) * vec;
-        if constexpr ( Rows > 2 ) ret.z( ) = mat.v3( ) * vec;
-        if constexpr ( Rows > 3 ) ret.w( ) = mat.v4( ) * vec;
+        ret.x( ) = mat.v1( ) * vecR;
+        ret.y( ) = mat.v2( ) * vecR;
+        if constexpr ( Rows > 2 ) ret.z( ) = mat.v3( ) * vecR;
+        if constexpr ( Rows > 3 ) ret.w( ) = mat.v4( ) * vecR;
         return ret;
     }
+    // Mat * Mat
+    template< typename TypeL, typename TypeR, unsigned RowsL, unsigned ColsL, unsigned RowsR, unsigned ColsR, bool LaytL >
+    SON8_MATFOURD_FUNC operator*( Mat< TypeL, RowsL, ColsL, LaytL > const &matL, Mat< TypeR, RowsR, ColsR > const &matR )
+    -> Mat< decltype( matL.v1( ).x( ) * matR.v1( ).x( ) ), RowsL, ColsR > {
+        static_assert( ColsL == RowsR, "Mat (column matrix) " "columns of left matrix must match rows of right matrix" );
+        using Ret = Mat< decltype( matL.v1( ).x( ) * matR.v1( ).x( ) ), RowsL, ColsR >;
+        Ret ret;
+        Mat< TypeL, RowsL, ColsL, Layout::RowMajor > mat;
+        if constexpr ( LaytL == Layout::RowMajor ) mat = matL;
+        else mat = ~matL;
+        ret.v1( ) = mat * matR.v1( );
+        ret.v2( ) = mat * matR.v2( );
+        if constexpr ( ColsR > 2 ) ret.v3( ) = mat * matR.v3( );
+        if constexpr ( ColsR > 3 ) ret.v4( ) = mat * matR.v4( );
+        return ret;
+    }
+
 }
 
 #endif//SON8_MATFOURD_MAT_HXX
