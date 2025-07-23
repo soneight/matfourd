@@ -85,24 +85,25 @@ namespace son8::matfourd {
         SON8_MATFOURD_FUNC operator~( ) const -> SwapType {
             SwapType ret;
 
-            /*_*/if constexpr ( vecs( ) == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
-            else if constexpr ( vecs( ) == 3 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x() };
-            else if constexpr ( vecs( ) == 4 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x(), data_[3].x() };
+            /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
+            else if constexpr ( SwapType::vals( ) == 3 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x() };
+            else if constexpr ( SwapType::vals( ) == 4 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x(), data_[3].x() };
 
-            /*_*/if constexpr ( vecs( ) == 2 ) ret.v2() = { data_[0].y(), data_[1].y() };
-            else if constexpr ( vecs( ) == 3 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y() };
-            else if constexpr ( vecs( ) == 4 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y(), data_[3].y() };
+            /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v2() = { data_[0].y(), data_[1].y() };
+            else if constexpr ( SwapType::vals( ) == 3 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y() };
+            else if constexpr ( SwapType::vals( ) == 4 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y(), data_[3].y() };
 
-            if constexpr ( vals( ) > 2 ) {
-                /*_*/if constexpr ( vecs( ) == 2 ) ret.v3() = { data_[0].z(), data_[1].z() };
-                else if constexpr ( vecs( ) == 3 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z() };
-                else if constexpr ( vecs( ) == 4 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z(), data_[3].z() };
+            if constexpr ( SwapType::vecs( ) > 2 ) {
+                /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v3() = { data_[0].z(), data_[1].z() };
+                else if constexpr ( SwapType::vals( ) == 3 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z() };
+                else if constexpr ( SwapType::vals( ) == 4 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z(), data_[3].z() };
             }
-            if constexpr ( vals( ) > 3 ) {
-                /*_*/if constexpr ( vecs( ) == 2 ) ret.v4() = { data_[0].w(), data_[1].w() };
-                else if constexpr ( vecs( ) == 3 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w() };
-                else if constexpr ( vecs( ) == 4 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w(), data_[3].w() };
+            if constexpr ( SwapType::vecs( ) > 3 ) {
+                /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v4() = { data_[0].w(), data_[1].w() };
+                else if constexpr ( SwapType::vals( ) == 3 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w() };
+                else if constexpr ( SwapType::vals( ) == 4 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w(), data_[3].w() };
             }
+
             return ret;
         }
     };
