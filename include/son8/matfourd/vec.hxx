@@ -69,13 +69,13 @@ namespace son8::matfourd {
             return data_[3];
         }
     };
-    // Vec (column ) aliases
+    // Vec (column vector) aliases
     template< typename Type > using Vec2 = Vec< Type, 2 >;
     template< typename Type > using Vec3 = Vec< Type, 3 >;
     template< typename Type > using Vec4 = Vec< Type, 4 >;
     // Vec (column vector) inner product (dot/scalar product)
     template< typename TypeL, typename TypeR, unsigned SizeL, unsigned SizeR, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator*( Vec< TypeL, SizeL, LaytL > const vecL, Vec< TypeR, SizeR, LaytR > const vecR ) {
+    SON8_MATFOURD_FUNC operator*( Vec< TypeL, SizeL, LaytL > const &vecL, Vec< TypeR, SizeR, LaytR > const &vecR ) {
         static_assert( SizeL == SizeR, "Vec (column vector) " "dot product " "sizes must match" );
         static_assert( LaytR == Layout::ColMajor, "Vec (column vector) " "dot product " "right operand must be column-major vector" );
         using Ret = decltype( vecL.x( ) * vecR.x( ) );
@@ -86,7 +86,7 @@ namespace son8::matfourd {
     }
     // Vec (column vector) cross product
     template< typename TypeL, typename TypeR, unsigned SizeL, unsigned SizeR, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator^( Vec< TypeL, SizeL, LaytL > const vecL, Vec< TypeR, SizeR, LaytR > const vecR ) {
+    SON8_MATFOURD_FUNC operator^( Vec< TypeL, SizeL, LaytL > const &vecL, Vec< TypeR, SizeR, LaytR > const &vecR ) {
         static_assert( SizeL == 3 && SizeR == 3, "Vec (column vector) " "cross product is only defined for 3D vectors" );
         static_assert( LaytL == Layout::ColMajor && LaytR == Layout::ColMajor, "Vec (column vector) " "cross product ^ " "both operands must be column-major vectors" );
         using Ret = Vec< decltype( vecL.x( ) * vecR.y( ) - vecL.y( ) * vecR.x( ) ), 3 >;

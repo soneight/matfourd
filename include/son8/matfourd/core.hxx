@@ -1,5 +1,5 @@
 #ifndef SON8_MATFOURD_CORE_HXX
-#define SON8_MATFOURD_HELP_HXX
+#define SON8_MATFOURD_CORE_HXX
 
 #define SON8_MATFOURD_FUNC [[nodiscard]] inline auto
 
