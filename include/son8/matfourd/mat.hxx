@@ -145,6 +145,21 @@ namespace son8::matfourd {
         if constexpr ( Cols > 3 ) ret.w( ) = vec * matR.v4( );
         return ret;
     }
+    // Mat * Vec
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL >
+    SON8_MATFOURD_FUNC operator*( Mat< TypeL, Rows, Cols, LaytL > const &matL, Vec< TypeR, Cols > const &vec )
+    -> Vec< decltype( matL.v1( ).x( ) * vec.x( ) ), Rows > {
+        using Ret = Vec< decltype( matL.v1( ).x( ) * vec.x( ) ), Rows >;
+        Ret ret;
+        Mat< TypeL, Rows, Cols, Layout::RowMajor > mat;
+        if constexpr ( LaytL == Layout::RowMajor ) mat = matL;
+        else mat = ~matL;
+        ret.x( ) = mat.v1( ) * vec;
+        ret.y( ) = mat.v2( ) * vec;
+        if constexpr ( Rows > 2 ) ret.z( ) = mat.v3( ) * vec;
+        if constexpr ( Rows > 3 ) ret.w( ) = mat.v4( ) * vec;
+        return ret;
+    }
 }
 
 #endif//SON8_MATFOURD_MAT_HXX
