@@ -41,15 +41,15 @@ namespace son8::matfourd {
         Mat( DataType const &array ) : data_( array ) { }
         Mat( VectorType const &v1, VectorType const &v2 )
         : data_{ v1, v2 } {
-            static_assert( vecs( ) == 2, "Mat (column matrix) " "constructor requires 2 vectors" );
+            static_assert( SelfType::vecs( ) == 2, "Mat (column matrix) " "constructor requires 2 vectors" );
         }
         Mat( VectorType const &v1, VectorType const &v2, VectorType const &v3 )
         : data_{ v1, v2, v3 } {
-            static_assert( vecs( ) == 3, "Mat (column matrix) " "constructor requires 3 vectors" );
+            static_assert( SelfType::vecs( ) == 3, "Mat (column matrix) " "constructor requires 3 vectors" );
         }
         Mat( VectorType const &v1, VectorType const &v2, VectorType const &v3, VectorType const &v4 )
         : data_{ v1, v2, v3, v4 } {
-            static_assert( vecs( ) == 4, "Mat (column matrix) " "constructor requires 4 vectors" );
+            static_assert( SelfType::vecs( ) == 4, "Mat (column matrix) " "constructor requires 4 vectors" );
         }
         // accessors
         SON8_MATFOURD_FUNC v1( ) -> VectorType & {
@@ -59,11 +59,11 @@ namespace son8::matfourd {
             return data_[1];
         }
         SON8_MATFOURD_FUNC v3( ) -> VectorType & {
-            static_assert( vecs( ) > 2, "Mat (column matrix) " "accessor requires more than 2 vectors" );
+            static_assert( SelfType::vecs( ) > 2, "Mat (column matrix) " "accessor requires more than 2 vectors" );
             return data_[2];
         }
         SON8_MATFOURD_FUNC v4( ) -> VectorType & {
-            static_assert( vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
+            static_assert( SelfType::vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
             return data_[3];
         }
         // const accessors
@@ -74,11 +74,11 @@ namespace son8::matfourd {
             return data_[1];
         }
         SON8_MATFOURD_FUNC v3( ) const -> VectorType const & {
-            static_assert( vecs( ) > 2, "Mat (column matrix) " "accessor requires more than 2 vectors" );
+            static_assert( SelfType::vecs( ) > 2, "Mat (column matrix) " "accessor requires more than 2 vectors" );
             return data_[2];
         }
         SON8_MATFOURD_FUNC v4( ) const -> VectorType const & {
-            static_assert( vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
+            static_assert( SelfType::vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
             return data_[3];
         }
         // as row-major operator~
@@ -108,15 +108,15 @@ namespace son8::matfourd {
         }
     };
     // Mat (column matrix) aliases
-    template< typename Type > using Mat2 = Mat< Type, 2, 2 >;
-    template< typename Type > using Mat3 = Mat< Type, 3, 3 >;
-    template< typename Type > using Mat4 = Mat< Type, 4, 4 >;
-    template< typename Type > using Mat2x3 = Mat< Type, 2, 3 >;
-    template< typename Type > using Mat2x4 = Mat< Type, 2, 4 >;
-    template< typename Type > using Mat3x2 = Mat< Type, 3, 2 >;
-    template< typename Type > using Mat3x4 = Mat< Type, 3, 4 >;
-    template< typename Type > using Mat4x2 = Mat< Type, 4, 2 >;
-    template< typename Type > using Mat4x3 = Mat< Type, 4, 3 >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat2 = Mat< Type, 2, 2, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat3 = Mat< Type, 3, 3, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat4 = Mat< Type, 4, 4, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat2x3 = Mat< Type, 2, 3, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat2x4 = Mat< Type, 2, 4, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat3x2 = Mat< Type, 3, 2, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat3x4 = Mat< Type, 3, 4, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat4x2 = Mat< Type, 4, 2, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat4x3 = Mat< Type, 4, 3, Layt >;
     // Layout aware operations (operator^)
     // Vec ^ ~Vec = Mat
     template< typename TypeL, typename TypeR, unsigned Size >
@@ -163,9 +163,9 @@ namespace son8::matfourd {
         if constexpr ( Rows > 3 ) ret.w( ) = matRow.v4( ) ^ vecCol;
         return ret;
     }
-    // layout-aware: ~Mat * Mat = Mat
+    // layout-aware: ~Mat ^ Mat = Mat
     template< typename TypeL, typename TypeR, unsigned RowsL, unsigned ColsL, unsigned RowsR, unsigned ColsR >
-    SON8_MATFOURD_FUNC operator*( Mat< TypeL, RowsL, ColsL, Layout::RowMajor > const &matRow, Mat< TypeR, RowsR, ColsR, Layout::ColMajor > const &matCol )
+    SON8_MATFOURD_FUNC operator^( Mat< TypeL, RowsL, ColsL, Layout::RowMajor > const &matRow, Mat< TypeR, RowsR, ColsR, Layout::ColMajor > const &matCol )
     -> Mat< decltype( matRow.v1( ).x( ) * matCol.v1( ).x( ) ), RowsL, ColsR > {
         static_assert( ColsL == RowsR, "Mat (column matrix) " "columns of left matrix must match rows of right matrix" );
         using Ret = Mat< decltype( matRow.v1( ).x( ) * matCol.v1( ).x( ) ), RowsL, ColsR >;
