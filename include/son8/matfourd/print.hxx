@@ -22,12 +22,13 @@ namespace son8::matfourd {
     // Mat (column matrix) print function
     template< typename Type, unsigned Rows, unsigned Cols, bool Layt >
     SON8_MATFOURD_DISC operator<<( std::ostream &os, Mat< Type, Rows, Cols, Layt > const &mat ) -> std::ostream & {
+        using SelfType = Mat< Type, Rows, Cols, Layt >;
         if constexpr ( Layt ) os << "~";
         os << "Mat" << Rows << "x" << Cols << "([";
         os << "\n\t" << mat.v1( ) << ",\n\t" << mat.v2( );
 
-        if constexpr ( mat.vecs( ) > 2 ) os << ",\n\t" << mat.v3( );
-        if constexpr ( mat.vecs( ) > 3 ) os << ",\n\t" << mat.v4( );
+        if constexpr ( SelfType::vecs( ) > 2 ) os << ",\n\t" << mat.v3( );
+        if constexpr ( SelfType::vecs( ) > 3 ) os << ",\n\t" << mat.v4( );
         os << "\n])";
         return os;
     }

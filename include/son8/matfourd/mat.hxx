@@ -24,6 +24,8 @@ namespace son8::matfourd {
             std::array< VectorType, Rows >,
             std::array< VectorType, Cols >
         >;
+        using SelfType = Mat< Type, Rows, Cols, Layt >;
+        using SwapType = Mat< Type, Rows, Cols, not Layt >;
     private:
         DataType data_;
     public:
@@ -35,7 +37,7 @@ namespace son8::matfourd {
         DataType const &data( ) const { return data_; }
         // constructors
         Mat( ) = default;
-        Mat( Mat< Type, Rows, Cols, not Layt > const &other ) : data_{ (~other).data( ) } { }
+        Mat( SwapType const &other ) : data_{ (~other).data( ) } { }
         Mat( DataType const &array ) : data_( array ) { }
         Mat( VectorType const &v1, VectorType const &v2 )
         : data_{ v1, v2 } {
@@ -80,27 +82,28 @@ namespace son8::matfourd {
             return data_[3];
         }
         // as row-major operator~
-        SON8_MATFOURD_FUNC operator~( ) const -> Mat< ValueType, Rows, Cols, not Layt > {
-            Mat< ValueType, Rows, Cols, not Layt > ret;
+        SON8_MATFOURD_FUNC operator~( ) const -> SwapType {
+            SwapType ret;
 
-            /*_*/if constexpr ( vecs( ) == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
-            else if constexpr ( vecs( ) == 3 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x() };
-            else if constexpr ( vecs( ) == 4 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x(), data_[3].x() };
+            /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
+            else if constexpr ( SwapType::vals( ) == 3 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x() };
+            else if constexpr ( SwapType::vals( ) == 4 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x(), data_[3].x() };
 
-            /*_*/if constexpr ( vecs( ) == 2 ) ret.v2() = { data_[0].y(), data_[1].y() };
-            else if constexpr ( vecs( ) == 3 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y() };
-            else if constexpr ( vecs( ) == 4 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y(), data_[3].y() };
+            /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v2() = { data_[0].y(), data_[1].y() };
+            else if constexpr ( SwapType::vals( ) == 3 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y() };
+            else if constexpr ( SwapType::vals( ) == 4 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y(), data_[3].y() };
 
-            if constexpr ( vals( ) > 2 ) {
-                /*_*/if constexpr ( vecs( ) == 2 ) ret.v3() = { data_[0].z(), data_[1].z() };
-                else if constexpr ( vecs( ) == 3 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z() };
-                else if constexpr ( vecs( ) == 4 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z(), data_[3].z() };
+            if constexpr ( SwapType::vecs( ) > 2 ) {
+                /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v3() = { data_[0].z(), data_[1].z() };
+                else if constexpr ( SwapType::vals( ) == 3 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z() };
+                else if constexpr ( SwapType::vals( ) == 4 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z(), data_[3].z() };
             }
-            if constexpr ( vals( ) > 3 ) {
-                /*_*/if constexpr ( vecs( ) == 2 ) ret.v4() = { data_[0].w(), data_[1].w() };
-                else if constexpr ( vecs( ) == 3 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w() };
-                else if constexpr ( vecs( ) == 4 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w(), data_[3].w() };
+            if constexpr ( SwapType::vecs( ) > 3 ) {
+                /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v4() = { data_[0].w(), data_[1].w() };
+                else if constexpr ( SwapType::vals( ) == 3 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w() };
+                else if constexpr ( SwapType::vals( ) == 4 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w(), data_[3].w() };
             }
+
             return ret;
         }
     };
@@ -114,9 +117,10 @@ namespace son8::matfourd {
     template< typename Type > using Mat3x4 = Mat< Type, 3, 4 >;
     template< typename Type > using Mat4x2 = Mat< Type, 4, 2 >;
     template< typename Type > using Mat4x3 = Mat< Type, 4, 3 >;
-    // inner product (vec * Vec)
+    // Layout aware operations (operator^)
+    // Vec ^ ~Vec = Mat
     template< typename TypeL, typename TypeR, unsigned Size >
-    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Size > const &vecL, Vec< TypeR, Size, Layout::RowMajor > const &vecR )
+    SON8_MATFOURD_FUNC operator^( Vec< TypeL, Size, Layout::ColMajor > const &vecL, Vec< TypeR, Size, Layout::RowMajor > const &vecR )
     -> Mat< decltype( vecL.x( ) * vecR.x( ) ), Size, Size > {
         using Ret = Mat< decltype( vecL.x( ) * vecR.x( ) ), Size, Size >;
         Ret ret;
@@ -135,32 +139,73 @@ namespace son8::matfourd {
         }
         return ret;
     }
-    // Vec * Mat
-    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL >
-    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Rows, LaytL > const &vecL, Mat< TypeR, Rows, Cols > const &matR )
+    // layout-aware: ~Vec ^ Mat = ~Vec
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols >
+    SON8_MATFOURD_FUNC operator^( Vec< TypeL, Rows, Layout::RowMajor > const &vecRow, Mat< TypeR, Rows, Cols, Layout::ColMajor > const &matCol )
+    -> Vec< decltype( vecRow.x( ) * matCol.v1( ).x( ) ), Cols, Layout::RowMajor > {
+        using Ret = Vec< decltype( vecRow.x( ) * matCol.v1( ).x( ) ), Cols, Layout::RowMajor >;
+        Ret ret;
+        ret.x( ) = vecRow ^ matCol.v1( );
+        ret.y( ) = vecRow ^ matCol.v2( );
+        if constexpr ( Cols > 2 ) ret.z( ) = vecRow ^ matCol.v3( );
+        if constexpr ( Cols > 3 ) ret.w( ) = vecRow ^ matCol.v4( );
+        return ret;
+    }
+    // layout-aware: ~Mat ^ Vec = Vec
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols >
+    SON8_MATFOURD_FUNC operator^( Mat< TypeL, Rows, Cols, Layout::RowMajor > const &matRow, Vec< TypeR, Cols, Layout::ColMajor > const &vecCol )
+    -> Vec< decltype( matRow.v1( ).x( ) * vecCol.x( ) ), Rows > {
+        using Ret = Vec< decltype( matRow.v1( ).x( ) * vecCol.x( ) ), Rows >;
+        Ret ret;
+        ret.x( ) = matRow.v1( ) ^ vecCol;
+        ret.y( ) = matRow.v2( ) ^ vecCol;
+        if constexpr ( Rows > 2 ) ret.z( ) = matRow.v3( ) ^ vecCol;
+        if constexpr ( Rows > 3 ) ret.w( ) = matRow.v4( ) ^ vecCol;
+        return ret;
+    }
+    // layout-aware: ~Mat * Mat = Mat
+    template< typename TypeL, typename TypeR, unsigned RowsL, unsigned ColsL, unsigned RowsR, unsigned ColsR >
+    SON8_MATFOURD_FUNC operator*( Mat< TypeL, RowsL, ColsL, Layout::RowMajor > const &matRow, Mat< TypeR, RowsR, ColsR, Layout::ColMajor > const &matCol )
+    -> Mat< decltype( matRow.v1( ).x( ) * matCol.v1( ).x( ) ), RowsL, ColsR > {
+        static_assert( ColsL == RowsR, "Mat (column matrix) " "columns of left matrix must match rows of right matrix" );
+        using Ret = Mat< decltype( matRow.v1( ).x( ) * matCol.v1( ).x( ) ), RowsL, ColsR >;
+        Ret ret;
+        ret.v1( ) = matRow ^ matCol.v1( );
+        ret.v2( ) = matRow ^ matCol.v2( );
+        if constexpr ( ColsR > 2 ) ret.v3( ) = matRow ^ matCol.v3( );
+        if constexpr ( ColsR > 3 ) ret.v4( ) = matRow ^ matCol.v4( );
+        return ret;
+    }
+    // Generic operations (operator*)
+    // generic: (any)Vec * (any)Mat = Vec
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Rows, LaytL > const &vecL, Mat< TypeR, Rows, Cols, LaytR > const &matR )
     -> Vec< decltype( vecL.x( ) * matR.v1( ).x( ) ), Cols, Layout::RowMajor > {
         using Ret = Vec< decltype( vecL.x( ) * matR.v1( ).x( ) ), Cols, Layout::RowMajor >;
         Ret ret;
-        ret.x( ) = vecL * matR.v1( );
-        ret.y( ) = vecL * matR.v2( );
-        if constexpr ( Cols > 2 ) ret.z( ) = vecL * matR.v3( );
-        if constexpr ( Cols > 3 ) ret.w( ) = vecL * matR.v4( );
+        Vec< TypeL, Rows, Layout::RowMajor > const vecRow{ vecL };
+        Mat< TypeR, Rows, Cols, Layout::ColMajor > const matCol{ matR };
+        ret.x( ) = vecRow ^ matCol.v1( );
+        ret.y( ) = vecRow ^ matCol.v2( );
+        if constexpr ( Cols > 2 ) ret.z( ) = vecRow ^ matCol.v3( );
+        if constexpr ( Cols > 3 ) ret.w( ) = vecRow ^ matCol.v4( );
         return ret;
     }
-    // Mat * Vec
-    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL >
-    SON8_MATFOURD_FUNC operator*( Mat< TypeL, Rows, Cols, LaytL > const &matL, Vec< TypeR, Cols > const &vecR )
+    // generic: (any)Mat * (any)Vec = Vec
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator*( Mat< TypeL, Rows, Cols, LaytL > const &matL, Vec< TypeR, Cols, LaytR > const &vecR )
     -> Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows > {
         using Ret = Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows >;
         Ret ret;
-        Mat< TypeL, Rows, Cols, Layout::RowMajor > const mat { matL };
-        ret.x( ) = mat.v1( ) * vecR;
-        ret.y( ) = mat.v2( ) * vecR;
-        if constexpr ( Rows > 2 ) ret.z( ) = mat.v3( ) * vecR;
-        if constexpr ( Rows > 3 ) ret.w( ) = mat.v4( ) * vecR;
+        Mat< TypeL, Rows, Cols, Layout::RowMajor > const matRow{ matL };
+        Vec< TypeR, Cols, Layout::ColMajor > const vecCol{ vecR };
+        ret.x( ) = matRow.v1( ) ^ vecCol;
+        ret.y( ) = matRow.v2( ) ^ vecCol;
+        if constexpr ( Rows > 2 ) ret.z( ) = matRow.v3( ) ^ vecCol;
+        if constexpr ( Rows > 3 ) ret.w( ) = matRow.v4( ) ^ vecCol;
         return ret;
     }
-    // Mat * Mat
+    // generic: (any)Mat * (any)Mat = Mat
     template< typename TypeL, typename TypeR, unsigned RowsL, unsigned ColsL, unsigned RowsR, unsigned ColsR, bool LaytL, bool LaytR >
     SON8_MATFOURD_FUNC operator*( Mat< TypeL, RowsL, ColsL, LaytL > const &matL, Mat< TypeR, RowsR, ColsR, LaytR > const &matR )
     -> Mat< decltype( matL.v1( ).x( ) * matR.v1( ).x( ) ), RowsL, ColsR > {
@@ -169,10 +214,10 @@ namespace son8::matfourd {
         Ret ret;
         Mat< TypeL, RowsL, ColsL, Layout::RowMajor > const matRow{ matL };
         Mat< TypeR, RowsR, ColsR, Layout::ColMajor > const matCol{ matR };
-        ret.v1( ) = matRow * matCol.v1( );
-        ret.v2( ) = matRow * matCol.v2( );
-        if constexpr ( ColsR > 2 ) ret.v3( ) = matRow * matCol.v3( );
-        if constexpr ( ColsR > 3 ) ret.v4( ) = matRow * matCol.v4( );
+        ret.v1( ) = matRow ^ matCol.v1( );
+        ret.v2( ) = matRow ^ matCol.v2( );
+        if constexpr ( ColsR > 2 ) ret.v3( ) = matRow ^ matCol.v3( );
+        if constexpr ( ColsR > 3 ) ret.v4( ) = matRow ^ matCol.v4( );
         return ret;
     }
 
