@@ -118,7 +118,7 @@ namespace son8::matfourd {
     template< typename Type, bool Layt = Layout::ColMajor > using Mat4x2 = Mat< Type, 4, 2, Layt >;
     template< typename Type, bool Layt = Layout::ColMajor > using Mat4x3 = Mat< Type, 4, 3, Layt >;
     // Layout aware operations (operator^)
-    // Vec ^ ~Vec = Mat
+    // Mat (column matrix) layout-aware vector outer product: Vec ^ ~Vec = Mat
     template< typename TypeL, typename TypeR, unsigned Size >
     SON8_MATFOURD_FUNC operator^( Vec< TypeL, Size, Layout::ColMajor > const &vecL, Vec< TypeR, Size, Layout::RowMajor > const &vecR )
     -> Mat< decltype( vecL.x( ) * vecR.x( ) ), Size, Size > {
@@ -139,7 +139,7 @@ namespace son8::matfourd {
         }
         return ret;
     }
-    // layout-aware: ~Vec ^ Mat = ~Vec
+    // Mat (column matrix) layout-aware: ~Vec ^ Mat = ~Vec
     template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols >
     SON8_MATFOURD_FUNC operator^( Vec< TypeL, Rows, Layout::RowMajor > const &vecRow, Mat< TypeR, Rows, Cols, Layout::ColMajor > const &matCol )
     -> Vec< decltype( vecRow.x( ) * matCol.v1( ).x( ) ), Cols, Layout::RowMajor > {
@@ -151,7 +151,7 @@ namespace son8::matfourd {
         if constexpr ( Cols > 3 ) ret.w( ) = vecRow ^ matCol.v4( );
         return ret;
     }
-    // layout-aware: ~Mat ^ Vec = Vec
+    // Mat (column matrix) layout-aware: ~Mat ^ Vec = Vec
     template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols >
     SON8_MATFOURD_FUNC operator^( Mat< TypeL, Rows, Cols, Layout::RowMajor > const &matRow, Vec< TypeR, Cols, Layout::ColMajor > const &vecCol )
     -> Vec< decltype( matRow.v1( ).x( ) * vecCol.x( ) ), Rows > {
@@ -163,7 +163,7 @@ namespace son8::matfourd {
         if constexpr ( Rows > 3 ) ret.w( ) = matRow.v4( ) ^ vecCol;
         return ret;
     }
-    // layout-aware: ~Mat ^ Mat = Mat
+    // Mat (column matrix) layout-aware: ~Mat ^ Mat = Mat
     template< typename TypeL, typename TypeR, unsigned RowsL, unsigned ColsL, unsigned RowsR, unsigned ColsR >
     SON8_MATFOURD_FUNC operator^( Mat< TypeL, RowsL, ColsL, Layout::RowMajor > const &matRow, Mat< TypeR, RowsR, ColsR, Layout::ColMajor > const &matCol )
     -> Mat< decltype( matRow.v1( ).x( ) * matCol.v1( ).x( ) ), RowsL, ColsR > {
@@ -177,7 +177,7 @@ namespace son8::matfourd {
         return ret;
     }
     // Generic operations (operator*)
-    // generic: (any)Vec * (any)Mat = Vec
+    // Mat (column matrix) generic: (any)Vec * (any)Mat = Vec
     template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
     SON8_MATFOURD_FUNC operator*( Vec< TypeL, Rows, LaytL > const &vecL, Mat< TypeR, Rows, Cols, LaytR > const &matR )
     -> Vec< decltype( vecL.x( ) * matR.v1( ).x( ) ), Cols, Layout::RowMajor > {
@@ -191,7 +191,7 @@ namespace son8::matfourd {
         if constexpr ( Cols > 3 ) ret.w( ) = vecRow ^ matCol.v4( );
         return ret;
     }
-    // generic: (any)Mat * (any)Vec = Vec
+    // Mat (column matrix) generic: (any)Mat * (any)Vec = Vec
     template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
     SON8_MATFOURD_FUNC operator*( Mat< TypeL, Rows, Cols, LaytL > const &matL, Vec< TypeR, Cols, LaytR > const &vecR )
     -> Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows > {
@@ -205,7 +205,7 @@ namespace son8::matfourd {
         if constexpr ( Rows > 3 ) ret.w( ) = matRow.v4( ) ^ vecCol;
         return ret;
     }
-    // generic: (any)Mat * (any)Mat = Mat
+    // Mat (column matrix) generic: (any)Mat * (any)Mat = Mat
     template< typename TypeL, typename TypeR, unsigned RowsL, unsigned ColsL, unsigned RowsR, unsigned ColsR, bool LaytL, bool LaytR >
     SON8_MATFOURD_FUNC operator*( Mat< TypeL, RowsL, ColsL, LaytL > const &matL, Mat< TypeR, RowsR, ColsR, LaytR > const &matR )
     -> Mat< decltype( matL.v1( ).x( ) * matR.v1( ).x( ) ), RowsL, ColsR > {
