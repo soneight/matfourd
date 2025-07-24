@@ -74,9 +74,9 @@ namespace son8::matfourd {
         }
     };
     // Vec (column vector) aliases
-    template< typename Type > using Vec2 = Vec< Type, 2 >;
-    template< typename Type > using Vec3 = Vec< Type, 3 >;
-    template< typename Type > using Vec4 = Vec< Type, 4 >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Vec2 = Vec< Type, 2, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Vec3 = Vec< Type, 3, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Vec4 = Vec< Type, 4, Layt >;
     // Generic operations (operator*)
     // Vec (column vector) inner product (dot/scalar product)
     template< typename TypeL, typename TypeR, unsigned Size, bool LaytL, bool LaytR >
