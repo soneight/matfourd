@@ -106,6 +106,24 @@ namespace son8::matfourd {
 
             return ret;
         }
+        // permit
+        SON8_MATFOURD_FUNC operator+( ) const -> SelfType {
+            SelfType ret;
+            ret.v1( ) = +v1( );
+            ret.v2( ) = +v2( );
+            if constexpr ( SelfType::vecs( ) > 2 ) ret.v3( ) = +v3( );
+            if constexpr ( SelfType::vecs( ) > 3 ) ret.v4( ) = +v4( );
+            return ret;
+        }
+        // negate
+        SON8_MATFOURD_FUNC operator-( ) const -> SelfType {
+            SelfType ret;
+            ret.v1( ) = -v1( );
+            ret.v2( ) = -v2( );
+            if constexpr ( SelfType::vecs( ) > 2 ) ret.v3( ) = -v3( );
+            if constexpr ( SelfType::vecs( ) > 3 ) ret.v4( ) = -v4( );
+            return ret;
+        }
     };
     // Mat (column matrix) aliases
     template< typename Type, bool Layt = Layout::ColMajor > using Mat2 = Mat< Type, 2, 2, Layt >;
@@ -219,6 +237,26 @@ namespace son8::matfourd {
         if constexpr ( ColsR > 2 ) ret.v3( ) = matRow ^ matCol.v3( );
         if constexpr ( ColsR > 3 ) ret.v4( ) = matRow ^ matCol.v4( );
         return ret;
+    }
+    // Mat (column matrix) generic addition: (any)Mat + (any)Mat = Mat
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator+( Mat< TypeL, Rows, Cols, LaytL > const &matL, Mat< TypeR, Rows, Cols, LaytR > const &matR )
+    -> Mat< decltype( matL.v1( ).x( ) + matR.v1( ).x( ) ), Rows, Cols > {
+        using Ret = Mat< decltype( matL.v1( ).x( ) + matR.v1( ).x( ) ), Rows, Cols >;
+        Ret ret;
+        Mat< TypeL, Rows, Cols, Layout::ColMajor > const matColL{ matL };
+        Mat< TypeR, Rows, Cols, Layout::ColMajor > const matColR{ matR };
+        ret.v1( ) = matColL.v1( ) + matColR.v1( );
+        ret.v2( ) = matColL.v2( ) + matColR.v2( );
+        if constexpr ( Cols > 2 ) ret.v3( ) = matColL.v3( ) + matColR.v3( );
+        if constexpr ( Cols > 3 ) ret.v4( ) = matColL.v4( ) + matColR.v4( );
+        return ret;
+    }
+    // Mat (column matrix) generic subtraction: (any)Mat - (any)Mat = Mat
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator-( Mat< TypeL, Rows, Cols, LaytL > const &matL, Mat< TypeR, Rows, Cols, LaytR > const &matR )
+    -> Mat< decltype( matL.v1( ).x( ) - matR.v1( ).x( ) ), Rows, Cols > {
+        return matL + ( -matR );
     }
 
 }
