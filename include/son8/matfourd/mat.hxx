@@ -51,36 +51,6 @@ namespace son8::matfourd {
         : data_{ v1, v2, v3, v4 } {
             static_assert( SelfType::vecs( ) == 4, "Mat (column matrix) " "constructor requires 4 vectors" );
         }
-        // accessors
-        SON8_MATFOURD_FUNC v1( ) -> VectorType & {
-            return data_[0];
-        }
-        SON8_MATFOURD_FUNC v2( ) -> VectorType & {
-            return data_[1];
-        }
-        SON8_MATFOURD_FUNC v3( ) -> VectorType & {
-            static_assert( SelfType::vecs( ) > 2, "Mat (column matrix) " "accessor requires more than 2 vectors" );
-            return data_[2];
-        }
-        SON8_MATFOURD_FUNC v4( ) -> VectorType & {
-            static_assert( SelfType::vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
-            return data_[3];
-        }
-        // const accessors
-        SON8_MATFOURD_FUNC v1( ) const -> VectorType const & {
-            return data_[0];
-        }
-        SON8_MATFOURD_FUNC v2( ) const -> VectorType const & {
-            return data_[1];
-        }
-        SON8_MATFOURD_FUNC v3( ) const -> VectorType const & {
-            static_assert( SelfType::vecs( ) > 2, "Mat (column matrix) " "accessor requires more than 2 vectors" );
-            return data_[2];
-        }
-        SON8_MATFOURD_FUNC v4( ) const -> VectorType const & {
-            static_assert( SelfType::vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
-            return data_[3];
-        }
         // as row-major operator~
         SON8_MATFOURD_FUNC operator~( ) const -> SwapType {
             SwapType ret;
@@ -123,6 +93,53 @@ namespace son8::matfourd {
             if constexpr ( SelfType::vecs( ) > 2 ) ret.v3( ) = -v3( );
             if constexpr ( SelfType::vecs( ) > 3 ) ret.v4( ) = -v4( );
             return ret;
+        }
+        // compound only works with same value type (for now)
+        SON8_MATFOURD_DISC operator+=( SelfType const &other ) -> SelfType & {
+            *this = *this + other;
+            return *this;
+        }
+        SON8_MATFOURD_DISC operator+=( SwapType const &other ) -> SelfType & {
+            *this += ~other;
+            return *this;
+        }
+        SON8_MATFOURD_DISC operator-=( SelfType const &other ) -> SelfType & {
+            *this = *this - other;
+            return *this;
+        }
+        SON8_MATFOURD_DISC operator-=( SwapType const &other ) -> SelfType & {
+            *this -= ~other;
+            return *this;
+        }
+        // accessors
+        SON8_MATFOURD_FUNC v1( ) -> VectorType & {
+            return data_[0];
+        }
+        SON8_MATFOURD_FUNC v2( ) -> VectorType & {
+            return data_[1];
+        }
+        SON8_MATFOURD_FUNC v3( ) -> VectorType & {
+            static_assert( SelfType::vecs( ) > 2, "Mat (column matrix) " "accessor requires more than 2 vectors" );
+            return data_[2];
+        }
+        SON8_MATFOURD_FUNC v4( ) -> VectorType & {
+            static_assert( SelfType::vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
+            return data_[3];
+        }
+        // const accessors
+        SON8_MATFOURD_FUNC v1( ) const -> VectorType const & {
+            return data_[0];
+        }
+        SON8_MATFOURD_FUNC v2( ) const -> VectorType const & {
+            return data_[1];
+        }
+        SON8_MATFOURD_FUNC v3( ) const -> VectorType const & {
+            static_assert( SelfType::vecs( ) > 2, "Mat (column matrix) " "accessor requires more than 2 vectors" );
+            return data_[2];
+        }
+        SON8_MATFOURD_FUNC v4( ) const -> VectorType const & {
+            static_assert( SelfType::vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
+            return data_[3];
         }
     };
     // Mat (column matrix) aliases
@@ -236,6 +253,18 @@ namespace son8::matfourd {
         ret.v2( ) = matRow ^ matCol.v2( );
         if constexpr ( ColsR > 2 ) ret.v3( ) = matRow ^ matCol.v3( );
         if constexpr ( ColsR > 3 ) ret.v4( ) = matRow ^ matCol.v4( );
+        return ret;
+    }
+    // Mat (column matrix) layout-aware addition: (same)Mat + (same)Mat = Mat
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool Layt >
+    SON8_MATFOURD_FUNC operator+( Mat< TypeL, Rows, Cols, Layt > const &matL, Mat< TypeR, Rows, Cols, Layt > const &matR )
+    -> Mat< decltype( matL.v1( ).x( ) + matR.v1( ).x( ) ), Rows, Cols, Layt > {
+        using Ret = Mat< decltype( matL.v1( ).x( ) + matR.v1( ).x( ) ), Rows, Cols, Layt >;
+        Ret ret;
+        ret.v1( ) = matL.v1( ) + matR.v1( );
+        ret.v2( ) = matL.v2( ) + matR.v2( );
+        if constexpr ( Cols > 2 ) ret.v3( ) = matL.v3( ) + matR.v3( );
+        if constexpr ( Cols > 3 ) ret.v4( ) = matL.v4( ) + matR.v4( );
         return ret;
     }
     // Mat (column matrix) generic addition: (any)Mat + (any)Mat = Mat

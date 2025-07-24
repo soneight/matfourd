@@ -60,6 +60,23 @@ namespace son8::matfourd {
             if constexpr ( Size > 3 ) { ret.w( ) = -w( ); }
             return ret;
         }
+        // compound only works with same value type (for now)
+        SON8_MATFOURD_DISC operator+=( SelfType const &other ) -> SelfType & {
+            *this = *this + other;
+            return *this;
+        }
+        SON8_MATFOURD_DISC operator+=( SwapType const &other ) -> SelfType & {
+            *this += ~other;
+            return *this;
+        }
+        SON8_MATFOURD_DISC operator-=( SelfType const &other ) -> SelfType & {
+            *this = *this - other;
+            return *this;
+        }
+        SON8_MATFOURD_DISC operator-=( SwapType const &other ) -> SelfType & {
+            *this -= ~other;
+            return *this;
+        }
         // accessors
         SON8_MATFOURD_FUNC x( ) -> ValueType & {
             return data_[0];
