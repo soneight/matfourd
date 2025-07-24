@@ -117,9 +117,9 @@ namespace son8::matfourd {
     template< typename Type > using Mat3x4 = Mat< Type, 3, 4 >;
     template< typename Type > using Mat4x2 = Mat< Type, 4, 2 >;
     template< typename Type > using Mat4x3 = Mat< Type, 4, 3 >;
-    // inner product (vec * Vec)
+    // Vec ^ Vec = Mat
     template< typename TypeL, typename TypeR, unsigned Size >
-    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Size > const &vecL, Vec< TypeR, Size, Layout::RowMajor > const &vecR )
+    SON8_MATFOURD_FUNC operator^( Vec< TypeL, Size, Layout::ColMajor > const &vecL, Vec< TypeR, Size, Layout::RowMajor > const &vecR )
     -> Mat< decltype( vecL.x( ) * vecR.x( ) ), Size, Size > {
         using Ret = Mat< decltype( vecL.x( ) * vecR.x( ) ), Size, Size >;
         Ret ret;
@@ -138,29 +138,32 @@ namespace son8::matfourd {
         }
         return ret;
     }
-    // Vec * Mat
-    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL >
-    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Rows, LaytL > const &vecL, Mat< TypeR, Rows, Cols > const &matR )
+    // Vec * Mat = Vec
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Rows, LaytL > const &vecL, Mat< TypeR, Rows, Cols, LaytR > const &matR )
     -> Vec< decltype( vecL.x( ) * matR.v1( ).x( ) ), Cols, Layout::RowMajor > {
         using Ret = Vec< decltype( vecL.x( ) * matR.v1( ).x( ) ), Cols, Layout::RowMajor >;
         Ret ret;
-        ret.x( ) = vecL * matR.v1( );
-        ret.y( ) = vecL * matR.v2( );
-        if constexpr ( Cols > 2 ) ret.z( ) = vecL * matR.v3( );
-        if constexpr ( Cols > 3 ) ret.w( ) = vecL * matR.v4( );
+        Vec< TypeL, Rows, Layout::RowMajor > const vecRow{ vecL };
+        Mat< TypeR, Rows, Cols, Layout::ColMajor > const matCol{ matR };
+        ret.x( ) = vecRow ^ matCol.v1( );
+        ret.y( ) = vecRow ^ matCol.v2( );
+        if constexpr ( Cols > 2 ) ret.z( ) = vecRow ^ matCol.v3( );
+        if constexpr ( Cols > 3 ) ret.w( ) = vecRow ^ matCol.v4( );
         return ret;
     }
-    // Mat * Vec
-    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL >
-    SON8_MATFOURD_FUNC operator*( Mat< TypeL, Rows, Cols, LaytL > const &matL, Vec< TypeR, Cols > const &vecR )
+    // Mat * Vec = Vec
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator*( Mat< TypeL, Rows, Cols, LaytL > const &matL, Vec< TypeR, Cols, LaytR > const &vecR )
     -> Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows > {
         using Ret = Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows >;
         Ret ret;
-        Mat< TypeL, Rows, Cols, Layout::RowMajor > const mat { matL };
-        ret.x( ) = mat.v1( ) * vecR;
-        ret.y( ) = mat.v2( ) * vecR;
-        if constexpr ( Rows > 2 ) ret.z( ) = mat.v3( ) * vecR;
-        if constexpr ( Rows > 3 ) ret.w( ) = mat.v4( ) * vecR;
+        Mat< TypeL, Rows, Cols, Layout::RowMajor > const matRow{ matL };
+        Vec< TypeR, Cols, Layout::ColMajor > const vecCol{ vecR };
+        ret.x( ) = matRow.v1( ) ^ vecCol;
+        ret.y( ) = matRow.v2( ) ^ vecCol;
+        if constexpr ( Rows > 2 ) ret.z( ) = matRow.v3( ) ^ vecCol;
+        if constexpr ( Rows > 3 ) ret.w( ) = matRow.v4( ) ^ vecCol;
         return ret;
     }
     // Mat * Mat
