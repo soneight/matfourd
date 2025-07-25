@@ -301,6 +301,23 @@ namespace son8::matfourd {
         if constexpr ( Cols > 3 ) ret.v4( ) = matL.v4( ) + matR.v4( );
         return ret;
     }
+    // Mat (column matrix) layout-aware equality: (same)Mat == (same)Mat = bool
+    template< typename Type, unsigned Rows, unsigned Cols, bool Layt >
+    SON8_MATFOURD_FUNC operator==( Mat< Type, Rows, Cols, Layt > const &matL, Mat< Type, Rows, Cols, Layt > const &matR )
+    -> bool {
+        bool ret = matL.v1( ) == matR.v1( ) and matL.v2( ) == matR.v2( );
+        if ( !ret ) return false;
+        if constexpr ( Cols > 2 ) ret = matL.v3( ) == matR.v3( );
+        if ( !ret ) return false;
+        if constexpr ( Cols > 3 ) ret = matL.v4( ) == matR.v4( );
+        return ret;
+    }
+    // Mat (column matrix) layout-aware inequality: (same)Mat != (same)Mat = bool
+    template< typename Type, unsigned Rows, unsigned Cols, bool Layt >
+    SON8_MATFOURD_FUNC operator!=( Mat< Type, Rows, Cols, Layt > const &matL, Mat< Type, Rows, Cols, Layt > const &matR )
+    -> bool {
+        return not ( matL == matR );
+    }
     // Mat (column matrix) generic addition: (any)Mat + (any)Mat = Mat
     template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
     SON8_MATFOURD_FUNC operator+( Mat< TypeL, Rows, Cols, LaytL > const &matL, Mat< TypeR, Rows, Cols, LaytR > const &matR )
@@ -321,8 +338,27 @@ namespace son8::matfourd {
     -> Mat< decltype( matL.v1( ).x( ) - matR.v1( ).x( ) ), Rows, Cols > {
         return matL + ( -matR );
     }
+    // Mat (column matrix) generic equality: (any)Mat == (any)Mat = bool
+    template< typename Type, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator==( Mat< Type, Rows, Cols, LaytL > const &matL, Mat< Type, Rows, Cols, LaytR > const &matR )
+    -> bool {
+        Mat< Type, Rows, Cols, Layout::ColMajor > const matColL{ matL };
+        Mat< Type, Rows, Cols, Layout::ColMajor > const matColR{ matR };
+        bool ret = matColL.v1( ) == matColR.v1( ) and matColL.v2( ) == matColR.v2( );
+        if ( !ret ) return false;
+        if constexpr ( Cols > 2 ) ret = matColL.v3( ) == matColR.v3( );
+        if ( !ret ) return false;
+        if constexpr ( Cols > 3 ) ret = matColL.v4( ) == matColR.v4( );
+        return ret;
+    }
+    // Mat (column matrix) generic inequality: (any)Mat != (any)Mat = bool
+    template< typename Type, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator!=( Mat< Type, Rows, Cols, LaytL > const &matL, Mat< Type, Rows, Cols, LaytR > const &matR )
+    -> bool {
+        return not ( matL == matR );
+    }
 
-}
+} // namespace son8::matfourd
 
 #endif//SON8_MATFOURD_MAT_HXX
 
