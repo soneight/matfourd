@@ -39,8 +39,43 @@ namespace son8::matfourd {
             static_assert( Size == 4, "Vec (column vector) " "size must be 4 for this constructor" );
         }
         // as row-major operator~
-        SON8_MATFOURD_FUNC operator~( ) const {
+        SON8_MATFOURD_FUNC operator~( ) const -> SwapType {
             return SwapType{ data_ };
+        }
+        // permit
+        SON8_MATFOURD_FUNC operator+( ) const -> SelfType {
+            SelfType ret;
+            ret.x( ) = +x( );
+            ret.y( ) = +y( );
+            if constexpr ( Size > 2 ) { ret.z( ) = +z( ); }
+            if constexpr ( Size > 3 ) { ret.w( ) = +w( ); }
+            return ret;
+        }
+        // negate
+        SON8_MATFOURD_FUNC operator-( ) const -> SelfType {
+            SelfType ret;
+            ret.x( ) = -x( );
+            ret.y( ) = -y( );
+            if constexpr ( Size > 2 ) { ret.z( ) = -z( ); }
+            if constexpr ( Size > 3 ) { ret.w( ) = -w( ); }
+            return ret;
+        }
+        // compound only works with same value type (for now)
+        SON8_MATFOURD_DISC operator+=( SelfType const &other ) -> SelfType & {
+            *this = *this + other;
+            return *this;
+        }
+        SON8_MATFOURD_DISC operator+=( SwapType const &other ) -> SelfType & {
+            *this += ~other;
+            return *this;
+        }
+        SON8_MATFOURD_DISC operator-=( SelfType const &other ) -> SelfType & {
+            *this = *this - other;
+            return *this;
+        }
+        SON8_MATFOURD_DISC operator-=( SwapType const &other ) -> SelfType & {
+            *this -= ~other;
+            return *this;
         }
         // accessors
         SON8_MATFOURD_FUNC x( ) -> ValueType & {
@@ -77,27 +112,17 @@ namespace son8::matfourd {
     template< typename Type, bool Layt = Layout::ColMajor > using Vec2 = Vec< Type, 2, Layt >;
     template< typename Type, bool Layt = Layout::ColMajor > using Vec3 = Vec< Type, 3, Layt >;
     template< typename Type, bool Layt = Layout::ColMajor > using Vec4 = Vec< Type, 4, Layt >;
-    // Generic operations (operator*)
-    // Vec (column vector) inner product (dot/scalar product)
-    template< typename TypeL, typename TypeR, unsigned Size, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Size, LaytL > const &vecL, Vec< TypeR, Size, LaytR > const &vecR ) {
-        using Ret = decltype( vecL.x( ) * vecR.x( ) );
-        Ret ret = vecL.x( ) * vecR.x( ) + vecL.y( ) * vecR.y( );
-        if constexpr ( Size > 2 ) { ret = ret + vecL.z( ) * vecR.z( ); }
-        if constexpr ( Size > 3 ) { ret = ret + vecL.w( ) * vecR.w( ); }
-        return ret;
-    }
     // Layout aware operations (operator^)
-    // Vec (column vector) layout aware dot product
+    // Vec (column vector) layout aware dot product: ~v ^ v = scalar (for library compile time test mainly)
     template< typename TypeL, typename TypeR, unsigned Size >
-    SON8_MATFOURD_FUNC operator^( Vec< TypeL, Size, Layout::RowMajor > const &vecL, Vec< TypeR, Size, Layout::ColMajor > const &vecR ) {
-        using Ret = decltype( vecL.x( ) * vecR.x( ) );
-        Ret ret = vecL.x( ) * vecR.x( ) + vecL.y( ) * vecR.y( );
-        if constexpr ( Size > 2 ) { ret = ret + vecL.z( ) * vecR.z( ); }
-        if constexpr ( Size > 3 ) { ret = ret + vecL.w( ) * vecR.w( ); }
+    SON8_MATFOURD_FUNC operator^( Vec< TypeL, Size, Layout::RowMajor > const &vecRow, Vec< TypeR, Size, Layout::ColMajor > const &vecCol ) {
+        using Ret = decltype( vecRow.x( ) * vecCol.x( ) );
+        Ret ret = vecRow.x( ) * vecCol.x( ) + vecRow.y( ) * vecCol.y( );
+        if constexpr ( Size > 2 ) { ret = ret + vecRow.z( ) * vecCol.z( ); }
+        if constexpr ( Size > 3 ) { ret = ret + vecRow.w( ) * vecCol.w( ); }
         return ret;
     }
-    // Vec (column vector) cross product
+    // Vec (column vector) layout-aware cross product: v[3] ^ v[3] = v[3]
     template< typename TypeL, typename TypeR >
     SON8_MATFOURD_FUNC operator^( Vec< TypeL, 3, Layout::ColMajor > const &vecL, Vec< TypeR, 3, Layout::ColMajor > const &vecR ) {
         using Ret = Vec< decltype( vecL.x( ) * vecR.y( ) - vecL.y( ) * vecR.x( ) ), 3, Layout::ColMajor >;
@@ -107,6 +132,71 @@ namespace son8::matfourd {
             vecL.x( ) * vecR.y( ) - vecL.y( ) * vecR.x( )
         };
     }
+    // Generic operations (operator*)
+    // Vec (column vector) generic: scalar * (any)v = v
+    template< typename TypeL, typename TypeR, unsigned Size, bool Layt >
+    SON8_MATFOURD_FUNC operator*( TypeL scalar, Vec< TypeR, Size, Layt > const &vec )
+    -> Vec< decltype( scalar * vec.x( ) ), Size, Layt > {
+        static_assert( std::is_arithmetic_v< TypeL >, "Vec (column vector) " " scalar multiplicator requires to be arithmetic type" );
+        using Ret = Vec< decltype( scalar * vec.x( ) ), Size, Layt >;
+        Ret ret;
+        ret.x( ) = scalar * vec.x( );
+        ret.y( ) = scalar * vec.y( );
+        if constexpr ( Size > 2 ) ret.z( ) = scalar * vec.z( );
+        if constexpr ( Size > 3 ) ret.w( ) = scalar * vec.w( );
+        return ret;
+    }
+    // Vec (column vector) generic: (any)v * scalar = v
+    template< typename TypeL, typename TypeR, unsigned Size, bool Layt >
+    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Size, Layt > const &vec, TypeR scalar )
+    -> Vec< decltype( vec.x( ) * scalar ), Size, Layt > {
+        return scalar * vec;
+    }
+    // Vec (column vector) generic dot product: (any)v * (any)v = scalar
+    template< typename TypeL, typename TypeR, unsigned Size, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Size, LaytL > const &vecL, Vec< TypeR, Size, LaytR > const &vecR ) {
+        using Ret = decltype( vecL.x( ) * vecR.x( ) );
+        Ret ret = vecL.x( ) * vecR.x( ) + vecL.y( ) * vecR.y( );
+        if constexpr ( Size > 2 ) { ret = ret + vecL.z( ) * vecR.z( ); }
+        if constexpr ( Size > 3 ) { ret = ret + vecL.w( ) * vecR.w( ); }
+        return ret;
+    }
+    // Vec (column vector) addition: (any)v + (any)v = v
+    template< typename TypeL, typename TypeR, unsigned Size, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator+( Vec< TypeL, Size, LaytL > const &vecL, Vec< TypeR, Size, LaytR > const &vecR )
+    -> Vec< decltype( vecL.x( ) + vecR.x( ) ), Size, Layout::ColMajor > {
+        using Ret = Vec< decltype( vecL.x( ) + vecR.x( ) ), Size, Layout::ColMajor >;
+        Ret ret;
+        ret.x( ) = vecL.x( ) + vecR.x( );
+        ret.y( ) = vecL.y( ) + vecR.y( );
+        if constexpr ( Size > 2 ) { ret.z( ) = vecL.z( ) + vecR.z( ); }
+        if constexpr ( Size > 3 ) { ret.w( ) = vecL.w( ) + vecR.w( ); }
+        return ret;
+    }
+    // Vec (column vector) subtraction: (any)v - (any)v = v
+    template< typename TypeL, typename TypeR, unsigned Size, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator-( Vec< TypeL, Size, LaytL > const &vecL, Vec< TypeR, Size, LaytR > const &vecR )
+    -> Vec< decltype( vecL.x( ) - vecR.x( ) ), Size, Layout::ColMajor > {
+        return vecL + (-vecR);
+    }
+    // Vec (column vector) equality: (any)v == (any)v = bool
+    template< typename Type, unsigned Size, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator==( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR )
+    -> bool {
+        bool ret = vecL.x( ) == vecR.x( ) and vecL.y( ) == vecR.y( );
+        if ( !ret ) return ret;
+        if constexpr ( Size > 2 ) { ret = ret and vecL.z( ) == vecR.z( ); }
+        if ( !ret ) return ret;
+        if constexpr ( Size > 3 ) { ret = ret and vecL.w( ) == vecR.w( ); }
+        return ret;
+    }
+    // Vec (column vector) inequality: (any)v != (any)v = bool
+    template< typename Type, unsigned Size, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator!=( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR )
+    -> bool {
+        return not (vecL == vecR);
+    }
+
 } // namespace son8::matfourd
 
 #endif//SON8_MATFOURD_VEC_HXX
