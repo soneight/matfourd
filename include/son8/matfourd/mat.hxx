@@ -6,6 +6,7 @@
 #include "vec.hxx"
 
 #include <array>
+#include <type_traits>
 
 namespace son8::matfourd {
     // Mat (column matrix) class template
@@ -111,6 +112,20 @@ namespace son8::matfourd {
             *this -= ~other;
             return *this;
         }
+        SON8_MATFOURD_DISC operator*=( SelfType const &other ) -> SelfType & {
+            static_assert( SelfType::rows( ) == SelfType::cols( ), "Mat (column matrix) " " compound operator* requires square matrix" );
+            *this = *this * other;
+            return *this;
+        }
+        SON8_MATFOURD_DISC operator*=( SwapType const &other ) -> SelfType & {
+            *this *= ~other;
+            return *this;
+        }
+        template< typename TypeR, unsigned RowsR, unsigned ColsR, bool LaytR >
+        SON8_MATFOURD_DISC operator*=( Mat< TypeR, RowsR, ColsR, LaytR > const &other ) -> SelfType & {
+            static_assert( false, "Mat (column matrix) " "compound operator* requires compatible matrix types" );
+            return *this;
+        }
         // accessors
         SON8_MATFOURD_FUNC v1( ) -> VectorType & {
             return data_[0];
@@ -212,6 +227,25 @@ namespace son8::matfourd {
         return ret;
     }
     // Generic operations (operator*)
+    // Mat (column matrix) generic: scalar * (any)Mat = Mat
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool Layt >
+    SON8_MATFOURD_FUNC operator*( TypeL scalar, Mat< TypeR, Rows, Cols, Layt > const &mat )
+    -> Mat< decltype( scalar * mat.v1( ).x( ) ), Rows, Cols, Layt > {
+        static_assert( std::is_arithmetic_v< TypeL >, "Mat (column matrix) " " matrix scalar multiplicator requires to be arithmetic type" );
+        using Ret = Mat< decltype( scalar * mat.v1( ).x( ) ), Rows, Cols, Layt >;
+        Ret ret;
+        ret.v1( ) = scalar * mat.v1( );
+        ret.v2( ) = scalar * mat.v2( );
+        if constexpr ( Cols > 2 ) ret.v3( ) = scalar * mat.v3( );
+        if constexpr ( Cols > 3 ) ret.v4( ) = scalar * mat.v4( );
+        return ret;
+    }
+    // Mat (column matrix) generic: (any)Mat * scalar = Mat
+    template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool Layt >
+    SON8_MATFOURD_FUNC operator*( Mat< TypeL, Rows, Cols, Layt > const &mat, TypeR scalar )
+    -> Mat< decltype( mat.v1( ).x( ) * scalar ), Rows, Cols, Layt > {
+        return scalar * mat;
+    }
     // Mat (column matrix) generic: (any)Vec * (any)Mat = Vec
     template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
     SON8_MATFOURD_FUNC operator*( Vec< TypeL, Rows, LaytL > const &vecL, Mat< TypeR, Rows, Cols, LaytR > const &matR )
