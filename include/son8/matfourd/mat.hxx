@@ -5,6 +5,7 @@
 #include "layout.hxx"
 #include "vec.hxx"
 
+#include <algorithm>
 #include <array>
 #include <type_traits>
 
@@ -357,6 +358,18 @@ namespace son8::matfourd {
     -> bool {
         return not ( matL == matR );
     }
+    // Mat (column matrix) transpose
+    template< typename Type, unsigned Rows, unsigned Cols, bool Layt >
+    SON8_MATFOURD_FUNC transpose( Mat< Type, Rows, Cols, Layt > const &mat )
+    -> Mat< Type, Cols, Rows, Layt > {
+        using Ret = Mat< Type, Cols, Rows, not Layt >;
+        Ret ret;
+        ret.v1( ) = mat.v1( );
+        ret.v2( ) = mat.v2( );
+        if constexpr ( Cols > 2 ) ret.v3( ) = mat.v3( );
+        if constexpr ( Cols > 3 ) ret.v4( ) = mat.v4( );
+        return ~ret;
+    };
 
 } // namespace son8::matfourd
 
