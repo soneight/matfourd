@@ -5,6 +5,10 @@
 #include "matfourd/layout.hxx"
 #include "matfourd/vec.hxx"
 #include "matfourd/mat.hxx"
+#include "matfourd/mat/addition.hxx"
+#include "matfourd/mat/alter.hxx"
+#include "matfourd/mat/equality.hxx"
+#include "matfourd/mat/multiply.hxx"
 #include "matfourd/print.hxx"
 
 #endif//SON8_MATFOURD_HXX
