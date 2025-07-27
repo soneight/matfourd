@@ -1,8 +1,8 @@
 #ifndef SON8_MATFOURD_VEC_HXX
 #define SON8_MATFOURD_VEC_HXX
 
-#include "core.hxx"
-#include "layout.hxx"
+#include <son8/matfourd/core.hxx>
+#include <son8/matfourd/layout.hxx>
 
 #include <array>
 
@@ -60,7 +60,7 @@ namespace son8::matfourd {
             if constexpr ( Size > 3 ) { ret.w( ) = -w( ); }
             return ret;
         }
-        // compound only works with same value type (for now)
+        // compound only works with same value type
         SON8_MATFOURD_DISC operator+=( SelfType const &other ) -> SelfType & {
             *this = *this + other;
             return *this;

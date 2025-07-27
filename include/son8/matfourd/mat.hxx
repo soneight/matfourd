@@ -1,9 +1,9 @@
 #ifndef SON8_MATFOURD_MAT_HXX
 #define SON8_MATFOURD_MAT_HXX
 
-#include "core.hxx"
-#include "layout.hxx"
-#include "vec.hxx"
+#include <son8/matfourd/core.hxx>
+#include <son8/matfourd/layout.hxx>
+#include <son8/matfourd/vec.hxx>
 
 #include <array>
 #include <type_traits>

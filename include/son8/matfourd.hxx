@@ -1,15 +1,15 @@
 #ifndef SON8_MATFOURD_HXX
 #define SON8_MATFOURD_HXX
 
-#include "matfourd/core.hxx"
-#include "matfourd/layout.hxx"
-#include "matfourd/vec.hxx"
-#include "matfourd/mat.hxx"
-#include "matfourd/mat/addition.hxx"
-#include "matfourd/mat/alter.hxx"
-#include "matfourd/mat/equality.hxx"
-#include "matfourd/mat/multiply.hxx"
-#include "matfourd/print.hxx"
+#include <son8/matfourd/core.hxx>
+#include <son8/matfourd/layout.hxx>
+#include <son8/matfourd/vec.hxx>
+#include <son8/matfourd/mat.hxx>
+#include <son8/matfourd/mat/addition.hxx>
+#include <son8/matfourd/mat/alter.hxx>
+#include <son8/matfourd/mat/equality.hxx>
+#include <son8/matfourd/mat/multiply.hxx>
+#include <son8/matfourd/print.hxx>
 
 #endif//SON8_MATFOURD_HXX
 
