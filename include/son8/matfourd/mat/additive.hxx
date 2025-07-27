@@ -1,7 +1,8 @@
-#ifndef SON8_MATFOURD_MAT_ADDITION_HXX
-#define SON8_MATFOURD_MAT_ADDITION_HXX
+#ifndef SON8_MATFOURD_MAT_ADDITIVE_HXX
+#define SON8_MATFOURD_MAT_ADDITIVE_HXX
 
 #include <son8/matfourd/mat.hxx>
+#include <son8/matfourd/vec/additive.hxx>
 
 namespace son8::matfourd {
     // Mat (column matrix) layout-aware addition: (same)Mat + (same)Mat = Mat
@@ -37,4 +38,4 @@ namespace son8::matfourd {
 
 
 
-#endif//SON8_MATFOURD_MAT_ADDITION_HXX
+#endif//SON8_MATFOURD_MAT_ADDITIVE_HXX

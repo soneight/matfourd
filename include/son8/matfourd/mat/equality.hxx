@@ -2,6 +2,7 @@
 #define SON8_MATFOURD_MAT_EQUALITY_HXX
 
 #include <son8/matfourd/mat.hxx>
+#include <son8/matfourd/vec/equality.hxx>
 
 namespace son8::matfourd {
     // Mat (column matrix) layout-aware equality: (any)Mat == (any)Mat = bool
