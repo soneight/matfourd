@@ -13,8 +13,8 @@ namespace son8::matfourd {
         Ret ret;
         ret.v1( ) = matL.v1( ) + matR.v1( );
         ret.v2( ) = matL.v2( ) + matR.v2( );
-        if constexpr ( Cols > 2 ) ret.v3( ) = matL.v3( ) + matR.v3( );
-        if constexpr ( Cols > 3 ) ret.v4( ) = matL.v4( ) + matR.v4( );
+        if constexpr ( Ret::vecs( ) > 2 ) ret.v3( ) = matL.v3( ) + matR.v3( );
+        if constexpr ( Ret::vecs( ) > 3 ) ret.v4( ) = matL.v4( ) + matR.v4( );
         return ret;
     }
     // Mat (column matrix) generic addition: (any)Mat + (any)Mat = Mat

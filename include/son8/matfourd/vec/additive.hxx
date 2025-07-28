@@ -12,8 +12,8 @@ namespace son8::matfourd {
         Ret ret;
         ret.x( ) = vecL.x( ) + vecR.x( );
         ret.y( ) = vecL.y( ) + vecR.y( );
-        if constexpr ( Size > 2 ) { ret.z( ) = vecL.z( ) + vecR.z( ); }
-        if constexpr ( Size > 3 ) { ret.w( ) = vecL.w( ) + vecR.w( ); }
+        if constexpr ( Ret::size( ) > 2 ) { ret.z( ) = vecL.z( ) + vecR.z( ); }
+        if constexpr ( Ret::size( ) > 3 ) { ret.w( ) = vecL.w( ) + vecR.w( ); }
         return ret;
     }
     // Vec (column vector) subtraction: (any)v - (any)v = v

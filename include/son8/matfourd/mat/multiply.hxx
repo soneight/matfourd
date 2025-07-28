@@ -35,8 +35,8 @@ namespace son8::matfourd {
         Ret ret;
         ret.x( ) = vecRow ^ matCol.v1( );
         ret.y( ) = vecRow ^ matCol.v2( );
-        if constexpr ( Cols > 2 ) ret.z( ) = vecRow ^ matCol.v3( );
-        if constexpr ( Cols > 3 ) ret.w( ) = vecRow ^ matCol.v4( );
+        if constexpr ( Ret::size( ) > 2 ) ret.z( ) = vecRow ^ matCol.v3( );
+        if constexpr ( Ret::size( ) > 3 ) ret.w( ) = vecRow ^ matCol.v4( );
         return ret;
     }
     // Mat (column matrix) layout-aware: ~Mat ^ Vec = Vec
@@ -47,8 +47,8 @@ namespace son8::matfourd {
         Ret ret;
         ret.x( ) = matRow.v1( ) ^ vecCol;
         ret.y( ) = matRow.v2( ) ^ vecCol;
-        if constexpr ( Rows > 2 ) ret.z( ) = matRow.v3( ) ^ vecCol;
-        if constexpr ( Rows > 3 ) ret.w( ) = matRow.v4( ) ^ vecCol;
+        if constexpr ( Ret::size( ) > 2 ) ret.z( ) = matRow.v3( ) ^ vecCol;
+        if constexpr ( Ret::size( ) > 3 ) ret.w( ) = matRow.v4( ) ^ vecCol;
         return ret;
     }
     // Mat (column matrix) layout-aware: ~Mat ^ Mat = Mat
@@ -60,8 +60,8 @@ namespace son8::matfourd {
         Ret ret;
         ret.v1( ) = matRow ^ matCol.v1( );
         ret.v2( ) = matRow ^ matCol.v2( );
-        if constexpr ( ColsR > 2 ) ret.v3( ) = matRow ^ matCol.v3( );
-        if constexpr ( ColsR > 3 ) ret.v4( ) = matRow ^ matCol.v4( );
+        if constexpr ( Ret::vecs( ) > 2 ) ret.v3( ) = matRow ^ matCol.v3( );
+        if constexpr ( Ret::vecs( ) > 3 ) ret.v4( ) = matRow ^ matCol.v4( );
         return ret;
     }
     // Generic operations (operator*)
@@ -74,8 +74,8 @@ namespace son8::matfourd {
         Ret ret;
         ret.v1( ) = scalar * mat.v1( );
         ret.v2( ) = scalar * mat.v2( );
-        if constexpr ( Cols > 2 ) ret.v3( ) = scalar * mat.v3( );
-        if constexpr ( Cols > 3 ) ret.v4( ) = scalar * mat.v4( );
+        if constexpr ( Ret::vecs( ) > 2 ) ret.v3( ) = scalar * mat.v3( );
+        if constexpr ( Ret::vecs( ) > 3 ) ret.v4( ) = scalar * mat.v4( );
         return ret;
     }
     // Mat (column matrix) generic: (any)Mat * scalar = Mat
@@ -84,7 +84,7 @@ namespace son8::matfourd {
     -> Mat< decltype( mat.v1( ).x( ) * scalar ), Rows, Cols, Layt > {
         return scalar * mat;
     }
-    // Mat (column matrix) generic: (any)Vec * (any)Mat = Vec
+    // Mat (column matrix) generic: (any)Vec * (any)Mat = ~Vec
     template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool LaytL, bool LaytR >
     SON8_MATFOURD_FUNC operator*( Vec< TypeL, Rows, LaytL > const &vecL, Mat< TypeR, Rows, Cols, LaytR > const &matR )
     -> Vec< decltype( vecL.x( ) * matR.v1( ).x( ) ), Cols, Layout::RowMajor > {
@@ -94,8 +94,8 @@ namespace son8::matfourd {
         Mat< TypeR, Rows, Cols, Layout::ColMajor > const matCol{ matR };
         ret.x( ) = vecRow ^ matCol.v1( );
         ret.y( ) = vecRow ^ matCol.v2( );
-        if constexpr ( Cols > 2 ) ret.z( ) = vecRow ^ matCol.v3( );
-        if constexpr ( Cols > 3 ) ret.w( ) = vecRow ^ matCol.v4( );
+        if constexpr ( Ret::size( ) > 2 ) ret.z( ) = vecRow ^ matCol.v3( );
+        if constexpr ( Ret::size( ) > 3 ) ret.w( ) = vecRow ^ matCol.v4( );
         return ret;
     }
     // Mat (column matrix) generic: (any)Mat * (any)Vec = Vec
@@ -108,8 +108,8 @@ namespace son8::matfourd {
         Vec< TypeR, Cols, Layout::ColMajor > const vecCol{ vecR };
         ret.x( ) = matRow.v1( ) ^ vecCol;
         ret.y( ) = matRow.v2( ) ^ vecCol;
-        if constexpr ( Rows > 2 ) ret.z( ) = matRow.v3( ) ^ vecCol;
-        if constexpr ( Rows > 3 ) ret.w( ) = matRow.v4( ) ^ vecCol;
+        if constexpr ( Ret::size( ) > 2 ) ret.z( ) = matRow.v3( ) ^ vecCol;
+        if constexpr ( Ret::size( ) > 3 ) ret.w( ) = matRow.v4( ) ^ vecCol;
         return ret;
     }
     // Mat (column matrix) generic: (any)Mat * (any)Mat = Mat
@@ -123,8 +123,8 @@ namespace son8::matfourd {
         Mat< TypeR, RowsR, ColsR, Layout::ColMajor > const matCol{ matR };
         ret.v1( ) = matRow ^ matCol.v1( );
         ret.v2( ) = matRow ^ matCol.v2( );
-        if constexpr ( ColsR > 2 ) ret.v3( ) = matRow ^ matCol.v3( );
-        if constexpr ( ColsR > 3 ) ret.v4( ) = matRow ^ matCol.v4( );
+        if constexpr ( Ret::vecs( ) > 2 ) ret.v3( ) = matRow ^ matCol.v3( );
+        if constexpr ( Ret::vecs( ) > 3 ) ret.v4( ) = matRow ^ matCol.v4( );
         return ret;
     }
 

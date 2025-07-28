@@ -34,8 +34,8 @@ namespace son8::matfourd {
         Ret ret;
         ret.x( ) = scalar * vec.x( );
         ret.y( ) = scalar * vec.y( );
-        if constexpr ( Size > 2 ) ret.z( ) = scalar * vec.z( );
-        if constexpr ( Size > 3 ) ret.w( ) = scalar * vec.w( );
+        if constexpr ( Ret::size( ) > 2 ) ret.z( ) = scalar * vec.z( );
+        if constexpr ( Ret::size( ) > 3 ) ret.w( ) = scalar * vec.w( );
         return ret;
     }
     // Vec (column vector) generic: (any)v * scalar = v
