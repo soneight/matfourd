@@ -9,11 +9,12 @@ namespace son8::matfourd {
     template< typename Type, unsigned Rows, unsigned Cols, bool Layt >
     SON8_MATFOURD_FUNC operator==( Mat< Type, Rows, Cols, Layt > const &matL, Mat< Type, Rows, Cols, Layt > const &matR )
     -> bool {
+        using CompType = Mat< Type, Rows, Cols, Layt >;
         bool ret = matL.v1( ) == matR.v1( ) and matL.v2( ) == matR.v2( );
         if ( !ret ) return false;
-        if constexpr ( Cols > 2 ) ret = matL.v3( ) == matR.v3( );
+        if constexpr ( CompType::vecs( ) > 2 ) ret = matL.v3( ) == matR.v3( );
         if ( !ret ) return false;
-        if constexpr ( Cols > 3 ) ret = matL.v4( ) == matR.v4( );
+        if constexpr ( CompType::vecs( ) > 3 ) ret = matL.v4( ) == matR.v4( );
         return ret;
     }
     // Mat (column matrix) generic equality: (any)Mat == (any)Mat = bool
