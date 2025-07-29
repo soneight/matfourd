@@ -27,18 +27,21 @@ namespace son8::matfourd {
         >;
         using SelfType = Mat< Type, Rows, Cols, Layt >;
         using SwapType = Mat< Type, Rows, Cols, not Layt >;
+        friend SwapType;
     private:
         DataType data_;
+        DataType const &array_data( ) const { return data_; }
     public:
         static constexpr unsigned vecs( ) { return ( Layt == Layout::ColMajor ) ? Cols : Rows; }
         static constexpr unsigned vals( ) { return ( Layt == Layout::ColMajor ) ? Rows : Cols; }
         static constexpr unsigned rows( ) { return Rows; }
         static constexpr unsigned cols( ) { return Cols; }
         static constexpr unsigned size( ) { return Rows * Cols; }
-        DataType const &data( ) const { return data_; }
+        SON8_MATFOURD_DISC data( ) -> ValueType * { return data_.data( )->data( ); }
+        SON8_MATFOURD_FUNC data( ) const -> ValueType const * { return data_.data( )->data( ); }
         // constructors
         Mat( ) = default;
-        Mat( SwapType const &other ) : data_{ (~other).data( ) } { }
+        Mat( SwapType const &other ) : data_{ (~other).array_data( ) } { }
         Mat( DataType const &array ) : data_( array ) { }
         Mat( VectorType const &v1, VectorType const &v2 )
         : data_{ v1, v2 } {
