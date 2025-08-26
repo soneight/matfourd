@@ -69,7 +69,7 @@ namespace son8::matfourd {
     template< typename TypeL, typename TypeR, unsigned Rows, unsigned Cols, bool Layt >
     SON8_MATFOURD_FUNC operator*( TypeL scalar, Mat< TypeR, Rows, Cols, Layt > const &mat )
     -> Mat< decltype( scalar * mat.v1( ).x( ) ), Rows, Cols, Layt > {
-        static_assert( std::is_arithmetic_v< TypeL >, "Mat (column matrix) " " matrix scalar multiplicator requires to be arithmetic type" );
+        static_assert( std::is_arithmetic_v< TypeL >, "Mat (column matrix) " " matrix scalar multiplier requires to be arithmetic type" );
         using Ret = Mat< decltype( scalar * mat.v1( ).x( ) ), Rows, Cols, Layt >;
         Ret ret;
         ret.v1( ) = scalar * mat.v1( );

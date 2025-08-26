@@ -29,7 +29,7 @@ namespace son8::matfourd {
     template< typename TypeL, typename TypeR, unsigned Size, bool Layt >
     SON8_MATFOURD_FUNC operator*( TypeL scalar, Vec< TypeR, Size, Layt > const &vec )
     -> Vec< decltype( scalar * vec.x( ) ), Size, Layt > {
-        static_assert( std::is_arithmetic_v< TypeL >, "Vec (column vector) " " scalar multiplicator requires to be arithmetic type" );
+        static_assert( std::is_arithmetic_v< TypeL >, "Vec (column vector) " " scalar multiplier requires to be arithmetic type" );
         using Ret = Vec< decltype( scalar * vec.x( ) ), Size, Layt >;
         Ret ret;
         ret.x( ) = scalar * vec.x( );
