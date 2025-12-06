@@ -1,7 +1,7 @@
 #ifndef SON8_MATFOURD_MAT_ADDITIVE_HXX
 #define SON8_MATFOURD_MAT_ADDITIVE_HXX
 
-#include <son8/matfourd/mat.hxx>
+#include <son8/matfourd/mat/type.hxx>
 #include <son8/matfourd/vec/additive.hxx>
 
 namespace son8::matfourd {

@@ -1,7 +1,7 @@
 #ifndef SON8_MATFOURD_VEC_ADDITIVE_HXX
 #define SON8_MATFOURD_VEC_ADDITIVE_HXX
 
-#include <son8/matfourd/vec.hxx>
+#include <son8/matfourd/vec/type.hxx>
 
 namespace son8::matfourd {
     // Vec (column vector) addition: (any)v + (any)v = v

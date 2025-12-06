@@ -1,7 +1,7 @@
 #ifndef SON8_MATFOURD_VEC_MULTIPLY_HXX
 #define SON8_MATFOURD_VEC_MULTIPLY_HXX
 
-#include <son8/matfourd/vec.hxx>
+#include <son8/matfourd/vec/type.hxx>
 
 namespace son8::matfourd {
     // Layout aware operations (operator^)
