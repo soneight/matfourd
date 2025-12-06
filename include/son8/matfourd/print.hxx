@@ -1,11 +1,10 @@
 #ifndef SON8_MATFOURD_PRINT_HXX
 #define SON8_MATFOURD_PRINT_HXX
-
+// matfourd headers
 #include <son8/matfourd/core.hxx>
-#include <son8/matfourd/layout.hxx>
-#include <son8/matfourd/vec.hxx>
-#include <son8/matfourd/mat.hxx>
-
+#include <son8/matfourd/vec/type.hxx>
+#include <son8/matfourd/mat/type.hxx>
+// std headers
 #include <iostream>
 
 namespace son8::matfourd {

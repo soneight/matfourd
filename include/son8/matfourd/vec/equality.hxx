@@ -1,7 +1,7 @@
 #ifndef SON8_MATFOURD_VEC_EQUALITY_HXX
 #define SON8_MATFOURD_VEC_EQUALITY_HXX
 
-#include <son8/matfourd/vec.hxx>
+#include <son8/matfourd/vec/type.hxx>
 
 namespace son8::matfourd {
     // Vec (column vector) equality: (any)v == (any)v = bool

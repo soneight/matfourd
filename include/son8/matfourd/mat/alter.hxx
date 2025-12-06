@@ -1,7 +1,7 @@
 #ifndef SON8_MATFOURD_MAT_ALTER_HXX
 #define SON8_MATFOURD_MAT_ALTER_HXX
 
-#include <son8/matfourd/mat.hxx>
+#include <son8/matfourd/mat/type.hxx>
 
 namespace son8::matfourd {
     // Mat (column matrix) transpose
