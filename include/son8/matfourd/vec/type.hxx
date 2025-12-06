@@ -10,6 +10,7 @@ namespace son8::matfourd {
     // Vec (column vector) class template
     template< typename Type, unsigned Size, bool Layt = Layout::ColMajor >
     class Vec final {
+    public:
         static constexpr unsigned const Size_Min = 2;
         static constexpr unsigned const Size_Max = 4;
         static_assert( Size_Min <= Size && Size <= Size_Max, "Vec (column vector) " "size must be in range [2,4]" );
