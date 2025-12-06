@@ -10,7 +10,7 @@
 
 namespace son8::matfourd {
     // Mat (column matrix) class template
-    template< typename Type, unsigned Rows, unsigned Cols, bool Layt = Layout::ColMajor >
+    template< typename Type, unsigned Cols, unsigned Rows, bool Layt = Layout::ColMajor >
     class Mat final {
     public:
         static constexpr unsigned const Dims_Min = 2;
@@ -25,8 +25,8 @@ namespace son8::matfourd {
             std::array< VectorType, Rows >,
             std::array< VectorType, Cols >
         >;
-        using SelfType = Mat< Type, Rows, Cols, Layt >;
-        using SwapType = Mat< Type, Rows, Cols, not Layt >;
+        using SelfType = Mat< Type, Cols, Rows, Layt >;
+        using SwapType = Mat< Type, Cols, Rows, not Layt >;
         friend SwapType;
     private:
         DataType data_;

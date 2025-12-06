@@ -6,9 +6,9 @@
 
 namespace son8::matfourd {
     // Mat (column matrix) aliases
-    template< typename Type, bool Layt = Layout::ColMajor > using Mat2 = Mat< Type, 2, 2, Layt >;
-    template< typename Type, bool Layt = Layout::ColMajor > using Mat3 = Mat< Type, 3, 3, Layt >;
-    template< typename Type, bool Layt = Layout::ColMajor > using Mat4 = Mat< Type, 4, 4, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat2   = Mat< Type, 2, 2, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat3   = Mat< Type, 3, 3, Layt >;
+    template< typename Type, bool Layt = Layout::ColMajor > using Mat4   = Mat< Type, 4, 4, Layt >;
     template< typename Type, bool Layt = Layout::ColMajor > using Mat2x3 = Mat< Type, 2, 3, Layt >;
     template< typename Type, bool Layt = Layout::ColMajor > using Mat2x4 = Mat< Type, 2, 4, Layt >;
     template< typename Type, bool Layt = Layout::ColMajor > using Mat3x2 = Mat< Type, 3, 2, Layt >;

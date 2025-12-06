@@ -116,3 +116,5 @@ namespace son8::matfourd {
 } // namespace son8::matfourd
 
 #endif//SON8_MATFOURD_VEC_TYPE_HXX
+
+// Ⓒ 2025 Oleg'Ease'Kharchuk ᦒ
