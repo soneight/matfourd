@@ -36,6 +36,6 @@ namespace son8::matfourd {
 
 } // namespace son8::matfourd
 
-
-
 #endif//SON8_MATFOURD_MAT_ADDITIVE_HXX
+
+// Ⓒ 2025 Oleg'Ease'Kharchuk ᦒ

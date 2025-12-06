@@ -5,10 +5,10 @@
 
 namespace son8::matfourd {
     // Mat (column matrix) transpose
-    template< typename Type, unsigned Rows, unsigned Cols, bool Layt >
-    SON8_MATFOURD_FUNC transpose( Mat< Type, Rows, Cols, Layt > const &mat )
-    -> Mat< Type, Cols, Rows, Layt > {
-        using Ret = Mat< Type, Cols, Rows, not Layt >;
+    template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
+    SON8_MATFOURD_FUNC transpose( Mat< Type, Cols, Rows, Layt > const &mat )
+    -> Mat< Type, Rows, Cols, Layt > {
+        using Ret = Mat< Type, Rows, Cols, not Layt >;
         Ret ret;
         ret.v1( ) = mat.v1( );
         ret.v2( ) = mat.v2( );
@@ -20,3 +20,5 @@ namespace son8::matfourd {
 } // namespace son8::matfourd
 
 #endif//SON8_MATFOURD_MAT_ALTER_HXX
+
+// Ⓒ 2025 Oleg'Ease'Kharchuk ᦒ
