@@ -25,12 +25,12 @@ namespace son8::matfourd {
     // vec equality
     template< typename TypeL, typename TypeR, unsigned SizeL, unsigned SizeR, bool LaytL, bool LaytR >
     void operator==( Vec< TypeL, SizeL, LaytL > const &vecL, Vec< TypeR, SizeR, LaytR > const &vecR ) {
-        static_assert( SizeL == SizeR, "son8::matfourd: operator== cannot compare two Vec with differenct sizes" );
+        static_assert( SizeL == SizeR, "son8::matfourd: operator== cannot compare two Vec with different sizes" );
         Un< TypeL >::reachable( );
     }
     template< typename TypeL, typename TypeR, unsigned SizeL, unsigned SizeR, bool LaytL, bool LaytR >
     void operator!=( Vec< TypeL, SizeL, LaytL > const &vecL, Vec< TypeR, SizeR, LaytR > const &vecR ) {
-        static_assert( SizeL == SizeR, "son8::matfourd: operator== cannot compare two Vec with differenct sizes" );
+        static_assert( SizeL == SizeR, "son8::matfourd: operator== cannot compare two Vec with different sizes" );
         Un< TypeL >::reachable( );
     }
     // vec multiply (layout-aware)
