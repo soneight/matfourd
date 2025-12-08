@@ -103,6 +103,60 @@ namespace son8::matfourd {
             , "son8::matfourd: operator!= requires two Vec with same value type" );
         Un< TypeL >::reachable( );
     }
+    // mat multiply scalar left
+    template< typename TypeL, typename Type, unsigned Cols, unsigned Rows, bool Layt >
+    void operator*( TypeL scalar, Mat< Type, Cols, Rows, Layt > mat ) {
+        static_assert( std::is_same_v< TypeL, Type >
+            , "son8::matfourd: operator* requires scalar and Mat with same value type" );
+        Un< Type >::reachable( );
+    }
+    // mat multiply scalar right
+    template< typename TypeR, typename Type, unsigned Cols, unsigned Rows, bool Layt >
+    void operator*( Mat< Type, Cols, Rows, Layt > mat, TypeR scalar ) {
+        static_assert( std::is_same_v< Type, TypeR >
+            , "son8::matfourd: operator* requires Mat and scalar with same value type" );
+        Un< Type >::reachable( );
+    }
+    // mat multiply vec left (layout-aware)
+    template< typename TypeL, typename TypeR, unsigned Size, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
+    void operator^( Vec< TypeL, Size, LaytL > vec, Mat< TypeR, Cols, Rows, LaytR > mat ) {
+        static_assert( LaytL == Layout::RowMajor && LaytR == Layout::ColMajor
+            , "son8::matfourd: operator^ layout-aware multiply requires row-major Vec and col-major Mat" );
+        static_assert( Size == Rows
+            , "son8::matfourd: operator^ layout-aware multiply requires Vec size and Mat rows to be equal" );
+        static_assert( std::is_same_v< TypeL, TypeR >
+            , "son8::matfourd: operator^ layout-aware multiply requires Vec and Mat with same value type" );
+        Un< TypeL >::reachable( );
+    }
+    // mat multiply vec right (layout-aware)
+    template< typename TypeL, typename TypeR, unsigned Size, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
+    void operator^( Mat< TypeL, Cols, Rows, LaytL > mat, Vec< TypeR, Size, LaytR > vec ) {
+        static_assert( LaytL == Layout::RowMajor && LaytR == Layout::ColMajor
+            , "son8::matfourd: operator^ layout-aware multiply requires row-major Mat and col-major Vec" );
+        static_assert( Cols == Size
+            , "son8::matfourd: operator^ layout-aware multiply requires Mat cols and Vec size to be equal" );
+        static_assert( std::is_same_v< TypeL, TypeR >
+            , "son8::matfourd: operator^ layout-aware multiply requires Mat and Vec with same value type" );
+        Un< TypeL >::reachable( );
+    }
+    // mat multiply vec left
+    template< typename TypeL, typename TypeR, unsigned Size, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
+    void operator*( Vec< TypeL, Size, LaytL > vec, Mat< TypeR, Cols, Rows, LaytR > mat ) {
+        static_assert( Size == Rows
+            , "son8::matfourd: operator* requires Vec size and Mat rows to be equal" );
+        static_assert( std::is_same_v< TypeL, TypeR >
+            , "son8::matfourd: operator* requires Vec and Mat with same value type" );
+        Un< TypeL >::reachable( );
+    }
+    // mat multiply vec right
+    template< typename TypeL, typename TypeR, unsigned Size, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
+    void operator*( Mat< TypeL, Cols, Rows, LaytL > mat, Vec< TypeR, Size, LaytR > vec ) {
+        static_assert( Cols == Size
+            , "son8::matfourd: operator* requires Mat cols and Vec size to be equal" );
+        static_assert( std::is_same_v< TypeL, TypeR >
+            , "son8::matfourd: operator* requires Mat and Vec with same value type" );
+        Un< TypeL >::reachable( );
+    }
     // mat multiply (layout-aware)
     template< typename TypeL, typename TypeR, unsigned ColsL, unsigned RowsL, unsigned ColsR, unsigned RowsR, bool LaytL, bool LaytR >
     void operator^( Mat< TypeL, ColsL, RowsL, LaytL > matL, Mat< TypeR, ColsR, RowsR, LaytR > matR ) {
