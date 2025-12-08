@@ -5,6 +5,7 @@
 #include <son8/matfourd/layout.hxx>
 #include <son8/matfourd/mat.hxx>
 #include <son8/matfourd/print.hxx>
+#include <son8/matfourd/static.hxx>
 #include <son8/matfourd/vec.hxx>
 
 #endif//SON8_MATFOURD_HXX
