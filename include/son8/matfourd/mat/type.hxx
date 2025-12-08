@@ -124,11 +124,6 @@ namespace son8::matfourd {
             *this *= ~other;
             return *this;
         }
-        template< typename TypeR, unsigned RowsR, unsigned ColsR, bool LaytR >
-        SON8_MATFOURD_DISC operator*=( Mat< TypeR, RowsR, ColsR, LaytR > const &other ) -> SelfType & {
-            static_assert( false, "Mat (column matrix) " "compound operator* requires compatible matrix types" );
-            return *this;
-        }
         // accessors
         SON8_MATFOURD_FUNC v1( ) -> VectorType & {
             return data_[0];
