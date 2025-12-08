@@ -4,6 +4,7 @@
 #include <son8/matfourd/vec/additive.hxx>
 #include <son8/matfourd/vec/equality.hxx>
 #include <son8/matfourd/vec/multiply.hxx>
+#include <son8/matfourd/vec/additive.hxx>
 #include <son8/matfourd/mat/equality.hxx>
 #include <son8/matfourd/mat/multiply.hxx>
 // std
@@ -32,7 +33,7 @@ namespace son8::matfourd {
             , "son8::matfourd: operator!= requires two Vec with same value type" );
         Un< TypeL >::reachable( );
     }
-    // vec additive
+    // vec additive plus
     template< typename TypeL, typename TypeR, unsigned SizeL, unsigned SizeR, bool LaytL, bool LaytR >
     void operator+( Vec< TypeL, SizeL, LaytL > const &vecL, Vec< TypeR, SizeR, LaytR > const &vecR ) {
         static_assert( SizeL == SizeR
@@ -41,6 +42,7 @@ namespace son8::matfourd {
             , "son8::matfourd: operator+ requires two Vec with same value type" );
         Un< TypeL >::reachable( );
     }
+    // vec additive minus
     template< typename TypeL, typename TypeR, unsigned SizeL, unsigned SizeR, bool LaytL, bool LaytR >
     void operator-( Vec< TypeL, SizeL, LaytL > const &vecL, Vec< TypeR, SizeR, LaytR > const &vecR ) {
         static_assert( SizeL == SizeR
@@ -101,6 +103,24 @@ namespace son8::matfourd {
             , "son8::matfourd: operator!= requires two Mat with same dimension" );
         static_assert( std::is_same_v< TypeL, TypeR >
             , "son8::matfourd: operator!= requires two Vec with same value type" );
+        Un< TypeL >::reachable( );
+    }
+    // mat additive plus
+    template< typename TypeL, typename TypeR, unsigned ColsL, unsigned RowsL, unsigned ColsR, unsigned RowsR, bool LaytL, bool LaytR >
+    void operator+( Mat< TypeL, ColsL, RowsL, LaytL > matL, Mat< TypeR, ColsR, RowsR, LaytR > matR ) {
+        static_assert( ColsL == ColsR && RowsL == RowsR
+            , "son8::matfourd: operator+ requires two Mat with same dimension" );
+        static_assert( std::is_same_v< TypeL, TypeR >
+            , "son8::matfourd: operator+ requires two Mat with same value type" );
+        Un< TypeL >::reachable( );
+    }
+    // mat additive minus
+    template< typename TypeL, typename TypeR, unsigned ColsL, unsigned RowsL, unsigned ColsR, unsigned RowsR, bool LaytL, bool LaytR >
+    void operator-( Mat< TypeL, ColsL, RowsL, LaytL > matL, Mat< TypeR, ColsR, RowsR, LaytR > matR ) {
+        static_assert( ColsL == ColsR && RowsL == RowsR
+            , "son8::matfourd: operator- requires two Mat with same dimension" );
+        static_assert( std::is_same_v< TypeL, TypeR >
+            , "son8::matfourd: operator- requires two Mat with same value type" );
         Un< TypeL >::reachable( );
     }
     // mat multiply scalar left
