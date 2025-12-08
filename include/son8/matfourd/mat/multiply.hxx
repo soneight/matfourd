@@ -106,7 +106,6 @@ namespace son8::matfourd {
     // Mat (column matrix) generic: (any)Mat * (any)Mat = Mat
     template< typename Type, unsigned ColsLRowsR, unsigned RowsL, unsigned ColsR, bool LaytL, bool LaytR >
     SON8_MATFOURD_FUNC operator*( Mat< Type, ColsLRowsR, RowsL, LaytL > const &matL, Mat< Type, ColsR, ColsLRowsR, LaytR > const &matR ) {
-        // static_assert( ColsL == RowsR, "Mat (column matrix) " "columns of left matrix must match rows of right matrix" );
         using Ret = Mat< Type, ColsR, RowsL >;
         Ret ret;
         Mat< Type, ColsLRowsR, RowsL, Layout::RowMajor > const matRow{ matL };
