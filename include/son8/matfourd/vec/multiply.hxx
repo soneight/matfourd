@@ -26,10 +26,8 @@ namespace son8::matfourd {
     }
     // Generic operations (operator*)
     // Vec (column vector) generic: scalar * (any)v = v
-    template< typename TypeL, typename TypeR, unsigned Size, bool Layt >
-    SON8_MATFOURD_FUNC operator*( TypeL scalar, Vec< TypeR, Size, Layt > const &vec )
-    -> Vec< decltype( scalar * vec.x( ) ), Size, Layt > {
-        static_assert( std::is_arithmetic_v< TypeL >, "Vec (column vector) " " scalar multiplier requires to be arithmetic type" );
+    template< typename TypeL, typename Type, unsigned Size, bool Layt >
+    SON8_MATFOURD_FUNC operator*( TypeL scalar, Vec< Type, Size, Layt > const &vec ) {
         using Ret = Vec< decltype( scalar * vec.x( ) ), Size, Layt >;
         Ret ret;
         ret.x( ) = scalar * vec.x( );
@@ -39,8 +37,8 @@ namespace son8::matfourd {
         return ret;
     }
     // Vec (column vector) generic: (any)v * scalar = v
-    template< typename TypeL, typename TypeR, unsigned Size, bool Layt >
-    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Size, Layt > const &vec, TypeR scalar )
+    template< typename TypeR, typename Type, unsigned Size, bool Layt >
+    SON8_MATFOURD_FUNC operator*( Vec< Type, Size, Layt > const &vec, TypeR scalar )
     -> Vec< decltype( vec.x( ) * scalar ), Size, Layt > {
         return scalar * vec;
     }
@@ -49,8 +47,8 @@ namespace son8::matfourd {
     SON8_MATFOURD_FUNC operator*( Vec< TypeL, Size, LaytL > const &vecL, Vec< TypeR, Size, LaytR > const &vecR ) {
         using Ret = decltype( vecL.x( ) * vecR.x( ) );
         Ret ret = vecL.x( ) * vecR.x( ) + vecL.y( ) * vecR.y( );
-        if constexpr ( Size > 2 ) { ret = ret + vecL.z( ) * vecR.z( ); }
-        if constexpr ( Size > 3 ) { ret = ret + vecL.w( ) * vecR.w( ); }
+        if constexpr ( Size > 2 ) ret = ret + vecL.z( ) * vecR.z( );
+        if constexpr ( Size > 3 ) ret = ret + vecL.w( ) * vecR.w( );
         return ret;
     }
 }

@@ -7,10 +7,9 @@
 namespace son8::matfourd {
     // Layout aware operations (operator^)
     // Mat (column matrix) layout-aware vector outer product: Vec ^ ~Vec = Mat
-    template< typename TypeL, typename TypeR, unsigned Size >
-    SON8_MATFOURD_FUNC operator^( Vec< TypeL, Size, Layout::ColMajor > const &vecL, Vec< TypeR, Size, Layout::RowMajor > const &vecR )
-    -> Mat< decltype( vecL.x( ) * vecR.x( ) ), Size, Size > {
-        using Ret = Mat< decltype( vecL.x( ) * vecR.x( ) ), Size, Size >;
+    template< typename Type, unsigned Size >
+    SON8_MATFOURD_FUNC operator^( Vec< Type, Size, Layout::ColMajor > const &vecL, Vec< Type, Size, Layout::RowMajor > const &vecR ) {
+        using Ret = Mat< Type, Size, Size >;
         Ret ret;
         if constexpr ( Size == 2 ) {
             ret.v1( ) = { vecL.x( ) * vecR.x( ), vecL.y( ) * vecR.x( ) };
@@ -28,10 +27,9 @@ namespace son8::matfourd {
         return ret;
     }
     // Mat (column matrix) layout-aware: ~Vec ^ Mat = ~Vec
-    template< typename TypeL, typename TypeR, unsigned Cols, unsigned Rows >
-    SON8_MATFOURD_FUNC operator^( Vec< TypeL, Rows, Layout::RowMajor > const &vecRow, Mat< TypeR, Cols, Rows, Layout::ColMajor > const &matCol )
-    -> Vec< decltype( vecRow.x( ) * matCol.v1( ).x( ) ), Cols, Layout::RowMajor > {
-        using Ret = Vec< decltype( vecRow.x( ) * matCol.v1( ).x( ) ), Cols, Layout::RowMajor >;
+    template< typename Type, unsigned Cols, unsigned Rows >
+    SON8_MATFOURD_FUNC operator^( Vec< Type, Rows, Layout::RowMajor > const &vecRow, Mat< Type, Cols, Rows, Layout::ColMajor > const &matCol ) {
+        using Ret = Vec< Type, Cols, Layout::RowMajor >;
         Ret ret;
         ret.x( ) = vecRow ^ matCol.v1( );
         ret.y( ) = vecRow ^ matCol.v2( );
@@ -40,10 +38,9 @@ namespace son8::matfourd {
         return ret;
     }
     // Mat (column matrix) layout-aware: ~Mat ^ Vec = Vec
-    template< typename TypeL, typename TypeR, unsigned Cols, unsigned Rows >
-    SON8_MATFOURD_FUNC operator^( Mat< TypeL, Cols, Rows, Layout::RowMajor > const &matRow, Vec< TypeR, Cols, Layout::ColMajor > const &vecCol )
-    -> Vec< decltype( matRow.v1( ).x( ) * vecCol.x( ) ), Rows > {
-        using Ret = Vec< decltype( matRow.v1( ).x( ) * vecCol.x( ) ), Rows >;
+    template< typename Type, unsigned Cols, unsigned Rows >
+    SON8_MATFOURD_FUNC operator^( Mat< Type, Cols, Rows, Layout::RowMajor > const &matRow, Vec< Type, Cols, Layout::ColMajor > const &vecCol ) {
+        using Ret = Vec< Type, Rows >;
         Ret ret;
         ret.x( ) = matRow.v1( ) ^ vecCol;
         ret.y( ) = matRow.v2( ) ^ vecCol;
@@ -52,11 +49,9 @@ namespace son8::matfourd {
         return ret;
     }
     // Mat (column matrix) layout-aware: ~Mat ^ Mat = Mat
-    template< typename TypeL, typename TypeR, unsigned ColsL, unsigned RowsL, unsigned ColsR, unsigned RowsR >
-    SON8_MATFOURD_FUNC operator^( Mat< TypeL, ColsL, RowsL, Layout::RowMajor > const &matRow, Mat< TypeR, ColsR, RowsR, Layout::ColMajor > const &matCol )
-    -> Mat< decltype( matRow.v1( ).x( ) * matCol.v1( ).x( ) ), RowsL, ColsR > {
-        static_assert( ColsL == RowsR, "Mat (column matrix) " "columns of left matrix must match rows of right matrix" );
-        using Ret = Mat< decltype( matRow.v1( ).x( ) * matCol.v1( ).x( ) ), RowsL, ColsR >;
+    template< typename Type, unsigned ColsLRowsR, unsigned RowsL, unsigned ColsR >
+    SON8_MATFOURD_FUNC operator^( Mat< Type, ColsLRowsR, RowsL, Layout::RowMajor > const &matRow, Mat< Type, ColsR, ColsLRowsR, Layout::ColMajor > const &matCol ) {
+        using Ret = Mat< Type, ColsR, RowsL >;
         Ret ret;
         ret.v1( ) = matRow ^ matCol.v1( );
         ret.v2( ) = matRow ^ matCol.v2( );
@@ -66,11 +61,9 @@ namespace son8::matfourd {
     }
     // Generic operations (operator*)
     // Mat (column matrix) generic: scalar * (any)Mat = Mat
-    template< typename TypeL, typename TypeR, unsigned Cols, unsigned Rows, bool Layt >
-    SON8_MATFOURD_FUNC operator*( TypeL scalar, Mat< TypeR, Cols, Rows, Layt > const &mat )
-    -> Mat< decltype( scalar * mat.v1( ).x( ) ), Cols, Rows, Layt > {
-        static_assert( std::is_arithmetic_v< TypeL >, "Mat (column matrix) " " matrix scalar multiplier requires to be arithmetic type" );
-        using Ret = Mat< decltype( scalar * mat.v1( ).x( ) ), Cols, Rows, Layt >;
+    template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
+    SON8_MATFOURD_FUNC operator*( Type scalar, Mat< Type, Cols, Rows, Layt > const &mat ) {
+        using Ret = Mat< Type, Cols, Rows, Layt >;
         Ret ret;
         ret.v1( ) = scalar * mat.v1( );
         ret.v2( ) = scalar * mat.v2( );
@@ -79,19 +72,18 @@ namespace son8::matfourd {
         return ret;
     }
     // Mat (column matrix) generic: (any)Mat * scalar = Mat
-    template< typename TypeL, typename TypeR, unsigned Cols, unsigned Rows, bool Layt >
-    SON8_MATFOURD_FUNC operator*( Mat< TypeL, Cols, Rows, Layt > const &mat, TypeR scalar )
-    -> Mat< decltype( mat.v1( ).x( ) * scalar ), Cols, Rows, Layt > {
+    template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
+    SON8_MATFOURD_FUNC operator*( Mat< Type, Cols, Rows, Layt > const &mat, Type scalar )
+    -> Mat< Type, Cols, Rows, Layt > {
         return scalar * mat;
     }
     // Mat (column matrix) generic: (any)Vec * (any)Mat = ~Vec
-    template< typename TypeL, typename TypeR, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator*( Vec< TypeL, Rows, LaytL > const &vecL, Mat< TypeR, Cols, Rows, LaytR > const &matR )
-    -> Vec< decltype( vecL.x( ) * matR.v1( ).x( ) ), Cols, Layout::RowMajor > {
-        using Ret = Vec< decltype( vecL.x( ) * matR.v1( ).x( ) ), Cols, Layout::RowMajor >;
+    template< typename Type, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator*( Vec< Type, Rows, LaytL > const &vecL, Mat< Type, Cols, Rows, LaytR > const &matR ) {
+        using Ret = Vec< Type, Cols, Layout::RowMajor >;
         Ret ret;
-        Vec< TypeL, Rows, Layout::RowMajor > const vecRow{ vecL };
-        Mat< TypeR, Cols, Rows, Layout::ColMajor > const matCol{ matR };
+        Vec< Type, Rows, Layout::RowMajor > const vecRow{ vecL };
+        Mat< Type, Cols, Rows, Layout::ColMajor > const matCol{ matR };
         ret.x( ) = vecRow ^ matCol.v1( );
         ret.y( ) = vecRow ^ matCol.v2( );
         if constexpr ( Ret::size( ) > 2 ) ret.z( ) = vecRow ^ matCol.v3( );
@@ -99,13 +91,12 @@ namespace son8::matfourd {
         return ret;
     }
     // Mat (column matrix) generic: (any)Mat * (any)Vec = Vec
-    template< typename TypeL, typename TypeR, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator*( Mat< TypeL, Cols, Rows, LaytL > const &matL, Vec< TypeR, Cols, LaytR > const &vecR )
-    -> Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows > {
-        using Ret = Vec< decltype( matL.v1( ).x( ) * vecR.x( ) ), Rows >;
+    template< typename Type, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator*( Mat< Type, Cols, Rows, LaytL > const &matL, Vec< Type, Cols, LaytR > const &vecR ) {
+        using Ret = Vec< Type, Rows >;
         Ret ret;
-        Mat< TypeL, Cols, Rows, Layout::RowMajor > const matRow{ matL };
-        Vec< TypeR, Cols, Layout::ColMajor > const vecCol{ vecR };
+        Mat< Type, Cols, Rows, Layout::RowMajor > const matRow{ matL };
+        Vec< Type, Cols, Layout::ColMajor > const vecCol{ vecR };
         ret.x( ) = matRow.v1( ) ^ vecCol;
         ret.y( ) = matRow.v2( ) ^ vecCol;
         if constexpr ( Ret::size( ) > 2 ) ret.z( ) = matRow.v3( ) ^ vecCol;
@@ -113,14 +104,13 @@ namespace son8::matfourd {
         return ret;
     }
     // Mat (column matrix) generic: (any)Mat * (any)Mat = Mat
-    template< typename TypeL, typename TypeR, unsigned ColsL, unsigned RowsL, unsigned ColsR, unsigned RowsR, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator*( Mat< TypeL, ColsL, RowsL, LaytL > const &matL, Mat< TypeR, ColsR, RowsR, LaytR > const &matR )
-    -> Mat< decltype( matL.v1( ).x( ) * matR.v1( ).x( ) ), ColsR, RowsL > {
-        static_assert( ColsL == RowsR, "Mat (column matrix) " "columns of left matrix must match rows of right matrix" );
-        using Ret = Mat< decltype( matL.v1( ).x( ) * matR.v1( ).x( ) ), ColsR, RowsL >;
+    template< typename Type, unsigned ColsLRowsR, unsigned RowsL, unsigned ColsR, bool LaytL, bool LaytR >
+    SON8_MATFOURD_FUNC operator*( Mat< Type, ColsLRowsR, RowsL, LaytL > const &matL, Mat< Type, ColsR, ColsLRowsR, LaytR > const &matR ) {
+        // static_assert( ColsL == RowsR, "Mat (column matrix) " "columns of left matrix must match rows of right matrix" );
+        using Ret = Mat< Type, ColsR, RowsL >;
         Ret ret;
-        Mat< TypeL, ColsL, RowsL, Layout::RowMajor > const matRow{ matL };
-        Mat< TypeR, ColsR, RowsR, Layout::ColMajor > const matCol{ matR };
+        Mat< Type, ColsLRowsR, RowsL, Layout::RowMajor > const matRow{ matL };
+        Mat< Type, ColsR, ColsLRowsR, Layout::ColMajor > const matCol{ matR };
         ret.v1( ) = matRow ^ matCol.v1( );
         ret.v2( ) = matRow ^ matCol.v2( );
         if constexpr ( Ret::vecs( ) > 2 ) ret.v3( ) = matRow ^ matCol.v3( );
