@@ -1,6 +1,7 @@
 #ifndef SON8_MATFOURD_STATIC_HXX
 #define SON8_MATFOURD_STATIC_HXX
 // son8
+#include <son8/matfourd/vec/swizzles.hxx>
 #include <son8/matfourd/vec/additive.hxx>
 #include <son8/matfourd/vec/equality.hxx>
 #include <son8/matfourd/vec/multiply.hxx>
@@ -16,6 +17,13 @@ namespace son8::matfourd {
     struct Un {
         static void reachable( ) { Type::son8_matfourd_force_compiler_error( ); }
     };
+    // vec swizzles
+    template< typename Type, bool Layt, unsigned SizeL, unsigned SizeR, unsigned ReqS, SON8_MATFOURD_SWIZZLES_COORDS >
+    void operator/( Vec< Type, SizeL, Layt >, swizzles::Impl_< SizeR, ReqS, Crd1, Crd2, Crd3, Crd4 > ) {
+        static_assert( SizeL >= ReqS
+            , "son8::matfourd: operator/ swizzles requires correct coords" );
+        Un< Type >::reachable( );
+    }
     // vec equality
     template< typename TypeL, typename TypeR, unsigned SizeL, unsigned SizeR, bool LaytL, bool LaytR >
     void operator==( Vec< TypeL, SizeL, LaytL > const &vecL, Vec< TypeR, SizeR, LaytR > const &vecR ) {
