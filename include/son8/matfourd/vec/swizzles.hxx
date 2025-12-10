@@ -1,9 +1,9 @@
 #ifndef SON8_MATFOURD_VEC_SWIZZLES_HXX
 #define SON8_MATFOURD_VEC_SWIZZLES_HXX
-// son8
+
 #include <son8/matfourd/core.hxx>
 #include <son8/matfourd/vec/type.hxx>
-// just less typing
+
 #define SON8_MATFOURD_SWIZZLES_COORDS swizzles::Coord Crd1, swizzles::Coord Crd2, swizzles::Coord Crd3, swizzles::Coord Crd4
 // each entry should use only one letter
 #define SON8_MATFOURD_SWIZZLES_VARS_1( a, ReqS ) \

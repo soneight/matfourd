@@ -1,10 +1,10 @@
 #ifndef SON8_MATFOURD_MAT_TYPE_HXX
 #define SON8_MATFOURD_MAT_TYPE_HXX
-// matfourd headers
+// son8
 #include <son8/matfourd/core.hxx>
 #include <son8/matfourd/layout.hxx>
 #include <son8/matfourd/vec/type.hxx>
-// std headers
+// std
 #include <array>
 #include <type_traits>
 
