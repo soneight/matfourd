@@ -1,10 +1,10 @@
 #ifndef SON8_MATFOURD_MAT_TYPE_HXX
 #define SON8_MATFOURD_MAT_TYPE_HXX
-// matfourd headers
+// son8
 #include <son8/matfourd/core.hxx>
 #include <son8/matfourd/layout.hxx>
 #include <son8/matfourd/vec/type.hxx>
-// std headers
+// std
 #include <array>
 #include <type_traits>
 
@@ -13,9 +13,7 @@ namespace son8::matfourd {
     template< typename Type, unsigned Cols, unsigned Rows, bool Layt = Layout::ColMajor >
     class Mat final {
     public:
-        static constexpr unsigned const Dims_Min = 2;
-        static constexpr unsigned const Dims_Max = 4;
-        static_assert( Dims_Min <= Rows && Rows <= Dims_Max && Dims_Min <= Cols && Cols <= Dims_Max, "Mat (column matrix) " "dimensions must be in range [2,4]" );
+        static_assert( 2 <= Rows && Rows <= 4 && 2 <= Cols && Cols <= 4, "Mat (column matrix) " "dimensions must be in range [2,4]" );
         using ValueType = Type;
         using VectorType = std::conditional_t< Layt,
             Vec< ValueType, Cols, Layt >,
@@ -59,21 +57,21 @@ namespace son8::matfourd {
         SON8_MATFOURD_FUNC operator~( ) const -> SwapType {
             SwapType ret;
 
-            /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
+            if/*_*/ constexpr ( SwapType::vals( ) == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
             else if constexpr ( SwapType::vals( ) == 3 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x() };
             else if constexpr ( SwapType::vals( ) == 4 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x(), data_[3].x() };
 
-            /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v2() = { data_[0].y(), data_[1].y() };
+            if/*_*/ constexpr ( SwapType::vals( ) == 2 ) ret.v2() = { data_[0].y(), data_[1].y() };
             else if constexpr ( SwapType::vals( ) == 3 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y() };
             else if constexpr ( SwapType::vals( ) == 4 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y(), data_[3].y() };
 
             if constexpr ( SwapType::vecs( ) > 2 ) {
-                /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v3() = { data_[0].z(), data_[1].z() };
+                if/*_*/ constexpr ( SwapType::vals( ) == 2 ) ret.v3() = { data_[0].z(), data_[1].z() };
                 else if constexpr ( SwapType::vals( ) == 3 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z() };
                 else if constexpr ( SwapType::vals( ) == 4 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z(), data_[3].z() };
             }
             if constexpr ( SwapType::vecs( ) > 3 ) {
-                /*_*/if constexpr ( SwapType::vals( ) == 2 ) ret.v4() = { data_[0].w(), data_[1].w() };
+                if/*_*/ constexpr ( SwapType::vals( ) == 2 ) ret.v4() = { data_[0].w(), data_[1].w() };
                 else if constexpr ( SwapType::vals( ) == 3 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w() };
                 else if constexpr ( SwapType::vals( ) == 4 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w(), data_[3].w() };
             }

@@ -1,9 +1,9 @@
 #ifndef SON8_MATFOURD_VEC_TYPE_HXX
 #define SON8_MATFOURD_VEC_TYPE_HXX
-// matfourd headers
+// son8
 #include <son8/matfourd/core.hxx>
 #include <son8/matfourd/layout.hxx>
-// std headers
+// std
 #include <array>
 
 namespace son8::matfourd {

@@ -1,11 +1,11 @@
 #ifndef SON8_MATFOURD_PRINT_HXX
 #define SON8_MATFOURD_PRINT_HXX
-// matfourd headers
+// son8
 #include <son8/matfourd/core.hxx>
 #include <son8/matfourd/vec/type.hxx>
 #include <son8/matfourd/mat/type.hxx>
-// std headers
-#include <iostream>
+// std
+#include <ostream>
 
 namespace son8::matfourd {
     // Vec (column vector) print function
