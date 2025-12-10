@@ -8,7 +8,7 @@ namespace son8::matfourd {
     template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
     SON8_MATFOURD_FUNC transpose( Mat< Type, Cols, Rows, Layt > const &mat )
     -> Mat< Type, Rows, Cols, Layt > {
-        using Ret = Mat< Type, Rows, Cols, not Layt >;
+        using Ret = Mat< Type, Rows, Cols, not Layt >; // IMPORTANT (not Layt) in necessary here!
         Ret ret;
         ret.v1( ) = mat.v1( );
         ret.v2( ) = mat.v2( );

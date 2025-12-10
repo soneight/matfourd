@@ -1,6 +1,7 @@
 #ifndef SON8_MATFOURD_MAT_MULTIPLY_HXX
 #define SON8_MATFOURD_MAT_MULTIPLY_HXX
 
+#include <son8/matfourd/layout.hxx>
 #include <son8/matfourd/mat/type.hxx>
 #include <son8/matfourd/vec/multiply.hxx>
 

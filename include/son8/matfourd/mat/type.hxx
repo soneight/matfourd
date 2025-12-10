@@ -13,9 +13,7 @@ namespace son8::matfourd {
     template< typename Type, unsigned Cols, unsigned Rows, bool Layt = Layout::ColMajor >
     class Mat final {
     public:
-        static constexpr unsigned const Dims_Min = 2;
-        static constexpr unsigned const Dims_Max = 4;
-        static_assert( Dims_Min <= Rows && Rows <= Dims_Max && Dims_Min <= Cols && Cols <= Dims_Max, "Mat (column matrix) " "dimensions must be in range [2,4]" );
+        static_assert( 2 <= Rows && Rows <= 4 && 2 <= Cols && Cols <= 4, "Mat (column matrix) " "dimensions must be in range [2,4]" );
         using ValueType = Type;
         using VectorType = std::conditional_t< Layt,
             Vec< ValueType, Cols, Layt >,

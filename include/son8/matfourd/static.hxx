@@ -5,7 +5,7 @@
 #include <son8/matfourd/vec/additive.hxx>
 #include <son8/matfourd/vec/equality.hxx>
 #include <son8/matfourd/vec/multiply.hxx>
-#include <son8/matfourd/vec/additive.hxx>
+#include <son8/matfourd/mat/additive.hxx>
 #include <son8/matfourd/mat/equality.hxx>
 #include <son8/matfourd/mat/multiply.hxx>
 // std
