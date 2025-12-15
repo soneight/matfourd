@@ -29,7 +29,7 @@ namespace son8::matfourd {
 
         if constexpr ( SelfType::vecs( ) > 2 ) os << ",\n\t" << mat.v3( );
         if constexpr ( SelfType::vecs( ) > 3 ) os << ",\n\t" << mat.v4( );
-        os << "\n}";
+        os << "\n}\n";
         return os;
     }
 }
