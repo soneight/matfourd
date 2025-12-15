@@ -30,11 +30,12 @@ namespace son8::matfourd {
         DataType data_;
         DataType const &array_data( ) const { return data_; }
     public:
-        static constexpr unsigned vecs( ) { return ( Layt == Layout::ColMajor ) ? Cols : Rows; }
-        static constexpr unsigned vals( ) { return ( Layt == Layout::ColMajor ) ? Rows : Cols; }
-        static constexpr unsigned rows( ) { return Rows; }
-        static constexpr unsigned cols( ) { return Cols; }
-        static constexpr unsigned size( ) { return Rows * Cols; }
+        static constexpr unsigned vecs( ) noexcept { return ( Layt == Layout::ColMajor ) ? Cols : Rows; }
+        static constexpr unsigned vals( ) noexcept { return ( Layt == Layout::ColMajor ) ? Rows : Cols; }
+        static constexpr unsigned rows( ) noexcept { return Rows; }
+        static constexpr unsigned cols( ) noexcept { return Cols; }
+        static constexpr unsigned size( ) noexcept { return Rows * Cols; }
+        static constexpr bool order( ) noexcept { return Layt; }
         SON8_MATFOURD_DISC data( ) -> ValueType * { return data_.data( )->data( ); }
         SON8_MATFOURD_FUNC data( ) const -> ValueType const * { return data_.data( )->data( ); }
         // constructors

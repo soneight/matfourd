@@ -23,7 +23,8 @@ namespace son8::matfourd {
         DataType data_;
         DataType const &array_data( ) const { return data_; }
     public:
-        static constexpr unsigned size( ) { return Size; }
+        static constexpr unsigned size( ) noexcept { return Size; }
+        static constexpr bool order( ) noexcept { return Layt; }
         SON8_MATFOURD_DISC data( ) -> ValueType * { return data_.data( ); }
         SON8_MATFOURD_FUNC data( ) const -> ValueType const * { return data_.data( ); }
         // constructors
