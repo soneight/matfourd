@@ -25,22 +25,22 @@ namespace son8::matfourd {
         };
     }
     // Generic operations (operator*)
-    // Vec (column vector) generic: scalar * (any)v = v
-    template< typename Type, unsigned Size, bool Layt >
-    SON8_MATFOURD_FUNC operator*( Type scalar, Vec< Type, Size, Layt > const &vec ) {
-        using Ret = Vec< Type, Size, Layt >;
-        Ret ret;
-        ret.x( ) = scalar * vec.x( );
-        ret.y( ) = scalar * vec.y( );
-        if constexpr ( Ret::size( ) > 2 ) ret.z( ) = scalar * vec.z( );
-        if constexpr ( Ret::size( ) > 3 ) ret.w( ) = scalar * vec.w( );
-        return ret;
-    }
     // Vec (column vector) generic: (any)v * scalar = v
     template< typename Type, unsigned Size, bool Layt >
-    SON8_MATFOURD_FUNC operator*( Vec< Type, Size, Layt > const &vec, Type scalar )
+    SON8_MATFOURD_FUNC operator*( Vec< Type, Size, Layt > const &vec, Type const &scalar ) {
+        using Ret = Vec< Type, Size, Layt >;
+        Ret ret;
+        ret.x( ) = vec.x( ) * scalar;
+        ret.y( ) = vec.y( ) * scalar;
+        if constexpr ( Ret::size( ) > 2 ) ret.z( ) = vec.z( ) * scalar;
+        if constexpr ( Ret::size( ) > 3 ) ret.w( ) = vec.w( ) * scalar;
+        return ret;
+    }
+    // Vec (column vector) generic: scalar * (any)v = v
+    template< typename Type, unsigned Size, bool Layt >
+    SON8_MATFOURD_FUNC operator*( Type const &scalar, Vec< Type, Size, Layt > const &vec )
     -> Vec< Type, Size, Layt > {
-        return scalar * vec;
+        return vec * scalar;
     }
     // Vec (column vector) generic dot product: (any)v * (any)v = scalar
     template< typename Type, unsigned Size, bool LaytL, bool LaytR >
