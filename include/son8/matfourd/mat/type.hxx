@@ -54,48 +54,63 @@ namespace son8::matfourd {
         : data_{ v1, v2, v3, v4 } {
             static_assert( SelfType::vecs( ) == 4, "Mat (column matrix) " "constructor requires 4 vectors" );
         }
-        // as row-major operator~
+        // as swap order operator~
         SON8_MATFOURD_FUNC operator~( ) const -> SwapType {
-            SwapType ret;
-
-            if/*_*/ constexpr ( SwapType::vals( ) == 2 ) ret.v1() = { data_[0].x(), data_[1].x() };
-            else if constexpr ( SwapType::vals( ) == 3 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x() };
-            else if constexpr ( SwapType::vals( ) == 4 ) ret.v1() = { data_[0].x(), data_[1].x(), data_[2].x(), data_[3].x() };
-
-            if/*_*/ constexpr ( SwapType::vals( ) == 2 ) ret.v2() = { data_[0].y(), data_[1].y() };
-            else if constexpr ( SwapType::vals( ) == 3 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y() };
-            else if constexpr ( SwapType::vals( ) == 4 ) ret.v2() = { data_[0].y(), data_[1].y(), data_[2].y(), data_[3].y() };
-
-            if constexpr ( SwapType::vecs( ) > 2 ) {
-                if/*_*/ constexpr ( SwapType::vals( ) == 2 ) ret.v3() = { data_[0].z(), data_[1].z() };
-                else if constexpr ( SwapType::vals( ) == 3 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z() };
-                else if constexpr ( SwapType::vals( ) == 4 ) ret.v3() = { data_[0].z(), data_[1].z(), data_[2].z(), data_[3].z() };
+            if/*___*/ constexpr ( SwapType::vecs( ) == 2 ) {
+                if/*___*/ constexpr ( SwapType::vals( ) == 2 ) {
+                    return SwapType { { v1( ).x( ), v2( ).x( ) }
+                                    , { v1( ).y( ), v2( ).y( ) } };
+                } else if constexpr ( SwapType::vals( ) == 3 ) {
+                    return SwapType { { v1( ).x( ), v2( ).x( ), v3( ).x( ) }
+                                    , { v1( ).y( ), v2( ).y( ), v3( ).y( ) } };
+                } else if constexpr ( SwapType::vals( ) == 4 ) {
+                    return SwapType { { v1( ).x( ), v2( ).x( ), v3( ).x( ), v4( ).x( ) }
+                                    , { v1( ).y( ), v2( ).y( ), v3( ).y( ), v4( ).y( ) } };
+                }
+            } else if constexpr ( SwapType::vecs( ) == 3 ) {
+                if/*___*/ constexpr ( SwapType::vals( ) == 2 ) {
+                    return SwapType { { v1( ).x( ), v2( ).x( ) }
+                                    , { v1( ).y( ), v2( ).y( ) }
+                                    , { v1( ).z( ), v2( ).z( ) } };
+                } else if constexpr ( SwapType::vals( ) == 3 ) {
+                    return SwapType { { v1( ).x( ), v2( ).x( ), v3( ).x( ) }
+                                    , { v1( ).y( ), v2( ).y( ), v3( ).y( ) }
+                                    , { v1( ).z( ), v2( ).z( ), v3( ).z( ) } };
+                } else if constexpr ( SwapType::vals( ) == 4 ) {
+                    return SwapType { { v1( ).x( ), v2( ).x( ), v3( ).x( ), v4( ).x( ) }
+                                    , { v1( ).y( ), v2( ).y( ), v3( ).y( ), v4( ).y( ) }
+                                    , { v1( ).z( ), v2( ).z( ), v3( ).z( ), v4( ).z( ) } };
+                }
+            } else if constexpr ( SwapType::vecs( ) == 4 ) {
+                if/*___*/ constexpr ( SwapType::vals( ) == 2 ) {
+                    return SwapType { { v1( ).x( ), v2( ).x( ) }
+                                    , { v1( ).y( ), v2( ).y( ) }
+                                    , { v1( ).z( ), v2( ).z( ) }
+                                    , { v1( ).w( ), v2( ).w( ) } };
+                } else if constexpr ( SwapType::vals( ) == 3 ) {
+                    return SwapType { { v1( ).x( ), v2( ).x( ), v3( ).x( ) }
+                                    , { v1( ).y( ), v2( ).y( ), v3( ).y( ) }
+                                    , { v1( ).z( ), v2( ).z( ), v3( ).z( ) }
+                                    , { v1( ).w( ), v2( ).w( ), v3( ).w( ) } };
+                } else if constexpr ( SwapType::vals( ) == 4 ) {
+                    return SwapType { { v1( ).x( ), v2( ).x( ), v3( ).x( ), v4( ).x( ) }
+                                    , { v1( ).y( ), v2( ).y( ), v3( ).y( ), v4( ).y( ) }
+                                    , { v1( ).z( ), v2( ).z( ), v3( ).z( ), v4( ).z( ) }
+                                    , { v1( ).w( ), v2( ).w( ), v3( ).w( ), v4( ).w( ) } };
+                }
             }
-            if constexpr ( SwapType::vecs( ) > 3 ) {
-                if/*_*/ constexpr ( SwapType::vals( ) == 2 ) ret.v4() = { data_[0].w(), data_[1].w() };
-                else if constexpr ( SwapType::vals( ) == 3 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w() };
-                else if constexpr ( SwapType::vals( ) == 4 ) ret.v4() = { data_[0].w(), data_[1].w(), data_[2].w(), data_[3].w() };
-            }
-
-            return ret;
         }
         // permit
         SON8_MATFOURD_FUNC operator+( ) const -> SelfType {
-            SelfType ret;
-            ret.v1( ) = +v1( );
-            ret.v2( ) = +v2( );
-            if constexpr ( SelfType::vecs( ) > 2 ) ret.v3( ) = +v3( );
-            if constexpr ( SelfType::vecs( ) > 3 ) ret.v4( ) = +v4( );
-            return ret;
+            if/*_*/ constexpr ( SelfType::vecs( ) == 2 ) return SelfType{ +v1( ), +v2( ) };
+            else if constexpr ( SelfType::vecs( ) == 3 ) return SelfType{ +v1( ), +v2( ), +v3( ) };
+            else if constexpr ( SelfType::vecs( ) == 4 ) return SelfType{ +v1( ), +v2( ), +v3( ), +v4( ) };
         }
         // negate
         SON8_MATFOURD_FUNC operator-( ) const -> SelfType {
-            SelfType ret;
-            ret.v1( ) = -v1( );
-            ret.v2( ) = -v2( );
-            if constexpr ( SelfType::vecs( ) > 2 ) ret.v3( ) = -v3( );
-            if constexpr ( SelfType::vecs( ) > 3 ) ret.v4( ) = -v4( );
-            return ret;
+            if/*_*/ constexpr ( SelfType::vecs( ) == 2 ) return SelfType{ -v1( ), -v2( ) };
+            else if constexpr ( SelfType::vecs( ) == 3 ) return SelfType{ -v1( ), -v2( ), -v3( ) };
+            else if constexpr ( SelfType::vecs( ) == 4 ) return SelfType{ -v1( ), -v2( ), -v3( ), -v4( ) };
         }
         // compound only works with same value type (for now)
         SON8_MATFOURD_DISC operator+=( SelfType const &other ) -> SelfType & {

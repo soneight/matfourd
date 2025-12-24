@@ -11,12 +11,20 @@ namespace son8::matfourd {
     SON8_MATFOURD_FUNC operator==( Mat< Type, Cols, Rows, Layt > const &matL, Mat< Type, Cols, Rows, Layt > const &matR )
     -> bool {
         using CompType = Mat< Type, Cols, Rows, Layt >;
-        bool ret = matL.v1( ) == matR.v1( ) and matL.v2( ) == matR.v2( );
-        if ( !ret ) return false;
-        if constexpr ( CompType::vecs( ) > 2 ) ret = matL.v3( ) == matR.v3( );
-        if ( !ret ) return false;
-        if constexpr ( CompType::vecs( ) > 3 ) ret = matL.v4( ) == matR.v4( );
-        return ret;
+        using r = bool;
+        if constexpr ( CompType::vecs( ) == 2 ) {
+            return r { matL.v1( ) == matR.v1( )
+                    && matL.v2( ) == matR.v2( ) };
+        } else if constexpr ( CompType::vecs( ) == 3 ) {
+            return r { matL.v1( ) == matR.v1( )
+                    && matL.v2( ) == matR.v2( )
+                    && matL.v3( ) == matR.v3( ) };
+        } else if constexpr ( CompType::vecs( ) == 4 ) {
+            return r { matL.v1( ) == matR.v1( )
+                    && matL.v2( ) == matR.v2( )
+                    && matL.v3( ) == matR.v3( )
+                    && matL.v4( ) == matR.v4( ) };
+        }
     }
     // Mat (column matrix) generic equality: (any)Mat == (any)Mat = bool
     template< typename Type, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >

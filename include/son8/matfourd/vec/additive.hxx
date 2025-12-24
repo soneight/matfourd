@@ -7,13 +7,20 @@ namespace son8::matfourd {
     // Vec (column vector) addition: (any)v + (any)v = v
     template< typename Type, unsigned Size, bool LaytL, bool LaytR >
     SON8_MATFOURD_FUNC operator+( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR ) {
-        using Ret = Vec< Type, Size, Layout::ColMajor >;
-        Ret ret;
-        ret.x( ) = vecL.x( ) + vecR.x( );
-        ret.y( ) = vecL.y( ) + vecR.y( );
-        if constexpr ( Ret::size( ) > 2 ) ret.z( ) = vecL.z( ) + vecR.z( );
-        if constexpr ( Ret::size( ) > 3 ) ret.w( ) = vecL.w( ) + vecR.w( );
-        return ret;
+        using r = Vec< Type, Size, Layout::ColMajor >;
+        if/*___*/ constexpr ( r::size( ) == 2 ) {
+            return r{ vecL.x( ) + vecR.x( )
+                    , vecL.y( ) + vecR.y( ) };
+        } else if constexpr ( r::size( ) == 3 ) {
+            return r{ vecL.x( ) + vecR.x( )
+                    , vecL.y( ) + vecR.y( )
+                    , vecL.z( ) + vecR.z( ) };
+        } else if constexpr ( r::size( ) == 4 ) {
+            return r{ vecL.x( ) + vecR.x( )
+                    , vecL.y( ) + vecR.y( )
+                    , vecL.z( ) + vecR.z( )
+                    , vecL.w( ) + vecR.w( ) };
+        }
     }
     // Vec (column vector) subtraction: (any)v - (any)v = v
     template< typename Type, unsigned Size, bool LaytL, bool LaytR >

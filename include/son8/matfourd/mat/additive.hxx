@@ -8,13 +8,20 @@ namespace son8::matfourd {
     // Mat (column matrix) layout-aware addition: (same)Mat + (same)Mat = Mat
     template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
     SON8_MATFOURD_FUNC operator+( Mat< Type, Cols, Rows, Layt > const &matL, Mat< Type, Cols, Rows, Layt > const &matR ) {
-        using Ret = Mat< Type, Cols, Rows, Layt >;
-        Ret ret;
-        ret.v1( ) = matL.v1( ) + matR.v1( );
-        ret.v2( ) = matL.v2( ) + matR.v2( );
-        if constexpr ( Ret::vecs( ) > 2 ) ret.v3( ) = matL.v3( ) + matR.v3( );
-        if constexpr ( Ret::vecs( ) > 3 ) ret.v4( ) = matL.v4( ) + matR.v4( );
-        return ret;
+        using r = Mat< Type, Cols, Rows, Layt >;
+        if/*___*/ constexpr ( r::vecs( ) == 2 ) {
+            return r{ matL.v1( ) + matR.v1( )
+                    , matL.v2( ) + matR.v2( ) };
+        } else if constexpr ( r::vecs( ) == 3 ) {
+            return r{ matL.v1( ) + matR.v1( )
+                    , matL.v2( ) + matR.v2( )
+                    , matL.v3( ) + matR.v3( ) };
+        } else if constexpr ( r::vecs( ) == 4 ) {
+            return r{ matL.v1( ) + matR.v1( )
+                    , matL.v2( ) + matR.v2( )
+                    , matL.v3( ) + matR.v3( )
+                    , matL.v4( ) + matR.v4( ) };
+        }
     }
     // Mat (column matrix) generic addition: (any)Mat + (any)Mat = Mat
     template< typename Type, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
