@@ -61,22 +61,22 @@ namespace son8::matfourd {
         return ret;
     }
     // Generic operations (operator*)
-    // Mat (column matrix) generic: scalar * (any)Mat = Mat
-    template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
-    SON8_MATFOURD_FUNC operator*( Type scalar, Mat< Type, Cols, Rows, Layt > const &mat ) {
-        using Ret = Mat< Type, Cols, Rows, Layt >;
-        Ret ret;
-        ret.v1( ) = scalar * mat.v1( );
-        ret.v2( ) = scalar * mat.v2( );
-        if constexpr ( Ret::vecs( ) > 2 ) ret.v3( ) = scalar * mat.v3( );
-        if constexpr ( Ret::vecs( ) > 3 ) ret.v4( ) = scalar * mat.v4( );
-        return ret;
-    }
     // Mat (column matrix) generic: (any)Mat * scalar = Mat
     template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
-    SON8_MATFOURD_FUNC operator*( Mat< Type, Cols, Rows, Layt > const &mat, Type scalar )
+    SON8_MATFOURD_FUNC operator*( Mat< Type, Cols, Rows, Layt > const &mat, Type const &scalar )  {
+        using Ret = Mat< Type, Cols, Rows, Layt >;
+        Ret ret;
+        ret.v1( ) = mat.v1( ) * scalar;
+        ret.v2( ) = mat.v2( ) * scalar;
+        if constexpr ( Ret::vecs( ) > 2 ) ret.v3( ) = mat.v3( ) * scalar;
+        if constexpr ( Ret::vecs( ) > 3 ) ret.v4( ) = mat.v4( ) * scalar;
+        return ret;
+    }
+    // Mat (column matrix) generic: scalar * (any)Mat = Mat
+    template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
+    SON8_MATFOURD_FUNC operator*( Type const &scalar, Mat< Type, Cols, Rows, Layt > const &mat )
     -> Mat< Type, Cols, Rows, Layt > {
-        return scalar * mat;
+        return mat * scalar;
     }
     // Mat (column matrix) generic: (any)Vec * (any)Mat = ~Vec
     template< typename Type, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
