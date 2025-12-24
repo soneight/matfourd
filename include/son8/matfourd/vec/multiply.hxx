@@ -66,14 +66,14 @@ namespace son8::matfourd {
     template< typename Type, unsigned Size, bool LaytL, bool LaytR >
     SON8_MATFOURD_FUNC operator*( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR ) {
         using r = Type;
-        if/*___*/ constexpr ( r::size( ) == 2 ) {
+        if/*___*/ constexpr ( Size == 2 ) {
             return r{ vecL.x( ) * vecR.x( )
                     + vecL.y( ) * vecR.y( ) };
-        } else if constexpr ( r::size( ) == 3 ) {
+        } else if constexpr ( Size == 3 ) {
             return r{ vecL.x( ) * vecR.x( )
                     + vecL.y( ) * vecR.y( )
                     + vecL.z( ) * vecR.z( ) };
-        } else if constexpr ( r::size( ) == 4 ) {
+        } else if constexpr ( Size == 4 ) {
             return r{ vecL.x( ) * vecR.x( )
                     + vecL.y( ) * vecR.y( )
                     + vecL.z( ) * vecR.z( )
