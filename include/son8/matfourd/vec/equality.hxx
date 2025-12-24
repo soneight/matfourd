@@ -6,14 +6,23 @@
 namespace son8::matfourd {
     // Vec (column vector) equality: (any)v == (any)v = bool
     template< typename Type, unsigned Size, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator==( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR )
-    -> bool {
-        bool ret = vecL.x( ) == vecR.x( ) and vecL.y( ) == vecR.y( );
-        if ( !ret ) return ret;
-        if constexpr ( Size > 2 ) { ret = ret and vecL.z( ) == vecR.z( ); }
-        if ( !ret ) return ret;
-        if constexpr ( Size > 3 ) { ret = ret and vecL.w( ) == vecR.w( ); }
-        return ret;
+    SON8_MATFOURD_FUNC operator==( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR ) {
+        using r = bool;
+        if/*_*/ constexpr ( Size == 2 ) {
+            return r { vecL.x( ) == vecR.x( )
+                    && vecL.y( ) == vecR.y( ) };
+        }
+        else if constexpr ( Size == 3 ) {
+            return r { vecL.x( ) == vecR.x( )
+                    && vecL.y( ) == vecR.y( )
+                    && vecL.z( ) == vecR.z( ) };
+        }
+        else if constexpr ( Size == 4 ) {
+            return r { vecL.x( ) == vecR.x( )
+                    && vecL.y( ) == vecR.y( )
+                    && vecL.z( ) == vecR.z( )
+                    && vecL.w( ) == vecR.w( ) };
+        }
     }
     // Vec (column vector) inequality: (any)v != (any)v = bool
     template< typename Type, unsigned Size, bool LaytL, bool LaytR >

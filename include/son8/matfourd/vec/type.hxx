@@ -49,21 +49,15 @@ namespace son8::matfourd {
         }
         // permit
         SON8_MATFOURD_FUNC operator+( ) const -> SelfType {
-            SelfType ret;
-            ret.x( ) = +x( );
-            ret.y( ) = +y( );
-            if constexpr ( Size > 2 ) { ret.z( ) = +z( ); }
-            if constexpr ( Size > 3 ) { ret.w( ) = +w( ); }
-            return ret;
+            if/*_*/ constexpr ( SelfType::size( ) == 2 ) return SelfType{ +x( ), +y( ) };
+            else if constexpr ( SelfType::size( ) == 3 ) return SelfType{ +x( ), +y( ), +z( ) };
+            else if constexpr ( SelfType::size( ) == 4 ) return SelfType{ +x( ), +y( ), +z( ), +w( ) };
         }
         // negate
         SON8_MATFOURD_FUNC operator-( ) const -> SelfType {
-            SelfType ret;
-            ret.x( ) = -x( );
-            ret.y( ) = -y( );
-            if constexpr ( Size > 2 ) { ret.z( ) = -z( ); }
-            if constexpr ( Size > 3 ) { ret.w( ) = -w( ); }
-            return ret;
+            if/*_*/ constexpr ( SelfType::size( ) == 2 ) return SelfType{ -x( ), -y( ) };
+            else if constexpr ( SelfType::size( ) == 3 ) return SelfType{ -x( ), -y( ), -z( ) };
+            else if constexpr ( SelfType::size( ) == 4 ) return SelfType{ -x( ), -y( ), -z( ), -w( ) };
         }
         // compound only works with same value type
         SON8_MATFOURD_DISC operator+=( SelfType const &other ) -> SelfType & {
