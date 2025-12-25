@@ -8,12 +8,11 @@
 
 namespace son8::matfourd {
     // Vec (column vector) class template
+    // TODO change Layt template parameter name to RowOrder?
     template< typename Type, unsigned Size, bool Layt = Layout::ColMajor >
     class Vec final {
     public:
-        static constexpr unsigned const Size_Min = 2;
-        static constexpr unsigned const Size_Max = 4;
-        static_assert( Size_Min <= Size && Size <= Size_Max, "Vec (column vector) " "size must be in range [2,4]" );
+        static_assert( 2 <= Size && Size <= 4, "son8::matfourd: Vec template size must be in range [2,4]" );
         using ValueType = Type;
         using DataType = std::array< ValueType, Size >;
         using SelfType = Vec< Type, Size, Layt >;
@@ -34,14 +33,14 @@ namespace son8::matfourd {
         : data_( array ) { }
         Vec( ValueType const &x, ValueType const &y )
         : data_{ x, y } {
-            static_assert( Size == 2, "Vec (column vector) " "size must be 2 for this constructor" );
+            static_assert( Size == 2, "son8::matfourd: Vec constructor requires type with 2 elements" );
         }
         Vec( ValueType const &x, ValueType const &y, ValueType const &z )
         : data_{ x, y, z } {
-            static_assert( Size == 3, "Vec (column vector) " "size must be 3 for this constructor" );
+            static_assert( Size == 3, "son8::matfourd: Vec constructor requires type with 3 elements" );
         }
         Vec( ValueType const &x, ValueType const &y, ValueType const &z, ValueType const &w ) : data_{ x, y, z, w } {
-            static_assert( Size == 4, "Vec (column vector) " "size must be 4 for this constructor" );
+            static_assert( Size == 4, "son8::matfourd: Vec constructor requires type with 4 elements" );
         }
         // as row-major operator~
         SON8_MATFOURD_FUNC operator~( ) const -> SwapType {
@@ -84,11 +83,11 @@ namespace son8::matfourd {
             return data_[1];
         }
         SON8_MATFOURD_FUNC z( ) -> ValueType & {
-            static_assert( Size > 2, "Vec (column vector) " "size must be greater than 2 for this accessor" );
+            static_assert( Size > 2, "son8::matfourd: Vec accessor z requires larger vector type" );
             return data_[2];
         }
         SON8_MATFOURD_FUNC w( ) -> ValueType & {
-            static_assert( Size > 3, "Vec (column vector) " "size must be greater than 3 for this accessor" );
+            static_assert( Size > 3, "son8::matfourd: Vec accessor w requires larger vector type" );
             return data_[3];
         }
         // const accessors
@@ -99,11 +98,11 @@ namespace son8::matfourd {
             return data_[1];
         }
         SON8_MATFOURD_FUNC z( ) const -> ValueType const & {
-            static_assert( Size > 2, "Vec (column vector) " "size must be greater than 2 for this accessor" );
+            static_assert( Size > 2, "son8::matfourd: Vec constant accessor z requires larger vector type" );
             return data_[2];
         }
         SON8_MATFOURD_FUNC w( ) const -> ValueType const & {
-            static_assert( Size > 3, "Vec (column vector) " "size must be greater than 3 for this accessor" );
+            static_assert( Size > 3, "son8::matfourd: Vec constant accessor w requires larger vector type" );
             return data_[3];
         }
     }; // class Vec
