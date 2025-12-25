@@ -146,11 +146,11 @@ namespace son8::matfourd {
             return data_[1];
         }
         SON8_MATFOURD_FUNC v3( ) -> VectorType & {
-            static_assert( SelfType::vecs( ) > 2, "Mat (column matrix) " "accessor requires more than 2 vectors" );
+            static_assert( SelfType::vecs( ) > 2, "son8::matfourd: Mat accessor v3 requires larger array type" );
             return data_[2];
         }
         SON8_MATFOURD_FUNC v4( ) -> VectorType & {
-            static_assert( SelfType::vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
+            static_assert( SelfType::vecs( ) > 3, "son8::matfourd: Mat accessor v4 requires larger array type" );
             return data_[3];
         }
         // const accessors
@@ -161,11 +161,11 @@ namespace son8::matfourd {
             return data_[1];
         }
         SON8_MATFOURD_FUNC v3( ) const -> VectorType const & {
-            static_assert( SelfType::vecs( ) > 2, "Mat (column matrix) " "accessor requires more than 2 vectors" );
+            static_assert( SelfType::vecs( ) > 2, "son8::matfourd: Mat const accessor v3 requires larger array type" );
             return data_[2];
         }
         SON8_MATFOURD_FUNC v4( ) const -> VectorType const & {
-            static_assert( SelfType::vecs( ) > 3, "Mat (column matrix) " "accessor requires more than 3 vectors" );
+            static_assert( SelfType::vecs( ) > 3, "son8::matfourd: Mat const accessor v4 requires larger array type" );
             return data_[3];
         }
     }; // class Mat

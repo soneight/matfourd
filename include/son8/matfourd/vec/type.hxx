@@ -83,11 +83,11 @@ namespace son8::matfourd {
             return data_[1];
         }
         SON8_MATFOURD_FUNC z( ) -> ValueType & {
-            static_assert( Size > 2, "son8::matfourd: Vec accessor z requires larger vector type" );
+            static_assert( Size > 2, "son8::matfourd: Vec accessor z requires larger array type" );
             return data_[2];
         }
         SON8_MATFOURD_FUNC w( ) -> ValueType & {
-            static_assert( Size > 3, "son8::matfourd: Vec accessor w requires larger vector type" );
+            static_assert( Size > 3, "son8::matfourd: Vec accessor w requires larger array type" );
             return data_[3];
         }
         // const accessors
@@ -98,11 +98,11 @@ namespace son8::matfourd {
             return data_[1];
         }
         SON8_MATFOURD_FUNC z( ) const -> ValueType const & {
-            static_assert( Size > 2, "son8::matfourd: Vec constant accessor z requires larger vector type" );
+            static_assert( Size > 2, "son8::matfourd: Vec const accessor z requires larger array type" );
             return data_[2];
         }
         SON8_MATFOURD_FUNC w( ) const -> ValueType const & {
-            static_assert( Size > 3, "son8::matfourd: Vec constant accessor w requires larger vector type" );
+            static_assert( Size > 3, "son8::matfourd: Vec const accessor w requires larger array type" );
             return data_[3];
         }
     }; // class Vec
