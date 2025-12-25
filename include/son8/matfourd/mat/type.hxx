@@ -13,7 +13,7 @@ namespace son8::matfourd {
     template< typename Type, unsigned Cols, unsigned Rows, bool Layt = Layout::ColMajor >
     class Mat final {
     public:
-        static_assert( 2 <= Rows && Rows <= 4 && 2 <= Cols && Cols <= 4, "Mat (column matrix) " "dimensions must be in range [2,4]" );
+        static_assert( 2 <= Rows && Rows <= 4 && 2 <= Cols && Cols <= 4, "son8::matfourd: Mat template cols and rows must be in range [2,4]" );
         using ValueType = Type;
         using VectorType = std::conditional_t< Layt,
             Vec< ValueType, Cols, Layt >,
@@ -44,15 +44,15 @@ namespace son8::matfourd {
         Mat( DataType const &array ) : data_( array ) { }
         Mat( VectorType const &v1, VectorType const &v2 )
         : data_{ v1, v2 } {
-            static_assert( SelfType::vecs( ) == 2, "Mat (column matrix) " "constructor requires 2 vectors" );
+            static_assert( SelfType::vecs( ) == 2, "son8::matfourd: Mat constructor requires type with 2 vectors" );
         }
         Mat( VectorType const &v1, VectorType const &v2, VectorType const &v3 )
         : data_{ v1, v2, v3 } {
-            static_assert( SelfType::vecs( ) == 3, "Mat (column matrix) " "constructor requires 3 vectors" );
+            static_assert( SelfType::vecs( ) == 3, "son8::matfourd: Mat constructor requires type with 3 vectors" );
         }
         Mat( VectorType const &v1, VectorType const &v2, VectorType const &v3, VectorType const &v4 )
         : data_{ v1, v2, v3, v4 } {
-            static_assert( SelfType::vecs( ) == 4, "Mat (column matrix) " "constructor requires 4 vectors" );
+            static_assert( SelfType::vecs( ) == 4, "son8::matfourd: Mat constructor requires type with 4 vectors" );
         }
         // as swap order operator~
         SON8_MATFOURD_FUNC operator~( ) const -> SwapType {
@@ -130,7 +130,7 @@ namespace son8::matfourd {
             return *this;
         }
         SON8_MATFOURD_DISC operator*=( SelfType const &other ) -> SelfType & {
-            static_assert( SelfType::rows( ) == SelfType::cols( ), "Mat (column matrix) " " compound operator* requires square matrix" );
+            static_assert( SelfType::rows( ) == SelfType::cols( ), "son8::matfourd: Mat operator*= requires square matrix" );
             *this = *this * other;
             return *this;
         }
