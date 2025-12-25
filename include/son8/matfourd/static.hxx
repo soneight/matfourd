@@ -193,7 +193,7 @@ namespace son8::matfourd {
         static_assert( ColsL == RowsR
             , "son8::matfourd: operator^ layout-aware two Mat multiply requires match columns of left matrix to rows of right matrix" );
         static_assert( std::is_same_v< TypeL, TypeR >
-            , "son8::matfourd: operator^ requires two Mat with same value type" );
+            , "son8::matfourd: operator^ layout-aware two Mat multiply requires two Mat with same value type" );
         Un< TypeL >::reachable( );
     }
     // mat multiply

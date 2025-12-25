@@ -12,7 +12,8 @@ namespace son8::matfourd {
     template< typename Type, unsigned Size, bool Layt = Layout::ColMajor >
     class Vec final {
     public:
-        static_assert( 2 <= Size && Size <= 4, "son8::matfourd: Vec template size must be in range [2,4]" );
+        static_assert( 2 <= Size && Size <= 4
+            , "son8::matfourd: Vec template size must be in range [2,4]" );
         using ValueType = Type;
         using DataType = std::array< ValueType, Size >;
         using SelfType = Vec< Type, Size, Layt >;
@@ -33,14 +34,17 @@ namespace son8::matfourd {
         : data_( array ) { }
         Vec( ValueType const &x, ValueType const &y )
         : data_{ x, y } {
-            static_assert( Size == 2, "son8::matfourd: Vec constructor requires type with 2 elements" );
+            static_assert( Size == 2
+                , "son8::matfourd: Vec constructor requires type with 2 elements" );
         }
         Vec( ValueType const &x, ValueType const &y, ValueType const &z )
         : data_{ x, y, z } {
-            static_assert( Size == 3, "son8::matfourd: Vec constructor requires type with 3 elements" );
+            static_assert( Size == 3
+                , "son8::matfourd: Vec constructor requires type with 3 elements" );
         }
         Vec( ValueType const &x, ValueType const &y, ValueType const &z, ValueType const &w ) : data_{ x, y, z, w } {
-            static_assert( Size == 4, "son8::matfourd: Vec constructor requires type with 4 elements" );
+            static_assert( Size == 4
+                , "son8::matfourd: Vec constructor requires type with 4 elements" );
         }
         // as row-major operator~
         SON8_MATFOURD_FUNC operator~( ) const -> SwapType {
@@ -83,11 +87,13 @@ namespace son8::matfourd {
             return data_[1];
         }
         SON8_MATFOURD_FUNC z( ) -> ValueType & {
-            static_assert( Size > 2, "son8::matfourd: Vec accessor z requires larger array type" );
+            static_assert( Size > 2
+                , "son8::matfourd: Vec accessor z requires larger array type" );
             return data_[2];
         }
         SON8_MATFOURD_FUNC w( ) -> ValueType & {
-            static_assert( Size > 3, "son8::matfourd: Vec accessor w requires larger array type" );
+            static_assert( Size > 3
+                , "son8::matfourd: Vec accessor w requires larger array type" );
             return data_[3];
         }
         // const accessors
@@ -98,11 +104,13 @@ namespace son8::matfourd {
             return data_[1];
         }
         SON8_MATFOURD_FUNC z( ) const -> ValueType const & {
-            static_assert( Size > 2, "son8::matfourd: Vec const accessor z requires larger array type" );
+            static_assert( Size > 2
+                , "son8::matfourd: Vec const accessor z requires larger array type" );
             return data_[2];
         }
         SON8_MATFOURD_FUNC w( ) const -> ValueType const & {
-            static_assert( Size > 3, "son8::matfourd: Vec const accessor w requires larger array type" );
+            static_assert( Size > 3
+                , "son8::matfourd: Vec const accessor w requires larger array type" );
             return data_[3];
         }
     }; // class Vec
