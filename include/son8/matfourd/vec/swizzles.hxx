@@ -138,7 +138,8 @@ namespace son8::matfourd {
             template< Coord Crd, typename Type >
             SON8_MATFOURD_FUNC
             static constexpr coord( Type const &vec ) {
-                static_assert( Crd != Coord::o, "son8::matfourd: swizzle with incorrect o Coord" );
+                static_assert( Crd != Coord::o
+                    , "son8::matfourd: swizzle with incorrect o Coord" );
                 if/*_*/ constexpr ( Crd == Coord::x ) return vec.x( );
                 else if constexpr ( Crd == Coord::y ) return vec.y( );
                 else if constexpr ( Crd == Coord::z ) return vec.z( );
