@@ -11,17 +11,17 @@ namespace son8::matfourd {
         using rswp = Mat< Type, Rows, Cols, not Layt >; // IMPORTANT (not Layt) in necessary here!
         // ~ preserve original layout
         if/*___*/ constexpr ( rswp::vecs( ) == 2 ) {
-            return ~rswp{ mat.v1( )
-                        , mat.v2( ) };
+            return ~rswp{ ~mat.v1( )
+                        , ~mat.v2( ) };
         } else if constexpr ( rswp::vecs( ) == 3 ) {
-            return ~rswp{ mat.v1( )
-                        , mat.v2( )
-                        , mat.v3( ) };
+            return ~rswp{ ~mat.v1( )
+                        , ~mat.v2( )
+                        , ~mat.v3( ) };
         } else if constexpr ( rswp::vecs( ) == 4 ) {
-            return ~rswp{ mat.v1( )
-                        , mat.v2( )
-                        , mat.v3( )
-                        , mat.v4( ) };
+            return ~rswp{ ~mat.v1( )
+                        , ~mat.v2( )
+                        , ~mat.v3( )
+                        , ~mat.v4( ) };
         }
     }
 
