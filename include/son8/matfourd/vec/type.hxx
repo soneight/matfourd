@@ -29,8 +29,8 @@ namespace son8::matfourd {
         SON8_MATFOURD_FUNC data( ) const -> ValueType const * { return data_.data( ); }
         // constructors
         Vec( ) = default;
-        Vec( SwapType const &other ) : data_{ other.array_data( ) } { }
-        Vec( DataType const &array )
+        operator DataType() const { return data_; }
+        explicit Vec( DataType const &array )
         : data_( array ) { }
         Vec( ValueType const &x, ValueType const &y )
         : data_{ x, y } {
@@ -42,7 +42,8 @@ namespace son8::matfourd {
             static_assert( Size == 3
                 , "son8::matfourd: Vec constructor requires type with 3 elements" );
         }
-        Vec( ValueType const &x, ValueType const &y, ValueType const &z, ValueType const &w ) : data_{ x, y, z, w } {
+        Vec( ValueType const &x, ValueType const &y, ValueType const &z, ValueType const &w )
+        : data_{ x, y, z, w } {
             static_assert( Size == 4
                 , "son8::matfourd: Vec constructor requires type with 4 elements" );
         }
