@@ -41,8 +41,8 @@ namespace son8::matfourd {
         SON8_MATFOURD_FUNC data( ) const -> ValueType const * { return data_.data( )->data( ); }
         // constructors
         Mat( ) = default;
-        Mat( SwapType const &other ) : data_{ (~other).array_data( ) } { }
-        Mat( DataType const &array ) : data_( array ) { }
+        operator SwapType( ) const { return ~(*this); }
+        explicit Mat( DataType const &array ) : data_( array ) { }
         Mat( VectorType const &v1, VectorType const &v2 )
         : data_{ v1, v2 } {
             static_assert( SelfType::vecs( ) == 2

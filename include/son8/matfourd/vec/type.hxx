@@ -5,7 +5,6 @@
 #include <son8/matfourd/layout.hxx>
 // std
 #include <array>
-#include <initializer_list>
 
 namespace son8::matfourd {
     // Vec (column vector) class template
