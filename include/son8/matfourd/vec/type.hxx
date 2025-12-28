@@ -28,6 +28,11 @@ namespace son8::matfourd {
         SON8_MATFOURD_DISC data( ) -> ValueType * { return data_.data( ); }
         SON8_MATFOURD_FUNC data( ) const -> ValueType const * { return data_.data( ); }
         // constructors
+        template< typename Banned >
+        Vec( ForsakenInitialist_< Banned > ) {
+            static_assert( sizeof( ValueType ) == 0xFA1105
+                , "son8::matfourd: Vec constructor requires not forsaken nested initilizer_list-like constructs" );
+        }
         Vec( ) = default;
         operator DataType() const { return data_; }
         explicit Vec( DataType const &array )
