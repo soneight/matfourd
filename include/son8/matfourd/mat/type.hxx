@@ -40,6 +40,11 @@ namespace son8::matfourd {
         SON8_MATFOURD_DISC data( ) -> ValueType * { return data_.data( )->data( ); }
         SON8_MATFOURD_FUNC data( ) const -> ValueType const * { return data_.data( )->data( ); }
         // constructors
+        template< typename Banned, typename = std::enable_if_t< not std::is_same_v< Banned, ValueType >, void > >
+        Mat( ForsakenInitialist_< Banned > ) {
+            static_assert( sizeof( VectorType ) == 0xFA1105
+                , "son8::matfourd: Mat constructor requires not forsaken nested initilizer_list-like constructs" );
+        }
         Mat( ) = default;
         operator SwapType( ) const { return ~(*this); }
         explicit Mat( DataType const &array ) : data_( array ) { }
