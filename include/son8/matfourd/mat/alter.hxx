@@ -5,10 +5,10 @@
 
 namespace son8::matfourd {
     // Mat (column matrix) transpose
-    template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
-    SON8_MATFOURD_FUNC transpose( Mat< Type, Cols, Rows, Layt > const &mat )
-    -> Mat< Type, Rows, Cols, Layt > {
-        using rswp = Mat< Type, Rows, Cols, not Layt >; // IMPORTANT (not Layt) in necessary here!
+    template< typename Type, unsigned Cols, unsigned Rows, bool RowMajor >
+    SON8_MATFOURD_FUNC transpose( Mat< Type, Cols, Rows, RowMajor > const &mat )
+    -> Mat< Type, Rows, Cols, RowMajor > {
+        using rswp = Mat< Type, Rows, Cols, not RowMajor >; // IMPORTANT (not RowMajor) in necessary here!
         // ~ preserve original layout
         if/*___*/ constexpr ( rswp::vecs( ) == 2 ) {
             return ~rswp{ ~mat.v1( )

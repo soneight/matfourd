@@ -1,16 +1,16 @@
 #ifndef SON8_MATFOURD_MAT_EQUALITY_HXX
 #define SON8_MATFOURD_MAT_EQUALITY_HXX
 
-#include <son8/matfourd/layout.hxx>
+#include <son8/matfourd/order.hxx>
 #include <son8/matfourd/mat/type.hxx>
 #include <son8/matfourd/vec/equality.hxx>
 
 namespace son8::matfourd {
     // Mat (column matrix) layout-aware equality: (any)Mat == (any)Mat = bool
-    template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
-    SON8_MATFOURD_FUNC operator==( Mat< Type, Cols, Rows, Layt > const &matL, Mat< Type, Cols, Rows, Layt > const &matR )
+    template< typename Type, unsigned Cols, unsigned Rows, bool RowMajor >
+    SON8_MATFOURD_FUNC operator==( Mat< Type, Cols, Rows, RowMajor > const &matL, Mat< Type, Cols, Rows, RowMajor > const &matR )
     -> bool {
-        using CompType = Mat< Type, Cols, Rows, Layt >;
+        using CompType = Mat< Type, Cols, Rows, RowMajor >;
         using r = bool;
         if constexpr ( CompType::vecs( ) == 2 ) {
             return r { matL.v1( ) == matR.v1( )
@@ -27,16 +27,16 @@ namespace son8::matfourd {
         }
     }
     // Mat (column matrix) generic equality: (any)Mat == (any)Mat = bool
-    template< typename Type, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator==( Mat< Type, Cols, Rows, LaytL > const &matL, Mat< Type, Cols, Rows, LaytR > const &matR )
+    template< typename Type, unsigned Cols, unsigned Rows, bool RowMajorL, bool RowMajorR >
+    SON8_MATFOURD_FUNC operator==( Mat< Type, Cols, Rows, RowMajorL > const &matL, Mat< Type, Cols, Rows, RowMajorR > const &matR )
     -> bool {
-        Mat< Type, Cols, Rows, Layout::ColMajor > const matColL{ matL };
-        Mat< Type, Cols, Rows, Layout::ColMajor > const matColR{ matR };
+        Mat< Type, Cols, Rows, Order::ColMajor > const matColL{ matL };
+        Mat< Type, Cols, Rows, Order::ColMajor > const matColR{ matR };
         return matColL == matColR;
     }
     // Mat (column matrix) generic inequality: (any)Mat != (any)Mat = bool
-    template< typename Type, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator!=( Mat< Type, Cols, Rows, LaytL > const &matL, Mat< Type, Cols, Rows, LaytR > const &matR )
+    template< typename Type, unsigned Cols, unsigned Rows, bool RowMajorL, bool RowMajorR >
+    SON8_MATFOURD_FUNC operator!=( Mat< Type, Cols, Rows, RowMajorL > const &matL, Mat< Type, Cols, Rows, RowMajorR > const &matR )
     -> bool {
         return not ( matL == matR );
     }

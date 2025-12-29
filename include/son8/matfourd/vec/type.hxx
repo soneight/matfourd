@@ -2,29 +2,28 @@
 #define SON8_MATFOURD_VEC_TYPE_HXX
 // son8
 #include <son8/matfourd/core.hxx>
-#include <son8/matfourd/layout.hxx>
+#include <son8/matfourd/order.hxx>
 // std
 #include <array>
 
 namespace son8::matfourd {
     // Vec (column vector) class template
-    // TODO change Layt template parameter name to RowOrder?
-    template< typename Type, unsigned Size, bool Layt = Layout::ColMajor >
+    template< typename Type, unsigned Size, bool RowMajor = Order::ColMajor >
     class Vec final {
     public:
         static_assert( 2 <= Size && Size <= 4
             , "son8::matfourd: Vec template size must be in range [2,4]" );
         using ValueType = Type;
         using DataType = std::array< ValueType, Size >;
-        using SelfType = Vec< Type, Size, Layt >;
-        using SwapType = Vec< Type, Size, not Layt >;
+        using SelfType = Vec< Type, Size, RowMajor >;
+        using SwapType = Vec< Type, Size, not RowMajor >;
         friend SwapType;
     private:
         DataType data_;
         DataType const &array_data( ) const { return data_; }
     public:
         static constexpr unsigned size( ) noexcept { return Size; }
-        static constexpr bool order( ) noexcept { return Layt; }
+        static constexpr bool order( ) noexcept { return RowMajor; }
         SON8_MATFOURD_DISC data( ) -> ValueType * { return data_.data( ); }
         SON8_MATFOURD_FUNC data( ) const -> ValueType const * { return data_.data( ); }
         // constructors

@@ -7,7 +7,7 @@ namespace son8::matfourd {
     // Layout aware operations (operator^)
     // Vec (column vector) layout aware dot product: ~v ^ v = scalar (for library compile time test mainly)
     template< typename Type, unsigned Size >
-    SON8_MATFOURD_FUNC operator^( Vec< Type, Size, Layout::RowMajor > const &vecRow, Vec< Type, Size, Layout::ColMajor > const &vecCol ) {
+    SON8_MATFOURD_FUNC operator^( Vec< Type, Size, Order::RowMajor > const &vecRow, Vec< Type, Size, Order::ColMajor > const &vecCol ) {
         using r = Type;
         if/*_*/ constexpr ( Size == 2 ) {
             return r{ vecRow.x( ) * vecCol.x( )
@@ -27,8 +27,8 @@ namespace son8::matfourd {
     }
     // Vec (column vector) layout-aware cross product: v[3] ^ v[3] = v[3]
     template< typename Type >
-    SON8_MATFOURD_FUNC operator^( Vec< Type, 3, Layout::ColMajor > const &vecL, Vec< Type, 3, Layout::ColMajor > const &vecR ) {
-        using r = Vec< Type, 3, Layout::ColMajor >;
+    SON8_MATFOURD_FUNC operator^( Vec< Type, 3, Order::ColMajor > const &vecL, Vec< Type, 3, Order::ColMajor > const &vecR ) {
+        using r = Vec< Type, 3, Order::ColMajor >;
         return r{
             vecL.y( ) * vecR.z( ) - vecL.z( ) * vecR.y( ),
             vecL.z( ) * vecR.x( ) - vecL.x( ) * vecR.z( ),
@@ -37,9 +37,9 @@ namespace son8::matfourd {
     }
     // Generic operations (operator*)
     // Vec (column vector) generic: (any)v * scalar = v
-    template< typename Type, unsigned Size, bool Layt >
-    SON8_MATFOURD_FUNC operator*( Vec< Type, Size, Layt > const &vec, Type const &scalar ) {
-        using r = Vec< Type, Size, Layt >;
+    template< typename Type, unsigned Size, bool RowMajor >
+    SON8_MATFOURD_FUNC operator*( Vec< Type, Size, RowMajor > const &vec, Type const &scalar ) {
+        using r = Vec< Type, Size, RowMajor >;
         if/*_*/ constexpr ( r::size( ) == 2 ) {
             return r{ vec.x( ) * scalar
                     , vec.y( ) * scalar };
@@ -57,14 +57,14 @@ namespace son8::matfourd {
         }
     }
     // Vec (column vector) generic: scalar * (any)v = v
-    template< typename Type, unsigned Size, bool Layt >
-    SON8_MATFOURD_FUNC operator*( Type const &scalar, Vec< Type, Size, Layt > const &vec )
-    -> Vec< Type, Size, Layt > {
+    template< typename Type, unsigned Size, bool RowMajor >
+    SON8_MATFOURD_FUNC operator*( Type const &scalar, Vec< Type, Size, RowMajor > const &vec )
+    -> Vec< Type, Size, RowMajor > {
         return vec * scalar;
     }
     // Vec (column vector) generic dot product: (any)v * (any)v = scalar
-    template< typename Type, unsigned Size, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator*( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR ) {
+    template< typename Type, unsigned Size, bool RowMajorL, bool RowMajorR >
+    SON8_MATFOURD_FUNC operator*( Vec< Type, Size, RowMajorL > const &vecL, Vec< Type, Size, RowMajorR > const &vecR ) {
         using r = Type;
         if/*___*/ constexpr ( Size == 2 ) {
             return r{ vecL.x( ) * vecR.x( )

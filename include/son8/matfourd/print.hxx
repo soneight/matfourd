@@ -9,9 +9,9 @@
 
 namespace son8::matfourd {
     // Vec (column vector) print function
-    template< typename Type, unsigned Size, bool Layt >
-    SON8_MATFOURD_DISC operator<<( std::ostream &os, Vec< Type, Size, Layt > const &vec ) -> std::ostream & {
-        if constexpr ( Layt ) os << "~";
+    template< typename Type, unsigned Size, bool RowMajor >
+    SON8_MATFOURD_DISC operator<<( std::ostream &os, Vec< Type, Size, RowMajor > const &vec ) -> std::ostream & {
+        if constexpr ( RowMajor ) os << "~";
         os << "Vec" << Size << "[" << vec.x( ) << ", " << vec.y( );
         if constexpr ( Size > 2 ) { os << ", " << vec.z( ); }
         if constexpr ( Size > 3 ) { os << ", " << vec.w( ); }
@@ -19,11 +19,11 @@ namespace son8::matfourd {
         return os;
     }
     // Mat (column matrix) print function
-    template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
-    SON8_MATFOURD_DISC operator<<( std::ostream &os, Mat< Type, Cols, Rows, Layt > const &mat ) -> std::ostream & {
-        using SelfType = Mat< Type, Cols, Rows, Layt >;
+    template< typename Type, unsigned Cols, unsigned Rows, bool RowMajor >
+    SON8_MATFOURD_DISC operator<<( std::ostream &os, Mat< Type, Cols, Rows, RowMajor > const &mat ) -> std::ostream & {
+        using SelfType = Mat< Type, Cols, Rows, RowMajor >;
         os << "\n";
-        if constexpr ( Layt ) os << "~";
+        if constexpr ( RowMajor ) os << "~";
         os << "Mat" << Cols << "x" << Rows << "{";
         os << "\n\t" << mat.v1( ) << ",\n\t" << mat.v2( );
 

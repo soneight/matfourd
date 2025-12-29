@@ -5,8 +5,8 @@
 
 namespace son8::matfourd {
     // Vec (column vector) equality: (any)v == (any)v = bool
-    template< typename Type, unsigned Size, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator==( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR ) {
+    template< typename Type, unsigned Size, bool RowMajorL, bool RowMajorR >
+    SON8_MATFOURD_FUNC operator==( Vec< Type, Size, RowMajorL > const &vecL, Vec< Type, Size, RowMajorR > const &vecR ) {
         using r = bool;
         if/*_*/ constexpr ( Size == 2 ) {
             return r { vecL.x( ) == vecR.x( )
@@ -25,8 +25,8 @@ namespace son8::matfourd {
         }
     }
     // Vec (column vector) inequality: (any)v != (any)v = bool
-    template< typename Type, unsigned Size, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator!=( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR )
+    template< typename Type, unsigned Size, bool RowMajorL, bool RowMajorR >
+    SON8_MATFOURD_FUNC operator!=( Vec< Type, Size, RowMajorL > const &vecL, Vec< Type, Size, RowMajorR > const &vecR )
     -> bool {
         return not (vecL == vecR);
     }

@@ -5,9 +5,9 @@
 
 namespace son8::matfourd {
     // Vec (column vector) addition: (any)v + (any)v = v
-    template< typename Type, unsigned Size, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator+( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR ) {
-        using r = Vec< Type, Size, Layout::ColMajor >;
+    template< typename Type, unsigned Size, bool RowMajorL, bool RowMajorR >
+    SON8_MATFOURD_FUNC operator+( Vec< Type, Size, RowMajorL > const &vecL, Vec< Type, Size, RowMajorR > const &vecR ) {
+        using r = Vec< Type, Size, Order::ColMajor >;
         if/*___*/ constexpr ( r::size( ) == 2 ) {
             return r{ vecL.x( ) + vecR.x( )
                     , vecL.y( ) + vecR.y( ) };
@@ -23,9 +23,9 @@ namespace son8::matfourd {
         }
     }
     // Vec (column vector) subtraction: (any)v - (any)v = v
-    template< typename Type, unsigned Size, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator-( Vec< Type, Size, LaytL > const &vecL, Vec< Type, Size, LaytR > const &vecR )
-    -> Vec< Type, Size, Layout::ColMajor > {
+    template< typename Type, unsigned Size, bool RowMajorL, bool RowMajorR >
+    SON8_MATFOURD_FUNC operator-( Vec< Type, Size, RowMajorL > const &vecL, Vec< Type, Size, RowMajorR > const &vecR )
+    -> Vec< Type, Size, Order::ColMajor > {
         return vecL + (-vecR);
     }
 } // namespace son8::matfourd
