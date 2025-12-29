@@ -5,10 +5,10 @@
 #include <son8/matfourd/vec/additive.hxx>
 
 namespace son8::matfourd {
-    // Mat (column matrix) layout-aware addition: (same)Mat + (same)Mat = Mat
-    template< typename Type, unsigned Cols, unsigned Rows, bool Layt >
-    SON8_MATFOURD_FUNC operator+( Mat< Type, Cols, Rows, Layt > const &matL, Mat< Type, Cols, Rows, Layt > const &matR ) {
-        using r = Mat< Type, Cols, Rows, Layt >;
+    // Mat (column matrix) order-aware addition: (same)Mat + (same)Mat = Mat
+    template< typename Type, unsigned Cols, unsigned Rows, bool RowMajor >
+    SON8_MATFOURD_FUNC operator+( Mat< Type, Cols, Rows, RowMajor > const &matL, Mat< Type, Cols, Rows, RowMajor > const &matR ) {
+        using r = Mat< Type, Cols, Rows, RowMajor >;
         if/*___*/ constexpr ( r::vecs( ) == 2 ) {
             return r{ matL.v1( ) + matR.v1( )
                     , matL.v2( ) + matR.v2( ) };
@@ -24,17 +24,17 @@ namespace son8::matfourd {
         }
     }
     // Mat (column matrix) generic addition: (any)Mat + (any)Mat = Mat
-    template< typename Type, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator+( Mat< Type, Cols, Rows, LaytL > const &matL, Mat< Type, Cols, Rows, LaytR > const &matR ) {
+    template< typename Type, unsigned Cols, unsigned Rows, bool RowMajorL, bool RowMajorR >
+    SON8_MATFOURD_FUNC operator+( Mat< Type, Cols, Rows, RowMajorL > const &matL, Mat< Type, Cols, Rows, RowMajorR > const &matR ) {
         using Ret = Mat< Type, Cols, Rows >;
         Ret ret;
-        Mat< Type, Cols, Rows, Layout::ColMajor > const matColL{ matL };
-        Mat< Type, Cols, Rows, Layout::ColMajor > const matColR{ matR };
+        Mat< Type, Cols, Rows, Order::ColMajor > const matColL{ matL };
+        Mat< Type, Cols, Rows, Order::ColMajor > const matColR{ matR };
         return matColL + matColR;
     }
     // Mat (column matrix) generic subtraction: (any)Mat - (any)Mat = Mat
-    template< typename Type, unsigned Cols, unsigned Rows, bool LaytL, bool LaytR >
-    SON8_MATFOURD_FUNC operator-( Mat< Type, Cols, Rows, LaytL > const &matL, Mat< Type, Cols, Rows, LaytR > const &matR )
+    template< typename Type, unsigned Cols, unsigned Rows, bool RowMajorL, bool RowMajorR >
+    SON8_MATFOURD_FUNC operator-( Mat< Type, Cols, Rows, RowMajorL > const &matL, Mat< Type, Cols, Rows, RowMajorR > const &matR )
     -> Mat< Type, Cols, Rows > {
         return matL + ( -matR );
     }

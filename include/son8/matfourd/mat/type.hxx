@@ -2,7 +2,7 @@
 #define SON8_MATFOURD_MAT_TYPE_HXX
 // son8
 #include <son8/matfourd/core.hxx>
-#include <son8/matfourd/layout.hxx>
+#include <son8/matfourd/order.hxx>
 #include <son8/matfourd/vec/type.hxx>
 // std
 #include <array>
@@ -10,33 +10,33 @@
 
 namespace son8::matfourd {
     // Mat (column matrix) class template
-    template< typename Type, unsigned Cols, unsigned Rows, bool Layt = Layout::ColMajor >
+    template< typename Type, unsigned Cols, unsigned Rows, bool RowMajor = Order::ColMajor >
     class Mat final {
     public:
         static_assert( 2 <= Rows && Rows <= 4 && 2 <= Cols && Cols <= 4
             , "son8::matfourd: Mat template cols and rows must be in range [2,4]" );
         using ValueType = Type;
-        using VectorType = std::conditional_t< Layt,
-            Vec< ValueType, Cols, Layt >,
-            Vec< ValueType, Rows, Layt >
+        using VectorType = std::conditional_t< RowMajor,
+            Vec< ValueType, Cols, RowMajor >,
+            Vec< ValueType, Rows, RowMajor >
         >;
-        using DataType = std::conditional_t< Layt,
+        using DataType = std::conditional_t< RowMajor,
             std::array< VectorType, Rows >,
             std::array< VectorType, Cols >
         >;
-        using SelfType = Mat< Type, Cols, Rows, Layt >;
-        using SwapType = Mat< Type, Cols, Rows, not Layt >;
+        using SelfType = Mat< Type, Cols, Rows, RowMajor >;
+        using SwapType = Mat< Type, Cols, Rows, not RowMajor >;
         friend SwapType;
     private:
         DataType data_;
         DataType const &array_data( ) const { return data_; }
     public:
-        static constexpr unsigned vecs( ) noexcept { return ( Layt == Layout::ColMajor ) ? Cols : Rows; }
-        static constexpr unsigned vals( ) noexcept { return ( Layt == Layout::ColMajor ) ? Rows : Cols; }
+        static constexpr unsigned vecs( ) noexcept { return ( RowMajor == Order::ColMajor ) ? Cols : Rows; }
+        static constexpr unsigned vals( ) noexcept { return ( RowMajor == Order::ColMajor ) ? Rows : Cols; }
         static constexpr unsigned rows( ) noexcept { return Rows; }
         static constexpr unsigned cols( ) noexcept { return Cols; }
         static constexpr unsigned size( ) noexcept { return Rows * Cols; }
-        static constexpr bool order( ) noexcept { return Layt; }
+        static constexpr bool order( ) noexcept { return RowMajor; }
         SON8_MATFOURD_DISC data( ) -> ValueType * { return data_.data( )->data( ); }
         SON8_MATFOURD_FUNC data( ) const -> ValueType const * { return data_.data( )->data( ); }
         // constructors

@@ -117,7 +117,7 @@ inline constexpr Impl_< 4, ReqS, Coord::d, Coord::c, Coord::a, Coord::b > d##c##
 inline constexpr Impl_< 4, ReqS, Coord::d, Coord::c, Coord::b, Coord::a > d##c##b##a
 // TODO maybe find a better way to do this instead of using macro
 #define SON8_MATFOURD_SWIZZLES_FUNC_BODY( ReqS )\
-using Ret = Vec< Type, Size, Layt >;\
+using Ret = Vec< Type, Size, RowMajor >;\
 using Swiz = swizzles::Impl_< Size, ReqS, Crd1, Crd2, Crd3, Crd4 >;\
 if/*_*/ constexpr ( Size == 2 ) return Ret{ Swiz::c1( vec ), Swiz::c2( vec ) };\
 else if constexpr ( Size == 3 ) return Ret{ Swiz::c1( vec ), Swiz::c2( vec ), Swiz::c3( vec ) };\
@@ -180,28 +180,28 @@ namespace son8::matfourd {
     // TODO too much repeat, maybe find a better implementation of restricting swizzle requirements
     //      IMORTANT not forget about static header with asserts)
     //      all this done to allow catching wrong swizzles with Vec combo when including static.hxx
-    template< typename Type, bool Layt, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
-    SON8_MATFOURD_FUNC operator/( Vec< Type, 2, Layt > const &vec, swizzles::Impl_< Size, 2, Crd1, Crd2, Crd3, Crd4 > ) {
+    template< typename Type, bool RowMajor, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
+    SON8_MATFOURD_FUNC operator/( Vec< Type, 2, RowMajor > const &vec, swizzles::Impl_< Size, 2, Crd1, Crd2, Crd3, Crd4 > ) {
         SON8_MATFOURD_SWIZZLES_FUNC_BODY( 2 );
     }
-    template< typename Type, bool Layt, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
-    SON8_MATFOURD_FUNC operator/( Vec< Type, 3, Layt > const &vec, swizzles::Impl_< Size, 2, Crd1, Crd2, Crd3, Crd4 > ) {
+    template< typename Type, bool RowMajor, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
+    SON8_MATFOURD_FUNC operator/( Vec< Type, 3, RowMajor > const &vec, swizzles::Impl_< Size, 2, Crd1, Crd2, Crd3, Crd4 > ) {
         SON8_MATFOURD_SWIZZLES_FUNC_BODY( 2 );
     }
-    template< typename Type, bool Layt, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
-    SON8_MATFOURD_FUNC operator/( Vec< Type, 3, Layt > const &vec, swizzles::Impl_< Size, 3, Crd1, Crd2, Crd3, Crd4 > ) {
+    template< typename Type, bool RowMajor, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
+    SON8_MATFOURD_FUNC operator/( Vec< Type, 3, RowMajor > const &vec, swizzles::Impl_< Size, 3, Crd1, Crd2, Crd3, Crd4 > ) {
         SON8_MATFOURD_SWIZZLES_FUNC_BODY( 3 );
     }
-    template< typename Type, bool Layt, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
-    SON8_MATFOURD_FUNC operator/( Vec< Type, 4, Layt > const &vec, swizzles::Impl_< Size, 2, Crd1, Crd2, Crd3, Crd4 > ) {
+    template< typename Type, bool RowMajor, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
+    SON8_MATFOURD_FUNC operator/( Vec< Type, 4, RowMajor > const &vec, swizzles::Impl_< Size, 2, Crd1, Crd2, Crd3, Crd4 > ) {
         SON8_MATFOURD_SWIZZLES_FUNC_BODY( 2 );
     }
-    template< typename Type, bool Layt, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
-    SON8_MATFOURD_FUNC operator/( Vec< Type, 4, Layt > const &vec, swizzles::Impl_< Size, 3, Crd1, Crd2, Crd3, Crd4 > ) {
+    template< typename Type, bool RowMajor, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
+    SON8_MATFOURD_FUNC operator/( Vec< Type, 4, RowMajor > const &vec, swizzles::Impl_< Size, 3, Crd1, Crd2, Crd3, Crd4 > ) {
         SON8_MATFOURD_SWIZZLES_FUNC_BODY( 3 );
     }
-    template< typename Type, bool Layt, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
-    SON8_MATFOURD_FUNC operator/( Vec< Type, 4, Layt > const &vec, swizzles::Impl_< Size, 4, Crd1, Crd2, Crd3, Crd4 > ) {
+    template< typename Type, bool RowMajor, unsigned Size, SON8_MATFOURD_SWIZZLES_COORDS >
+    SON8_MATFOURD_FUNC operator/( Vec< Type, 4, RowMajor > const &vec, swizzles::Impl_< Size, 4, Crd1, Crd2, Crd3, Crd4 > ) {
         SON8_MATFOURD_SWIZZLES_FUNC_BODY( 4 );
     }
 
