@@ -6,7 +6,7 @@
 #include <son8/matfourd/vec/equality.hxx>
 
 namespace son8::matfourd {
-    // Mat (column matrix) layout-aware equality: (any)Mat == (any)Mat = bool
+    // Mat (column matrix) order-aware equality: (any)Mat == (any)Mat = bool
     template< typename Type, unsigned Cols, unsigned Rows, bool RowMajor >
     SON8_MATFOURD_FUNC operator==( Mat< Type, Cols, Rows, RowMajor > const &matL, Mat< Type, Cols, Rows, RowMajor > const &matR )
     -> bool {

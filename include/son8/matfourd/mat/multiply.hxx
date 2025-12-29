@@ -6,8 +6,8 @@
 #include <son8/matfourd/vec/multiply.hxx>
 
 namespace son8::matfourd {
-    // Layout aware operations (operator^)
-    // Mat (column matrix) layout-aware vector outer product: Vec ^ ~Vec = Mat
+    // Order-aware operations (operator^)
+    // Mat (column matrix) order-aware vector outer product: Vec ^ ~Vec = Mat
     template< typename Type, unsigned Size >
     SON8_MATFOURD_FUNC operator^( Vec< Type, Size, Order::ColMajor > const &vecL, Vec< Type, Size, Order::RowMajor > const &vecR ) {
         using r = Mat< Type, Size, Size >;
@@ -25,7 +25,7 @@ namespace son8::matfourd {
                     , { vecL.x( ) * vecR.w( ), vecL.y( ) * vecR.w( ), vecL.z( ) * vecR.w( ), vecL.w( ) * vecR.w( ) } };
         }
     }
-    // Mat (column matrix) layout-aware: ~Vec ^ Mat = ~Vec
+    // Mat (column matrix) order-aware: ~Vec ^ Mat = ~Vec
     template< typename Type, unsigned Cols, unsigned Rows >
     SON8_MATFOURD_FUNC operator^( Vec< Type, Rows, Order::RowMajor > const &vecRow, Mat< Type, Cols, Rows, Order::ColMajor > const &matCol ) {
         using r = Vec< Type, Cols, Order::RowMajor >;
@@ -43,7 +43,7 @@ namespace son8::matfourd {
                     , vecRow ^ matCol.v4( ) };
         }
     }
-    // Mat (column matrix) layout-aware: ~Mat ^ Vec = Vec
+    // Mat (column matrix) order-aware: ~Mat ^ Vec = Vec
     template< typename Type, unsigned Cols, unsigned Rows >
     SON8_MATFOURD_FUNC operator^( Mat< Type, Cols, Rows, Order::RowMajor > const &matRow, Vec< Type, Cols, Order::ColMajor > const &vecCol ) {
         using r = Vec< Type, Rows >;
@@ -61,7 +61,7 @@ namespace son8::matfourd {
                     , matRow.v4( ) ^ vecCol };
         }
     }
-    // Mat (column matrix) layout-aware: ~Mat ^ Mat = Mat
+    // Mat (column matrix) order-aware: ~Mat ^ Mat = Mat
     template< typename Type, unsigned ColsLRowsR, unsigned RowsL, unsigned ColsR >
     SON8_MATFOURD_FUNC operator^( Mat< Type, ColsLRowsR, RowsL, Order::RowMajor > const &matRow, Mat< Type, ColsR, ColsLRowsR, Order::ColMajor > const &matCol ) {
         using r = Mat< Type, ColsR, RowsL >;

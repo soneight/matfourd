@@ -5,7 +5,7 @@
 #include <son8/matfourd/vec/additive.hxx>
 
 namespace son8::matfourd {
-    // Mat (column matrix) layout-aware addition: (same)Mat + (same)Mat = Mat
+    // Mat (column matrix) order-aware addition: (same)Mat + (same)Mat = Mat
     template< typename Type, unsigned Cols, unsigned Rows, bool RowMajor >
     SON8_MATFOURD_FUNC operator+( Mat< Type, Cols, Rows, RowMajor > const &matL, Mat< Type, Cols, Rows, RowMajor > const &matR ) {
         using r = Mat< Type, Cols, Rows, RowMajor >;

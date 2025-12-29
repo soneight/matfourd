@@ -73,17 +73,17 @@ namespace son8::matfourd {
             , "son8::matfourd: operator* requires Vec and scalar with same value type" );
         Un< TypeL >::reachable( );
     }
-    // vec multiply (layout-aware)
+    // vec multiply (order-aware)
     template< typename TypeL, typename TypeR, unsigned SizeL, unsigned SizeR, bool RowMajorL, bool RowMajorR >
     void operator^( Vec< TypeL, SizeL, RowMajorL >, Vec< TypeR, SizeR, RowMajorR > ) {
         static_assert( SizeL == SizeR
-            , "son8::matfourd: operator^ layout-aware multiply requires two Vec with same size" );
+            , "son8::matfourd: operator^ order-aware multiply requires two Vec with same size" );
         static_assert( not ( RowMajorL && RowMajorR )
-            , "son8::matfourd: operator^ layout-aware multiply does not work when both Vec are row-major, unknown operation" );
+            , "son8::matfourd: operator^ order-aware multiply does not work when both Vec are row-major, unknown operation" );
         static_assert( SizeL == 3
-            , "son8::matfourd: operator^ layout-aware cross product requires both Vec to be col-major of size 3" );
+            , "son8::matfourd: operator^ order-aware cross product requires both Vec to be col-major of size 3" );
         static_assert( std::is_same_v< TypeL, TypeR >
-            , "son8::matfourd: operator^ layout-aware multiply requires two Vec with same value type" );
+            , "son8::matfourd: operator^ order-aware multiply requires two Vec with same value type" );
         Un< TypeL >::reachable( );
     }
     // vec multiply
@@ -145,26 +145,26 @@ namespace son8::matfourd {
             , "son8::matfourd: operator* requires Mat and scalar with same value type" );
         Un< Type >::reachable( );
     }
-    // mat multiply vec left (layout-aware)
+    // mat multiply vec left (order-aware)
     template< typename TypeL, typename TypeR, unsigned Size, unsigned Cols, unsigned Rows, bool RowMajorL, bool RowMajorR >
     void operator^( Vec< TypeL, Size, RowMajorL >, Mat< TypeR, Cols, Rows, RowMajorR > ) {
         static_assert( RowMajorL == Order::RowMajor && RowMajorR == Order::ColMajor
-            , "son8::matfourd: operator^ layout-aware multiply requires row-major Vec and col-major Mat" );
+            , "son8::matfourd: operator^ order-aware multiply requires row-major Vec and col-major Mat" );
         static_assert( Size == Rows
-            , "son8::matfourd: operator^ layout-aware multiply requires Vec size and Mat rows to be equal" );
+            , "son8::matfourd: operator^ order-aware multiply requires Vec size and Mat rows to be equal" );
         static_assert( std::is_same_v< TypeL, TypeR >
-            , "son8::matfourd: operator^ layout-aware multiply requires Vec and Mat with same value type" );
+            , "son8::matfourd: operator^ order-aware multiply requires Vec and Mat with same value type" );
         Un< TypeL >::reachable( );
     }
-    // mat multiply vec right (layout-aware)
+    // mat multiply vec right (order-aware)
     template< typename TypeL, typename TypeR, unsigned Size, unsigned Cols, unsigned Rows, bool RowMajorL, bool RowMajorR >
     void operator^( Mat< TypeL, Cols, Rows, RowMajorL >, Vec< TypeR, Size, RowMajorR > ) {
         static_assert( RowMajorL == Order::RowMajor && RowMajorR == Order::ColMajor
-            , "son8::matfourd: operator^ layout-aware multiply requires row-major Mat and col-major Vec" );
+            , "son8::matfourd: operator^ order-aware multiply requires row-major Mat and col-major Vec" );
         static_assert( Cols == Size
-            , "son8::matfourd: operator^ layout-aware multiply requires Mat cols and Vec size to be equal" );
+            , "son8::matfourd: operator^ order-aware multiply requires Mat cols and Vec size to be equal" );
         static_assert( std::is_same_v< TypeL, TypeR >
-            , "son8::matfourd: operator^ layout-aware multiply requires Mat and Vec with same value type" );
+            , "son8::matfourd: operator^ order-aware multiply requires Mat and Vec with same value type" );
         Un< TypeL >::reachable( );
     }
     // mat multiply vec left
@@ -185,15 +185,15 @@ namespace son8::matfourd {
             , "son8::matfourd: operator* requires Mat and Vec with same value type" );
         Un< TypeL >::reachable( );
     }
-    // mat multiply (layout-aware)
+    // mat multiply (order-aware)
     template< typename TypeL, typename TypeR, unsigned ColsL, unsigned RowsL, unsigned ColsR, unsigned RowsR, bool RowMajorL, bool RowMajorR >
     void operator^( Mat< TypeL, ColsL, RowsL, RowMajorL >, Mat< TypeR, ColsR, RowsR, RowMajorR > ) {
         static_assert( RowMajorL == Order::RowMajor && RowMajorR == Order::ColMajor
-            , "son8::matfourd: operator^ layout-aware two Mat multiply requires row-major left Mat and col-major right Mat" );
+            , "son8::matfourd: operator^ order-aware two Mat multiply requires row-major left Mat and col-major right Mat" );
         static_assert( ColsL == RowsR
-            , "son8::matfourd: operator^ layout-aware two Mat multiply requires match columns of left matrix to rows of right matrix" );
+            , "son8::matfourd: operator^ order-aware two Mat multiply requires match columns of left matrix to rows of right matrix" );
         static_assert( std::is_same_v< TypeL, TypeR >
-            , "son8::matfourd: operator^ layout-aware two Mat multiply requires two Mat with same value type" );
+            , "son8::matfourd: operator^ order-aware two Mat multiply requires two Mat with same value type" );
         Un< TypeL >::reachable( );
     }
     // mat multiply

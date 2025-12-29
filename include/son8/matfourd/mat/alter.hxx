@@ -9,7 +9,7 @@ namespace son8::matfourd {
     SON8_MATFOURD_FUNC transpose( Mat< Type, Cols, Rows, RowMajor > const &mat )
     -> Mat< Type, Rows, Cols, RowMajor > {
         using rswp = Mat< Type, Rows, Cols, not RowMajor >; // IMPORTANT (not RowMajor) in necessary here!
-        // ~ preserve original layout
+        // ~ preserve original order
         if/*___*/ constexpr ( rswp::vecs( ) == 2 ) {
             return ~rswp{ ~mat.v1( )
                         , ~mat.v2( ) };

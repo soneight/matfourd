@@ -4,8 +4,8 @@
 #include <son8/matfourd/vec/type.hxx>
 
 namespace son8::matfourd {
-    // Layout aware operations (operator^)
-    // Vec (column vector) layout aware dot product: ~v ^ v = scalar (for library compile time test mainly)
+    // Order-aware operations (operator^)
+    // Vec (column vector) order-aware dot product: ~v ^ v = scalar (for library compile time test mainly)
     template< typename Type, unsigned Size >
     SON8_MATFOURD_FUNC operator^( Vec< Type, Size, Order::RowMajor > const &vecRow, Vec< Type, Size, Order::ColMajor > const &vecCol ) {
         using r = Type;
@@ -25,7 +25,7 @@ namespace son8::matfourd {
                     + vecRow.w( ) * vecCol.w( ) };
         }
     }
-    // Vec (column vector) layout-aware cross product: v[3] ^ v[3] = v[3]
+    // Vec (column vector) order-aware cross product: v[3] ^ v[3] = v[3]
     template< typename Type >
     SON8_MATFOURD_FUNC operator^( Vec< Type, 3, Order::ColMajor > const &vecL, Vec< Type, 3, Order::ColMajor > const &vecR ) {
         using r = Vec< Type, 3, Order::ColMajor >;
