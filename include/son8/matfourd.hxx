@@ -8,6 +8,10 @@
 #include <son8/matfourd/static.hxx>
 #include <son8/matfourd/vec.hxx>
 
+#ifdef SON8_MATFOURD_INCLUDE_DEPRECATED
+#include <son8/matfourd/layout.hxx>
+#endif
+
 #endif//SON8_MATFOURD_HXX
 
 // Ⓒ 2025 Oleg'Ease'Kharchuk ᦒ
