@@ -16,10 +16,7 @@ namespace son8::matfourd {
         static constexpr ColMajor_ ColMajor{ };
     };
 
-#   ifdef SON8_MATFOURD_INCLUDE_DEPRECATED
-        using Layout [[deprecated("son8::matfourd: Layout is subject to be removed/changed use Order instead")]] = Order;
-#   endif
-}
+} // namespace son8::matfourd
 
 #endif//SON8_MATFOURD_ORDER_HXX
 
