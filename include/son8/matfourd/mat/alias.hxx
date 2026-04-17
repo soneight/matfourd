@@ -40,3 +40,8 @@ namespace son8::matfourd {
 #endif//SON8_MATFOURD_MAT_ALIAS_HXX
 
 // Ⓒ 2025 Oleg'Ease'Kharchuk ᦒ
+// Apache License 2.0
+// NO WARRANTY OF ANY KIND see <http://www.apache.org/licenses/LICENSE-2.0>
+// SPDX-License-Identifier: Apache-2.0
+// lib: `matfourd` C++17 Four Dimensional Matrices
+// Ⓒ Copyright (c) 2026 Oleg'Ease'Kharchuk ᦒ
