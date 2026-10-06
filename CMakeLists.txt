@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 3.8...3.27 )
-project( matfourd VERSION 0.0.0 LANGUAGES CXX )
+project( matfourd VERSION 0.0.1 LANGUAGES CXX )
 set( SON8_LIB son8__${PROJECT_NAME} )
 option( SON8_MATFOURD_INCLUDE_DEPRECATED "Include deprecated son8::matfourd entities" OFF )
 # Private configuration under source directory

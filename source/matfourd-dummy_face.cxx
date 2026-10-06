@@ -5,8 +5,8 @@ namespace son8::dummy_face {
     using Col4x4f = m4d::Col4x4< float >;
     using Ref = Col4x4f const &;
 
-    static Col4x4f mvp( Ref m, Ref v, Ref p ) {
-        return m * v * p;
+    static Col4x4f mvp( Ref matModel, Ref matView, Ref matProj ) {
+        return matProj * ( matView * matModel );
     }
 
 }
