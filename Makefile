@@ -1,14 +1,16 @@
-.PHONY: usage cmake ninja clean build allin
-# recipes
+.PHONY: usage cmake ninja clean
+# variables
+BUILD := build
+# commands
 usage:
-	cat Makefile.usage.txt
+	@cat Makefile.usage.txt
 cmake:
-	cmake -B build/ -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+	@echo "configure project into build directory"
+	@cmake -B $(BUILD) -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DSON8_MATFOURD_DUMMY_FACE_BUILD=ON
 ninja:
-	ninja -C build/
+	@echo "generates project into build directory"
+	@ninja -C $(BUILD)
 clean:
-	rm -rf build/ && git restore build/.gitignore
-build:
-	make cmake && make ninja
-allin:
-	make clean && make build
+	@echo "remove force recursive build directory"
+	@rm -fr $(BUILD)
+	@git restore $(BUILD)

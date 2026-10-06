@@ -1,4 +1,4 @@
-# MATFOURD
+# `MATFOURD`
 > C++17 Four Dimensional Matrices
 
 Project Overview
