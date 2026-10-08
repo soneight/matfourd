@@ -79,7 +79,7 @@ m4d::Row2x4< float > matrixRow{
     vecRowMajor / zw
 }; // in-memory: 1-2-3-4-5-6-7-8
 
-auto /* m4d::Col4x2< float > */ matrix = ~matrixRow; // in-memory: 1-5-2-6-3-7-4-8
+auto /* m4d::Col2x4< float > */ matrix = ~matrixRow; // in-memory: 1-5-2-6-3-7-4-8
 
 ```
 
