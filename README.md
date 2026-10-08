@@ -4,7 +4,6 @@
 - **dimensions and order:**
   - `Vec*` and `Mat*` support dimensions from 2 to 4 only
   - GLSL dimension naming: `Mat<Type, Cols, Rows>` (`Mat2x4` = 2 columns, 4 rows)
-  - Memory: `ColMajor.data()` is contiguous column-by-column
 
 - **memory**:
   - **IMPORTANT**: local variables for `Vec*` and `Mat*` classes are uninitialized, so contains garbage
@@ -16,8 +15,9 @@
   - Default order is always `Order::ColMajor`
 
 - **operator roles (`*` vs `^` vs `~`):**
+  - most of multiplication internally implemented by using order-aware `^` operator
   - **`^` (strict order-aware multiplication):** generally expect `RowMajor` left operand and `ColMajor` right operand
-  - **`*` (generic order-agnostic multiplication):** automatically converts left operand to `RowMajor` and right operand to `ColMajor`, then calls `^`, that means using it for any multiplication between `Vec*` results in dot product
+  - **`*` (generic order-agnostic multiplication):** automatically converts left operand to `RowMajor` and right operand to `ColMajor`, then calls `^`, that means using `*` for any multiplication between `Vec*` results in dot product
   - **`~` (order toggle):** reverses storage/vector orientation without changing dimensions (`ColMajor <-> RowMajor`)
   - **`transpose(mat)` vs `~mat`:**
     - `transpose`: swaps dimensions (Cols <-> Rows) and preserves order
@@ -71,10 +71,13 @@ m4d::Row2x4< float > matrixRowMajor{
 m4d::Vec4< float > vecColMajor{ 1, 2, 3, 4 };
 m4d::Row4< float > vecRowMajor{ 5, 6, 7, 8 };
 
-m4d::Row4x2< float > matrix{
-    ~vecColMajor, // `~` is necessary, auto conversion is not supported, need to be explicit
-    vecRowMajor
-};// in-memory: 1-2-3-4-5-6-7-8
+using namespace m4d::swizzles;
+m4d::Row2x4< float > matrixRow{
+    ~vecColMajor / xy, // `~` is necessary, auto conversion is
+    ~vecColMajor / zw, // \ not supported, need to be explicit
+    vecRowMajor / xy,
+    vecRowMajor / zw
+}; // in-memory: 1-2-3-4-5-6-7-8
 
 auto /* m4d::Col4x2< float > */ matrix = ~matrixRow; // in-memory: 1-5-2-6-3-7-4-8
 
